@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Great Lakes Gazette</title>
+<meta name="description" content="Weekly Great Lakes shipping news — auto-generated from live AIS tracking data. Real vessel movements, no invented details.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Georgia,'Times New Roman',serif;background:#f5f1e8;color:#2a2a2a;line-height:1.7}
+.masthead{background:#1a2744;color:#f5f1e8;text-align:center;padding:32px 24px 24px;border-bottom:4px solid #c8a84b}
+.masthead-rule{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:8px}
+.masthead-rule hr{border:none;border-top:1px solid #c8a84b66;flex:1;max-width:80px}
+.overline{font-family:-apple-system,sans-serif;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#c8a84b}
+.masthead h1{font-size:clamp(2.2rem,6vw,4rem);font-weight:700;letter-spacing:-.01em;margin:4px 0 8px;color:#f5f1e8;line-height:1.1}
+.masthead-sub{font-size:.9rem;color:#a0aac0;font-style:italic}
+.nav-strip{background:#c8a84b;display:flex;justify-content:center;gap:0}
+.nav-strip a{font-family:-apple-system,sans-serif;font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#1a2744;padding:10px 20px;text-decoration:none;transition:background .15s}
+.nav-strip a:hover{background:#b8963b;color:#fff}
+.container{max-width:860px;margin:0 auto;padding:40px 24px}
+.issue-header{text-align:center;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid #c8a84b44}
+.issue-label{font-family:-apple-system,sans-serif;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:#888;margin-bottom:6px}
+.issue-date{font-size:1.1rem;color:#444;font-style:italic}
+.brief-content{font-size:1.05rem;line-height:1.85;color:#2a2a2a}
+.brief-content p{margin-bottom:1.2em}
+.brief-content p:first-child::first-letter{font-size:3.2em;font-weight:700;float:left;line-height:.85;margin-right:8px;margin-top:4px;color:#1a2744}
+.sources-box{background:#fff;border:1px solid #ddd;border-radius:4px;padding:16px 20px;margin-top:32px;font-family:-apple-system,sans-serif;font-size:.8rem;color:#666}
+.sources-box strong{color:#333}
+.sources-box a{color:#1a2744;text-decoration:none}
+.sources-box a:hover{text-decoration:underline}
+.loading{text-align:center;padding:60px 24px;color:#888;font-style:italic;font-family:-apple-system,sans-serif}
+.spinner{width:24px;height:24px;border:2px solid #ddd;border-top-color:#1a2744;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-box{background:#fff3cd;border:1px solid #ffc107;border-radius:4px;padding:16px;margin:24px 0;font-family:-apple-system,sans-serif;font-size:.88rem;color:#664d03}
+.btn-generate{font-family:-apple-system,sans-serif;background:#1a2744;color:#f5f1e8;border:none;border-radius:4px;padding:12px 28px;font-size:.88rem;font-weight:600;cursor:pointer;transition:background .15s;text-transform:uppercase;letter-spacing:.08em;margin-top:8px}
+.btn-generate:hover{background:#c8a84b;color:#1a2744}
+.btn-generate:disabled{background:#ccc;cursor:default}
+.btn-publish{font-family:-apple-system,sans-serif;background:#2d6a2d;color:#fff;border:none;border-radius:4px;padding:10px 22px;font-size:.82rem;font-weight:600;cursor:pointer;margin-left:10px;transition:background .15s}
+.btn-publish:hover{background:#1f4d1f}
+.btn-row{margin-top:28px;text-align:center}
+.badge{display:inline-block;font-family:-apple-system,sans-serif;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;background:#e8f4e8;color:#2d6a2d;border:1px solid #b8d8b8;border-radius:3px;padding:2px 7px;margin-left:8px;vertical-align:middle}
+.footer{border-top:4px solid #1a2744;padding:24px;text-align:center;font-family:-apple-system,sans-serif;font-size:.78rem;color:#888;margin-top:48px}
+.footer a{color:#1a2744;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="masthead">
+  <div class="masthead-rule"><hr><div class="overline">Est. 2026 · Bay City, Michigan</div><hr></div>
+  <h1>Great Lakes Gazette</h1>
+  <div class="masthead-sub">Weekly shipping news from the freshwater seas — sourced from live AIS data</div>
+</div>
+<nav class="nav-strip">
+  <a href="/">This Week</a>
+  <a href="/matchmaker.html">Seed Matchmaker</a>
+  <a href="https://freighterviewfarms.com" target="_blank">Freighter View Farms</a>
+  <a href="https://github.com/izworskic/great-lakes-gazette" target="_blank">Source</a>
+</nav>
+
+<div class="container">
+  <div class="issue-header">
+    <div class="issue-label">Issue <span id="issueNum">—</span></div>
+    <div class="issue-date" id="issueDate">Loading this week's edition…</div>
+  </div>
+
+  <div id="briefArea">
+    <div class="loading">
+      <div class="spinner"></div>
+      Pulling live vessel data from BoatNerd AIS…<br>
+      <small style="font-size:.75rem;margin-top:8px;display:block">This takes 15–20 seconds — we're scraping real shipping data and generating the brief.</small>
+    </div>
+  </div>
+
+  <div class="btn-row" id="btnRow" style="display:none">
+    <button class="btn-generate" id="refreshBtn" onclick="loadBrief()">Generate fresh edition</button>
+    <button class="btn-publish" id="publishBtn" onclick="publishBrief()">Publish to FVF (draft)</button>
+  </div>
+</div>
+
+<div class="footer">
+  <p>Great Lakes Gazette · <a href="https://freighterviewfarms.com">Freighter View Farms</a> · Built by <a href="https://chrisizworski.com">Chris Izworski</a></p>
+  <p style="margin-top:6px">All vessel data sourced from <a href="https://boatnerd.com" target="_blank">BoatNerd AIS</a> and the <a href="https://www.seaway.dot.gov" target="_blank">US Seaway</a> — no facts are invented.</p>
+</div>
+
+<script>
+let currentBrief = null;
+
+function renderBrief(data) {
+  currentBrief = data;
+  document.getElementById('issueNum').textContent = data.issueNumber || '1';
+  document.getElementById('issueDate').textContent = data.issueDate || '';
+
+  const paras = (data.brief || '').split('\n\n').filter(p => p.trim());
+  const html = paras.map(p => `<p>${p.replace(/\n/g,'<br>')}</p>`).join('');
+
+  const sourcesHtml = buildSourcesHtml(data.sources);
+
+  document.getElementById('briefArea').innerHTML = `
+    <div class="brief-content">${html}</div>
+    ${sourcesHtml}`;
+
+  document.getElementById('btnRow').style.display = 'block';
+  document.getElementById('refreshBtn').disabled = false;
+  document.getElementById('refreshBtn').textContent = 'Generate fresh edition';
+}
+
+function buildSourcesHtml(sources) {
+  if (!sources) return '';
+  const links = [];
+  if (sources.portReport) links.push(`<a href="${sources.portReport}" target="_blank">BoatNerd Port Report</a>`);
+  if (sources.seaway) links.push(`<a href="${sources.seaway}" target="_blank">US Seaway News</a>`);
+  (sources.passages || []).filter(p => p.count > 0 && p.url).forEach(p =>
+    links.push(`<a href="${p.url}" target="_blank">${p.port} (${p.count} vessels)</a>`)
+  );
+  if (!links.length) return '';
+  return `<div class="sources-box"><strong>Data sources:</strong> ${links.join(' · ')}<br>
+  <span style="color:#999">All vessel movements sourced from live AIS data — nothing is invented.</span></div>`;
+}
+
+async function loadBrief() {
+  document.getElementById('briefArea').innerHTML = `<div class="loading"><div class="spinner"></div>Fetching live vessel data…<br><small>15–20 seconds</small></div>`;
+  document.getElementById('btnRow').style.display = 'none';
+  document.getElementById('issueDate').textContent = 'Loading…';
+
+  try {
+    const r = await fetch('/api/generate');
+    const data = await r.json();
+    if (data.error) throw new Error(data.error);
+    renderBrief(data);
+  } catch(e) {
+    document.getElementById('briefArea').innerHTML = `<div class="error-box"><strong>Error generating brief:</strong> ${e.message}<br><br>The scraper may have been blocked or the data source is unavailable. <button class="btn-generate" style="margin-top:12px" onclick="loadBrief()">Try again</button></div>`;
+    document.getElementById('issueDate').textContent = 'Error';
+    document.getElementById('btnRow').style.display = 'block';
+  }
+}
+
+async function publishBrief() {
+  const btn = document.getElementById('publishBtn');
+  btn.textContent = 'Publishing…';
+  btn.disabled = true;
+  try {
+    const r = await fetch('/api/publish', { method: 'POST' });
+    const data = await r.json();
+    if (data.error) throw new Error(data.error);
+    btn.textContent = '✓ Published as draft';
+    btn.style.background = '#2d6a2d';
+    if (data.wordpress?.edit_url) {
+      setTimeout(() => {
+        btn.textContent = 'View in WordPress →';
+        btn.disabled = false;
+        btn.onclick = () => window.open(data.wordpress.edit_url, '_blank');
+      }, 1500);
+    }
+  } catch(e) {
+    btn.textContent = 'Publish failed — try again';
+    btn.disabled = false;
+    alert('Publish error: ' + e.message);
+  }
+}
+
+// Auto-load on page open
+loadBrief();
+</script>
+</body>
+</html>

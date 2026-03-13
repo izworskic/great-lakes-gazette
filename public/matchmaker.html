@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Heirloom Variety Matchmaker — Freighter View Farms</title>
+<meta name="description" content="Answer 5 questions about your garden — get 3 perfectly matched heirloom varieties with seed saving instructions. Powered by real horticultural knowledge.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f7f5f0;color:#2a2a2a;min-height:100vh}
+.masthead{background:#2d5016;color:#f5f1e8;text-align:center;padding:28px 24px 20px;border-bottom:4px solid #8ab34a}
+.overline{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#8ab34a;margin-bottom:6px}
+.masthead h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;color:#f5f1e8;margin-bottom:6px}
+.masthead-sub{font-size:.88rem;color:#a0c06a;font-style:italic}
+.nav-strip{background:#8ab34a;display:flex;justify-content:center}
+.nav-strip a{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#2d5016;padding:9px 18px;text-decoration:none;transition:background .15s}
+.nav-strip a:hover{background:#7a9f3e}
+.container{max-width:640px;margin:0 auto;padding:48px 24px}
+.progress-wrap{margin-bottom:28px}
+.progress-bar{display:flex;gap:5px}
+.pip{height:3px;flex:1;border-radius:2px;background:#ddd;transition:background .3s}
+.pip.done{background:#8ab34a}
+.pip.active{background:#5a8a1e}
+.step{display:none}.step.active{display:block}
+.q-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:#888;margin-bottom:8px;font-weight:600}
+.q-title{font-size:1.15rem;font-weight:600;color:#2a2a2a;margin-bottom:1.25rem;line-height:1.4}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.5rem}
+.opt{background:#fff;border:1px solid #ddd;border-radius:6px;padding:13px 16px;font-size:.88rem;color:#333;cursor:pointer;text-align:left;transition:all .15s;line-height:1.4}
+.opt:hover{border-color:#8ab34a;background:#f0f7e6}
+.opt.selected{border:2px solid #5a8a1e;background:#e8f5d0;color:#2d5016;font-weight:500}
+.nav{display:flex;gap:10px;margin-top:4px}
+.btn-back{background:transparent;border:1px solid #ccc;border-radius:6px;padding:10px 20px;font-size:.85rem;color:#666;cursor:pointer}
+.btn-back:hover{border-color:#999}
+.btn-next{background:#5a8a1e;border:none;border-radius:6px;padding:10px 24px;font-size:.85rem;font-weight:600;color:#fff;cursor:pointer;transition:background .15s}
+.btn-next:hover{background:#2d5016}
+.btn-next:disabled{background:#ccc;cursor:default}
+.loading-state{text-align:center;padding:48px 0}
+.spinner{width:28px;height:28px;border:2.5px solid #ddd;border-top-color:#5a8a1e;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-state p{font-size:.9rem;color:#888;font-style:italic}
+.variety-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:20px;margin-bottom:14px;transition:box-shadow .15s}
+.variety-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.variety-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:8px}
+.variety-name{font-size:1.05rem;font-weight:700;color:#2d5016}
+.variety-type{background:#e8f5d0;color:#2d5016;border:1px solid #c0e090;border-radius:3px;padding:3px 9px;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;flex-shrink:0}
+.variety-why{font-size:.88rem;color:#444;line-height:1.65;margin-bottom:12px}
+.seed-section{background:#f7faf2;border-top:1px solid #e0ecd0;margin:-20px -20px -20px;padding:14px 20px;border-radius:0 0 8px 8px;margin-top:12px}
+.seed-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:#8ab34a;font-weight:700;margin-bottom:5px}
+.seed-text{font-size:.82rem;color:#555;line-height:1.6}
+.result-header{margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid #e0ecd0}
+.result-header h2{font-size:1.2rem;font-weight:700;color:#2d5016}
+.result-header p{font-size:.85rem;color:#777;margin-top:4px}
+.restart-btn{width:100%;margin-top:14px;background:transparent;border:1px solid #ccc;border-radius:6px;padding:11px;font-size:.85rem;color:#666;cursor:pointer;transition:all .15s}
+.restart-btn:hover{border-color:#8ab34a;color:#2d5016;background:#f0f7e6}
+.error-msg{background:#fff3cd;border:1px solid #ffc107;border-radius:6px;padding:14px;font-size:.85rem;color:#664d03;margin-top:1rem}
+.footer{border-top:1px solid #ddd;padding:20px 24px;text-align:center;font-size:.75rem;color:#999;margin-top:48px}
+.footer a{color:#5a8a1e;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="masthead">
+  <div class="overline">Freighter View Farms</div>
+  <h1>Heirloom Variety Matchmaker</h1>
+  <div class="masthead-sub">5 questions → 3 perfect varieties for your garden, with seed saving instructions</div>
+</div>
+<nav class="nav-strip">
+  <a href="/">Great Lakes Gazette</a>
+  <a href="https://freighterviewfarms.com" target="_blank">Freighter View Farms</a>
+  <a href="https://chrisizworski.com" target="_blank">About</a>
+</nav>
+
+<div class="container">
+  <div class="progress-wrap">
+    <div class="progress-bar" id="progress"></div>
+  </div>
+
+  <div class="step active" id="step-0">
+    <div class="q-label">Question 1 of 5</div>
+    <div class="q-title">What USDA hardiness zone are you growing in?</div>
+    <div class="opts">
+      <button class="opt" data-q="0" data-v="Zone 3–4 (northern Minnesota, Upper Michigan peninsula, very short season)">Zone 3–4</button>
+      <button class="opt" data-q="0" data-v="Zone 5 (southern Michigan, northern Ohio, 130–150 frost-free days)">Zone 5</button>
+      <button class="opt" data-q="0" data-v="Zone 6a — Bay City, Michigan area (155–165 frost-free days, last frost mid-May, first frost mid-October)">Zone 6a (Bay City area)</button>
+      <button class="opt" data-q="0" data-v="Zone 6b–7 (southern Ohio, Indiana, Kentucky border — long season)">Zone 6b–7</button>
+    </div>
+    <div class="nav"><button class="btn-next" id="next-0" disabled onclick="advance(0)">Continue →</button></div>
+  </div>
+
+  <div class="step" id="step-1">
+    <div class="q-label">Question 2 of 5</div>
+    <div class="q-title">How much direct sun does your garden get daily?</div>
+    <div class="opts">
+      <button class="opt" data-q="1" data-v="Full sun — 8+ hours of direct sun each day">Full sun (8+ hrs)</button>
+      <button class="opt" data-q="1" data-v="Mostly sunny — 6–8 hours direct sun, some light shade in morning or late afternoon">Mostly sunny (6–8 hrs)</button>
+      <button class="opt" data-q="1" data-v="Partial shade — 4–6 hours direct sun, afternoon shade from trees or buildings">Partial shade (4–6 hrs)</button>
+      <button class="opt" data-q="1" data-v="Mostly shaded — under 4 hours direct sun daily">Mostly shaded</button>
+    </div>
+    <div class="nav">
+      <button class="btn-back" onclick="back(1)">← Back</button>
+      <button class="btn-next" id="next-1" disabled onclick="advance(1)">Continue →</button>
+    </div>
+  </div>
+
+  <div class="step" id="step-2">
+    <div class="q-label">Question 3 of 5</div>
+    <div class="q-title">Describe your growing space.</div>
+    <div class="opts">
+      <button class="opt" data-q="2" data-v="Large in-ground garden, 100 square feet or more — room for sprawling plants">Large in-ground (100+ sq ft)</button>
+      <button class="opt" data-q="2" data-v="Medium in-ground garden, 25–100 square feet — moderate space">Medium in-ground (25–100 sq ft)</button>
+      <button class="opt" data-q="2" data-v="Raised beds or a few large containers — limited horizontal space">Raised beds / containers</button>
+      <button class="opt" data-q="2" data-v="Very small space — balcony or patio with only a few pots">Balcony / small patio</button>
+    </div>
+    <div class="nav">
+      <button class="btn-back" onclick="back(2)">← Back</button>
+      <button class="btn-next" id="next-2" disabled onclick="advance(2)">Continue →</button>
+    </div>
+  </div>
+
+  <div class="step" id="step-3">
+    <div class="q-label">Question 4 of 5</div>
+    <div class="q-title">How experienced are you as a gardener?</div>
+    <div class="opts">
+      <button class="opt" data-q="3" data-v="Beginner — this is my first or second season growing vegetables">Beginner (1st–2nd season)</button>
+      <button class="opt" data-q="3" data-v="Intermediate — a few years growing vegetables, comfortable with basic seed starting">Intermediate (a few years)</button>
+      <button class="opt" data-q="3" data-v="Experienced — comfortable starting seeds, saving seed, and managing multiple varieties at once">Experienced gardener</button>
+      <button class="opt" data-q="3" data-v="Expert — I breed plants, maintain multiple variety lines, and understand isolation distances and crossing risk">Expert / variety keeper</button>
+    </div>
+    <div class="nav">
+      <button class="btn-back" onclick="back(3)">← Back</button>
+      <button class="btn-next" id="next-3" disabled onclick="advance(3)">Continue →</button>
+    </div>
+  </div>
+
+  <div class="step" id="step-4">
+    <div class="q-label">Question 5 of 5</div>
+    <div class="q-title">What's your primary goal for this season?</div>
+    <div class="opts">
+      <button class="opt" data-q="4" data-v="Best flavor — I want the most exceptional-tasting tomatoes, beans, peppers, or other vegetables possible">Best possible flavor</button>
+      <button class="opt" data-q="4" data-v="Seed saving — I want to reliably save seed each season and build my own seed library">Seed saving & seed library</button>
+      <button class="opt" data-q="4" data-v="High yield — I want the most productive variety per square foot, good for canning and preserving">Maximum yield</button>
+      <button class="opt" data-q="4" data-v="Rare and unusual — I want obscure, heirloom, conversation-starting varieties I can't find at a hardware store">Rare & unusual varieties</button>
+    </div>
+    <div class="nav">
+      <button class="btn-back" onclick="back(4)">← Back</button>
+      <button class="btn-next" id="next-4" disabled onclick="getRecommendations()">Find my varieties →</button>
+    </div>
+  </div>
+
+  <div class="step" id="step-loading">
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Searching the seed catalog…</p>
+    </div>
+  </div>
+
+  <div class="step" id="step-results">
+    <div id="results-body"></div>
+    <button class="restart-btn" onclick="restart()">← Start over with different answers</button>
+  </div>
+</div>
+
+<div class="footer">
+  <a href="https://freighterviewfarms.com">Freighter View Farms</a> · Heirloom Variety Matchmaker · Built by <a href="https://chrisizworski.com">Chris Izworski</a>
+</div>
+
+<script>
+const answers = {};
+const TOTAL = 5;
+
+function renderProgress(current) {
+  document.getElementById('progress').innerHTML = Array.from({length:TOTAL},(_,i) =>
+    `<div class="pip ${i<current?'done':i===current?'active':''}"></div>`
+  ).join('');
+}
+renderProgress(0);
+
+document.querySelectorAll('.opt').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const q = this.dataset.q;
+    document.querySelectorAll(`.opt[data-q="${q}"]`).forEach(b => b.classList.remove('selected'));
+    this.classList.add('selected');
+    answers[q] = this.dataset.v;
+    const nb = document.getElementById(`next-${q}`);
+    if (nb) nb.disabled = false;
+  });
+});
+
+function advance(step) {
+  document.getElementById(`step-${step}`).classList.remove('active');
+  document.getElementById(`step-${step+1}`).classList.add('active');
+  renderProgress(step+1);
+}
+function back(step) {
+  document.getElementById(`step-${step}`).classList.remove('active');
+  document.getElementById(`step-${step-1}`).classList.add('active');
+  renderProgress(step-1);
+}
+
+async function getRecommendations() {
+  document.getElementById('step-4').classList.remove('active');
+  document.getElementById('step-loading').classList.add('active');
+  renderProgress(5);
+
+  const prompt = `You are an expert heirloom seed advisor for the Great Lakes region of the United States. A gardener has answered five questions:
+
+1. Growing zone: ${answers[0]}
+2. Sun conditions: ${answers[1]}
+3. Garden space: ${answers[2]}
+4. Experience level: ${answers[3]}
+5. Primary goal: ${answers[4]}
+
+Recommend exactly 3 heirloom varieties that are the strongest possible match for this specific combination of conditions. Respond ONLY with a valid JSON array — no text before or after, no markdown fences:
+
+[
+  {
+    "name": "Full variety name",
+    "type": "Tomato / Bean / Squash / Pepper / Cucumber / etc.",
+    "why": "2-3 sentences explaining why this variety is ideal for this gardener's specific conditions and goals.",
+    "seed_saving": "2-3 sentences of specific, accurate seed saving instructions for this variety: isolation distance, how to harvest seed, fermentation if needed, drying method, storage conditions."
+  }
+]
+
+Rules you must follow:
+- Only recommend real, historically documented heirloom varieties that actually exist
+- Match the zone, sun, space, and experience level carefully — do not recommend vining plants for container growers, or difficult varieties for beginners
+- For seed saving goals: favor self-pollinating varieties that are easy to isolate (tomatoes, beans, lettuce)
+- For flavor goals: recommend varieties specifically celebrated for exceptional taste
+- Seed saving instructions must be botanically accurate and specific to the variety's pollination type
+- Vary the types: don't recommend three tomatoes unless the gardener specifically indicated tomatoes`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1200,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await resp.json();
+    const text = data.content[0].text.replace(/```json|```/g,'').trim();
+    const varieties = JSON.parse(text);
+    renderResults(varieties);
+  } catch(e) {
+    document.getElementById('step-loading').classList.remove('active');
+    document.getElementById('step-results').classList.add('active');
+    document.getElementById('results-body').innerHTML = `
+      <div class="result-header"><h2>Something went wrong</h2></div>
+      <div class="error-msg">Could not reach the seed advisor. Please try again in a moment.<br><br>
+      <button onclick="getRecommendations()" style="background:#5a8a1e;color:#fff;border:none;padding:8px 18px;border-radius:5px;cursor:pointer;font-size:.85rem">Try again</button></div>`;
+  }
+}
+
+function renderResults(varieties) {
+  const zone = (answers[0]||'').split('—')[0].trim();
+  const goal = (answers[4]||'').split('—')[0].toLowerCase().trim();
+
+  let html = `<div class="result-header">
+    <h2>Your 3 heirloom varieties</h2>
+    <p>${zone} · ${goal}</p>
+  </div>`;
+
+  varieties.forEach(v => {
+    html += `<div class="variety-card">
+      <div class="variety-top">
+        <div class="variety-name">${v.name}</div>
+        <span class="variety-type">${v.type}</span>
+      </div>
+      <div class="variety-why">${v.why}</div>
+      <div class="seed-section">
+        <div class="seed-label">Seed saving</div>
+        <div class="seed-text">${v.seed_saving}</div>
+      </div>
+    </div>`;
+  });
+
+  document.getElementById('results-body').innerHTML = html;
+  document.getElementById('step-loading').classList.remove('active');
+  document.getElementById('step-results').classList.add('active');
+}
+
+function restart() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.btn-next').forEach(b => b.disabled = true);
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-0').classList.add('active');
+  renderProgress(0);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "great-lakes-gazette",
+  "version": "1.0.0",
+  "description": "Great Lakes shipping news — auto-generated from real AIS data",
+  "type": "module",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}

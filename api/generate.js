@@ -1,13 +1,16 @@
-// GET /api/generate — scrape all sources, return structured data for display
-// Module-level 6-hour cache — serves cached response to most visitors,
-// only re-scrapes when content is actually stale. Keeps costs near zero.
+// GET /api/generate — scrape + generate brief, serve from 6-hour cache
+// Claude is called ONCE per cache cycle maximum.
+// All visitors after the first hit get instant cached response.
+// ?refresh=1 forces regeneration (CRON_SECRET required to prevent abuse).
 
-import { fetchAllData } from '../lib/scraper.js';
+import { fetchAllData }  from '../lib/scraper.js';
+import { generateBrief } from '../lib/generator.js';
 
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours
 
 let cache = {
-  data: null,
+  data:        null,
+  brief:       null,
   generatedAt: null,
 };
 
@@ -20,43 +23,63 @@ function isCacheFresh() {
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  // Allow forced refresh via ?refresh=1 (useful for cron / admin trigger)
+  // Force refresh requires CRON_SECRET — prevents crawlers from burning API calls
   const forceRefresh = req.query?.refresh === '1';
+  if (forceRefresh) {
+    const auth = req.headers['authorization'];
+    if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+  }
 
   try {
     if (!forceRefresh && isCacheFresh()) {
       const ageMinutes = Math.floor((Date.now() - cache.generatedAt) / 60000);
-      console.log(`[generate] Cache hit — ${ageMinutes}m old, serving cached data`);
+      console.log(`[generate] Cache hit — ${ageMinutes}m old`);
       return res.status(200).json({
         success: true,
         cached: true,
         cache_age_minutes: ageMinutes,
-        data: cache.data,
+        data:  cache.data,
+        brief: cache.brief,
       });
     }
 
-    console.log('[generate] Cache miss — fetching fresh data...');
+    console.log('[generate] Cache miss — scraping + generating brief...');
     const data = await fetchAllData();
 
-    // Store in module cache
-    cache.data = data;
+    // Generate AI brief — catches gracefully if API key missing or Claude unavailable
+    let brief = null;
+    try {
+      brief = await generateBrief(data);
+      console.log('[generate] Brief generated:', brief.headline);
+    } catch(e) {
+      console.error('[generate] Brief generation failed (non-fatal):', e.message);
+    }
+
+    // Update cache
+    cache.data        = data;
+    cache.brief       = brief;
     cache.generatedAt = Date.now();
 
     return res.status(200).json({
       success: true,
-      cached: false,
+      cached:  false,
       data,
+      brief,
     });
+
   } catch(e) {
-    console.error('[generate] Error:', e.message);
-    // On error, return stale cache if available rather than a hard failure
+    console.error('[generate] Fatal error:', e.message);
+    // Serve stale cache on hard failure rather than blank page
     if (cache.data) {
-      console.log('[generate] Returning stale cache after error');
+      console.log('[generate] Serving stale cache after error');
       return res.status(200).json({
         success: true,
-        cached: true,
-        stale: true,
-        data: cache.data,
+        cached:  true,
+        stale:   true,
+        data:    cache.data,
+        brief:   cache.brief,
       });
     }
     return res.status(500).json({ success: false, error: e.message });

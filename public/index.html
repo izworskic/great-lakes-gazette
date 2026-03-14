@@ -96,7 +96,10 @@ function renderBrief(data) {
 
   document.getElementById('briefArea').innerHTML = `
     <div class="brief-content">${html}</div>
-    ${sourcesHtml}`;
+    ${sourcesHtml}
+    ${data.data_summary ? `<p style="font-family:-apple-system,sans-serif;font-size:.72rem;color:#bbb;margin-top:8px;text-align:right">
+      ${data.data_summary.port_reports_found} port reports · ${data.data_summary.news_items_found} news items · ${data.data_summary.ais_ports_with_data} AIS ports active
+    </p>` : ''}`;
 
   document.getElementById('btnRow').style.display = 'block';
   document.getElementById('refreshBtn').disabled = false;
@@ -106,14 +109,19 @@ function renderBrief(data) {
 function buildSourcesHtml(sources) {
   if (!sources) return '';
   const links = [];
-  if (sources.portReport) links.push(`<a href="${sources.portReport}" target="_blank">BoatNerd Port Report</a>`);
-  if (sources.seaway) links.push(`<a href="${sources.seaway}" target="_blank">US Seaway News</a>`);
-  (sources.passages || []).filter(p => p.count > 0 && p.url).forEach(p =>
-    links.push(`<a href="${p.url}" target="_blank">${p.port} (${p.count} vessels)</a>`)
+  (sources.portReports || []).forEach(p =>
+    links.push(`<a href="${p.url}" target="_blank">${p.title}</a>`)
   );
-  if (!links.length) return '';
-  return `<div class="sources-box"><strong>Data sources:</strong> ${links.join(' · ')}<br>
-  <span style="color:#999">All vessel movements sourced from live AIS data — nothing is invented.</span></div>`;
+  (sources.newsItems || []).slice(0,2).forEach(n =>
+    links.push(`<a href="${n.url}" target="_blank">${n.title}</a>`)
+  );
+  const aisText = sources.aisPassages?.length > 0
+    ? `Live AIS: ${sources.aisPassages.map(p => `${p.port} (${p.count})`).join(', ')}`
+    : 'AIS: off-season or unavailable';
+  return `<div class="sources-box">
+    <strong>Data sources:</strong> ${links.join(' · ')}<br>
+    <span style="color:#999">${aisText} · All facts sourced from live data.</span>
+  </div>`;
 }
 
 async function loadBrief() {

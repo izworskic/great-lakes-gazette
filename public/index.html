@@ -3,440 +3,895 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Great Lakes Gazette — Weekly Shipping News</title>
+<title>Great Lakes Gazette — Maritime Chronicle</title>
 <meta name="description" content="Great Lakes shipping news sourced live from BoatNerd AIS vessel tracking. Real vessel movements, zero fabrication.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Oswald:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,300;1,8..60,400;1,8..60,600&family=Josefin+Sans:ital,wght@0,300;0,400;0,600;1,300&family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --ink: #0d0d0d;
-  --paper: #f0e8d4;
-  --gold: #c4973a;
-  --gold-light: #d4af62;
-  --rust: #963a1e;
-  --muted: #7a6e5e;
-  --dim: #3a3a3a;
-  --rule: rgba(196,151,58,.25);
+  --paper:       #f0e8d5;
+  --paper-card:  #f8f2e4;
+  --paper-deep:  #e6dcc6;
+  --paper-ruled: #ded3bb;
+  --ink:         #110c02;
+  --ink-body:    #1e1508;
+  --ink-2:       #3d3020;
+  --ink-3:       #6b5a42;
+  --ink-4:       #9a876c;
+  --lake:        #1b3a56;
+  --lake-light:  #2a5278;
+  --gold:        #8a6500;
+  --gold-light:  #b08420;
+  --rust:        #782000;
+  --rule-heavy:  #1b3a56;
+  --rule-mid:    rgba(27,58,86,.25);
+  --rule-light:  rgba(27,58,86,.12);
 }
 
-* { margin:0; padding:0; box-sizing:border-box; }
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--ink);
-  color: var(--paper);
-  font-family: 'Libre Baskerville', Georgia, serif;
-  line-height: 1.6;
+  background: var(--paper);
+  color: var(--ink-body);
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 16px;
+  line-height: 1.75;
   min-height: 100vh;
 }
 
-/* grain */
+/* ── Paper texture ── */
 body::before {
-  content:''; position:fixed; inset:0; pointer-events:none; z-index:999; opacity:.45;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: .4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
 }
 
-/* ── Ticker ── */
-.ticker-wrap { background:var(--gold); height:30px; display:flex; align-items:center; overflow:hidden; }
+/* ── Ticker bar ── */
+.ticker-wrap {
+  background: var(--lake);
+  height: 32px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+}
 .ticker-badge {
-  font-family:'Oswald',sans-serif; font-size:.6rem; font-weight:600; letter-spacing:.18em;
-  text-transform:uppercase; background:var(--ink); color:var(--gold);
-  padding:0 14px; height:100%; display:flex; align-items:center; flex-shrink:0;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .6rem;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  background: var(--ink);
+  color: #c8b882;
+  padding: 0 16px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
-.ticker-scroll { display:flex; animation:scroll 50s linear infinite; white-space:nowrap; }
-.ticker-scroll:hover { animation-play-state:paused; }
+.ticker-scroll {
+  display: flex;
+  animation: scroll 60s linear infinite;
+  white-space: nowrap;
+}
+.ticker-scroll:hover { animation-play-state: paused; }
 .ticker-item {
-  font-family:'Oswald',sans-serif; font-size:.68rem; font-weight:400;
-  letter-spacing:.06em; color:var(--ink); padding:0 30px; text-transform:uppercase;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .65rem;
+  font-weight: 300;
+  letter-spacing: .1em;
+  color: #a8cce0;
+  padding: 0 32px;
+  text-transform: uppercase;
 }
-.ticker-item em { font-style:normal; font-weight:600; color:#5a2800; }
-@keyframes scroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+.ticker-item em {
+  font-style: normal;
+  font-weight: 600;
+  color: #c8b882;
+}
+.ticker-sep {
+  color: rgba(168,204,224,.3);
+  font-size: .5rem;
+  padding: 0 8px;
+}
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
 
 /* ── Masthead ── */
 .masthead {
-  background:var(--ink); padding:28px 24px 20px; text-align:center;
-  border-bottom:1px solid #222;
+  background: var(--paper-card);
+  padding: 0;
+  position: relative;
+  z-index: 5;
+  border-bottom: 3px solid var(--rule-heavy);
 }
-.mast-meta {
-  display:flex; justify-content:space-between; align-items:flex-start;
-  max-width:1060px; margin:0 auto 14px;
-  font-family:'Oswald',sans-serif; font-size:.6rem; font-weight:300;
-  letter-spacing:.14em; text-transform:uppercase; color:#444;
+.mast-top {
+  border-bottom: 1px solid var(--rule-mid);
+  padding: 10px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
 }
-.mast-meta span { max-width:200px; line-height:1.6; }
-.mast-rule { display:flex; align-items:center; max-width:900px; margin:0 auto 2px; }
-.mast-rule hr { flex:1; border:none; border-top:1px solid var(--gold); }
-.diamond { width:6px; height:6px; background:var(--gold); transform:rotate(45deg); margin:0 10px; flex-shrink:0; }
+.mast-top-label {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .58rem;
+  font-weight: 300;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.mast-top-label strong {
+  font-weight: 600;
+  color: var(--lake);
+}
+.mast-center {
+  padding: 28px 32px 22px;
+  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Triple rule before flag */
+.mast-rule-triple {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 18px;
+}
+.mast-rule-triple span {
+  display: block;
+  height: 1px;
+  background: var(--rule-heavy);
+}
+.mast-rule-triple span:nth-child(2) {
+  height: 3px;
+}
+
 .flag {
-  font-family:'UnifrakturMaguntia', cursive;
-  font-size:clamp(2.6rem,7.5vw,5.2rem);
-  color:var(--paper); line-height:1.05; letter-spacing:.01em;
-  text-shadow:0 0 60px rgba(196,151,58,.15);
-  margin:6px 0 4px;
+  font-family: 'IM Fell English', serif;
+  font-size: clamp(2.8rem, 8vw, 5.8rem);
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: .02em;
+  margin-bottom: 6px;
+}
+.flag em {
+  font-style: italic;
+  color: var(--lake);
 }
 .tagline {
-  font-family:'Playfair Display',serif; font-style:italic;
-  font-size:clamp(.75rem,1.8vw,.95rem); color:var(--gold-light); letter-spacing:.04em;
-  margin-bottom:6px;
+  font-family: 'Source Serif 4', serif;
+  font-style: italic;
+  font-size: clamp(.78rem, 1.6vw, .95rem);
+  color: var(--ink-3);
+  letter-spacing: .03em;
+  margin-bottom: 16px;
 }
-.mast-rule2 { display:flex; align-items:center; max-width:900px; margin:0 auto; }
-.mast-rule2 hr { flex:1; border:none; border-top:2px double #2e2e2e; }
-.mast-rule2 .center-txt {
-  font-family:'Oswald',sans-serif; font-size:.55rem; font-weight:300;
-  letter-spacing:.2em; text-transform:uppercase; color:#383838; padding:0 16px;
-  white-space:nowrap;
+
+/* Rule with ornament under flag */
+.mast-ornament {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: center;
+  margin-bottom: 0;
+}
+.mast-ornament hr {
+  flex: 1;
+  max-width: 280px;
+  border: none;
+  border-top: 1px solid var(--rule-mid);
+}
+.mast-ornament .orn {
+  font-size: .7rem;
+  color: var(--lake);
+  letter-spacing: .08em;
 }
 
 /* ── Nav ── */
 .nav {
-  border-bottom:1px solid #1c1c1c; background:#0a0a0a;
-  display:flex; justify-content:center;
+  background: var(--paper-deep);
+  border-bottom: 2px solid var(--rule-heavy);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  gap: 0;
 }
 .nav a {
-  font-family:'Oswald',sans-serif; font-size:.65rem; font-weight:400;
-  letter-spacing:.15em; text-transform:uppercase; color:#484848;
-  padding:11px 18px; text-decoration:none; border-right:1px solid #1c1c1c;
-  transition:color .15s, background .15s;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .6rem;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  padding: 11px 22px;
+  text-decoration: none;
+  border-right: 1px solid var(--rule-light);
+  transition: color .15s, background .15s;
+  white-space: nowrap;
 }
-.nav a:first-child { border-left:1px solid #1c1c1c; }
-.nav a:hover, .nav a.active { color:var(--gold); background:#111; }
+.nav a:first-child { border-left: 1px solid var(--rule-light); }
+.nav a:hover { color: var(--lake); background: var(--paper-card); }
+.nav a.active { color: var(--rust); }
 
-/* ── Page ── */
-.page { max-width:1080px; margin:0 auto; padding:36px 20px 60px; }
-
-/* ── Season bar ── */
-.season-bar {
-  background:#0f0f0f; border:1px solid #1e1e1e;
-  padding:16px 22px; margin-bottom:30px;
-  display:flex; align-items:center; gap:18px;
-  font-family:'Oswald',sans-serif;
+/* ── Page wrapper ── */
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+  position: relative;
+  z-index: 1;
 }
-.season-icon { font-size:1.8rem; flex-shrink:0; }
-.season-copy h3 { font-size:.8rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:3px; }
-.season-copy p { font-size:.75rem; font-weight:300; color:var(--muted); line-height:1.5; font-family:'Libre Baskerville',serif; }
-.season-right { margin-left:auto; text-align:right; flex-shrink:0; }
-.days-num { font-family:'Playfair Display',serif; font-size:2rem; font-weight:900; color:var(--gold); line-height:1; }
-.days-lbl { font-family:'Oswald',sans-serif; font-size:.55rem; letter-spacing:.15em; text-transform:uppercase; color:#444; }
 
-/* ── Grid ── */
-.grid { display:grid; grid-template-columns:1fr 300px; gap:32px; }
-@media(max-width:720px){ .grid { grid-template-columns:1fr; } }
+/* ── Season banner ── */
+.season-banner {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--rule-mid);
+  border-top: 3px solid var(--lake);
+  background: var(--paper-card);
+  margin-bottom: 36px;
+  overflow: hidden;
+}
+.season-banner-left {
+  background: var(--lake);
+  color: #fff;
+  padding: 16px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 110px;
+  flex-shrink: 0;
+}
+.season-days {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: #f0d878;
+  line-height: 1;
+  display: block;
+}
+.season-days-lbl {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .52rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.6);
+  display: block;
+  margin-top: 4px;
+  text-align: center;
+}
+.season-body {
+  padding: 14px 20px;
+  flex: 1;
+}
+.season-body h3 {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--lake);
+  margin-bottom: 5px;
+}
+.season-body p {
+  font-family: 'Source Serif 4', serif;
+  font-size: .84rem;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
 
-/* ── Section labels ── */
-.sec-head { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
-.sec-head hr { flex:1; border:none; border-top:1px solid #222; }
+/* ── Main grid ── */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 0 40px;
+}
+@media (max-width: 800px) {
+  .main-grid { grid-template-columns: 1fr; }
+  .sidebar { order: 2; }
+}
+
+/* Vertical rule between main and sidebar */
+.main-col { border-right: 1px solid var(--rule-mid); padding-right: 36px; }
+
+/* ── Section heads ── */
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--rule-heavy);
+}
 .sec-lbl {
-  font-family:'Oswald',sans-serif; font-size:.6rem; font-weight:600;
-  letter-spacing:.22em; text-transform:uppercase; color:var(--gold); white-space:nowrap;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--rust);
+  white-space: nowrap;
 }
-/* ── Gazette Brief (AI editorial) ── */
+.sec-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--rule-mid);
+}
+.sec-num {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: .8rem;
+  color: var(--ink-4);
+}
+
+/* ── Brief block ── */
 .brief-wrap {
-  border:1px solid #1e1e1e; background:#0a0a0a;
-  padding:28px 28px 22px; margin-bottom:36px;
-  animation:fadeIn .5s ease;
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--rule-mid);
+  animation: fadeUp .5s ease both;
 }
 .brief-kicker {
-  font-family:'Oswald',sans-serif; font-size:.58rem; font-weight:600;
-  letter-spacing:.26em; text-transform:uppercase; color:var(--rust);
-  margin-bottom:10px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .58rem;
+  font-weight: 600;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 10px;
 }
 .brief-headline {
-  font-family:'Playfair Display',serif; font-size:1.55rem; font-weight:900;
-  color:var(--paper); line-height:1.2; margin-bottom:6px;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1.15;
+  margin-bottom: 8px;
+  letter-spacing: -.01em;
 }
 .brief-dateline {
-  font-family:'Oswald',sans-serif; font-size:.6rem; font-weight:300;
-  letter-spacing:.14em; text-transform:uppercase; color:#555;
-  margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid #1c1c1c;
+  font-family: 'Source Serif 4', serif;
+  font-style: italic;
+  font-size: .82rem;
+  color: var(--ink-3);
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule-light);
 }
 .brief-body {
-  font-family:'Libre Baskerville',serif; font-size:.86rem;
-  color:#bbb; line-height:1.8;
+  font-family: 'Source Serif 4', serif;
+  font-size: .93rem;
+  color: var(--ink-body);
+  line-height: 1.85;
+  column-count: 2;
+  column-gap: 32px;
+  column-rule: 1px solid var(--rule-light);
 }
-.brief-body p { margin-bottom:1em; }
+@media (max-width: 680px) { .brief-body { column-count: 1; } }
+.brief-body p { margin-bottom: .9em; break-inside: avoid; }
 .brief-body p:first-child::first-letter {
-  font-family:'Playfair Display',serif; font-size:3.2em; font-weight:900;
-  float:left; line-height:.8; margin-right:6px; margin-top:6px;
-  color:var(--gold);
+  font-family: 'IM Fell English', serif;
+  font-size: 3.8em;
+  font-weight: 400;
+  float: left;
+  line-height: .78;
+  margin-right: 6px;
+  margin-top: 8px;
+  color: var(--lake);
 }
 .brief-spotlight {
-  margin-top:18px; padding:14px 16px;
-  border-left:2px solid var(--gold); background:#0d0d0d;
-  font-family:'Libre Baskerville',serif; font-size:.78rem;
-  font-style:italic; color:#777; line-height:1.6;
+  margin-top: 20px;
+  padding: 14px 18px;
+  border-left: 3px solid var(--gold);
+  background: var(--paper-deep);
+  font-family: 'Source Serif 4', serif;
+  font-style: italic;
+  font-size: .84rem;
+  color: var(--ink-2);
+  line-height: 1.65;
+  break-inside: avoid;
 }
 .brief-spotlight strong {
-  font-family:'Oswald',sans-serif; font-size:.58rem; font-weight:600;
-  letter-spacing:.18em; text-transform:uppercase; color:#444;
-  font-style:normal; display:block; margin-bottom:5px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .56rem;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-style: normal;
+  display: block;
+  margin-bottom: 6px;
 }
 .brief-loading {
-  border:1px solid #1e1e1e; background:#0a0a0a; padding:36px 24px;
-  text-align:center; margin-bottom:36px;
+  padding: 48px 24px;
+  text-align: center;
+  border: 1px solid var(--rule-light);
+  background: var(--paper-card);
+  margin-bottom: 40px;
 }
-
-
-/* ── Loading state ── */
-.loading-state {
-  border:1px solid #1e1e1e; background:#0a0a0a; padding:48px 24px;
-  text-align:center;
+.brief-loading p {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .65rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-top: 14px;
 }
-.loading-state p {
-  font-family:'Oswald',sans-serif; font-size:.7rem; font-weight:300;
-  letter-spacing:.14em; text-transform:uppercase; color:#444; margin-top:14px;
-}
-.spin {
-  width:28px; height:28px; border:1.5px solid #222;
-  border-top-color:var(--gold); border-radius:50%;
-  animation:spin .8s linear infinite; margin:0 auto;
-}
-@keyframes spin { to{transform:rotate(360deg)} }
 
 /* ── Report cards ── */
 .report-card {
-  border-bottom:1px solid #1a1a1a; padding:18px 0;
-  animation:fadeIn .4s ease;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--rule-light);
+  animation: fadeUp .4s ease both;
 }
-.report-card:last-child { border-bottom:none; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+.report-card:first-child { padding-top: 0; }
+.report-card:last-child { border-bottom: none; }
 .report-dateline {
-  font-family:'Oswald',sans-serif; font-size:.58rem; font-weight:600;
-  letter-spacing:.2em; text-transform:uppercase;
-  color:var(--rust); margin-bottom:5px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .58rem;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 6px;
 }
 .report-title {
-  font-family:'Playfair Display',serif; font-size:1.05rem; font-weight:700;
-  color:var(--paper); line-height:1.3; margin-bottom:10px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: 10px;
 }
-.report-title a { color:inherit; text-decoration:none; }
-.report-title a:hover { color:var(--gold); }
+.report-title a { color: inherit; text-decoration: none; }
+.report-title a:hover { color: var(--lake); text-decoration: underline; text-decoration-color: var(--rule-mid); }
 .report-body {
-  font-family:'Libre Baskerville',serif; font-size:.83rem;
-  color:#aaa; line-height:1.75;
+  font-family: 'Source Serif 4', serif;
+  font-size: .88rem;
+  color: var(--ink-2);
+  line-height: 1.82;
 }
-.report-body p { margin-bottom:.8em; }
+.report-body p { margin-bottom: .85em; }
 .report-body p:first-child::first-letter {
-  font-family:'Playfair Display',serif; font-size:3em; font-weight:900;
-  float:left; line-height:.82; margin-right:5px; margin-top:5px;
-  color:var(--gold);
+  font-family: 'IM Fell English', serif;
+  font-size: 3.2em;
+  float: left;
+  line-height: .8;
+  margin-right: 5px;
+  margin-top: 6px;
+  color: var(--lake);
 }
 .report-readmore {
-  font-family:'Oswald',sans-serif; font-size:.6rem; font-weight:400;
-  letter-spacing:.12em; text-transform:uppercase; color:#444;
-  text-decoration:none; display:inline-block; margin-top:6px;
-  transition:color .15s;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .58rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--lake);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+  transition: border-color .15s;
 }
-.report-readmore:hover { color:var(--gold); }
+.report-readmore:hover { border-color: var(--lake); }
 
-/* ── News cards ── */
-.news-item {
-  border-bottom:1px solid #1a1a1a; padding:14px 0;
-  animation:fadeIn .4s ease;
+/* ── Shipping news ── */
+.news-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 28px;
 }
-.news-item:last-child { border-bottom:none; }
+@media (max-width: 600px) { .news-grid { grid-template-columns: 1fr; } }
+.news-item {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--rule-light);
+  animation: fadeUp .4s ease both;
+}
+.news-item:last-child { border-bottom: none; }
 .news-date {
-  font-family:'Oswald',sans-serif; font-size:.58rem; font-weight:300;
-  letter-spacing:.15em; text-transform:uppercase; color:#444; margin-bottom:3px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .57rem;
+  font-weight: 300;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 4px;
 }
 .news-title {
-  font-family:'Playfair Display',serif; font-size:.92rem; font-weight:700;
-  color:var(--paper); line-height:1.3; margin-bottom:6px;
+  font-family: 'Source Serif 4', serif;
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+  margin-bottom: 6px;
 }
-.news-title a { color:inherit; text-decoration:none; }
-.news-title a:hover { color:var(--gold); }
+.news-title a { color: inherit; text-decoration: none; }
+.news-title a:hover { color: var(--lake); }
 .news-snip {
-  font-family:'Libre Baskerville',serif; font-size:.78rem;
-  color:#888; line-height:1.6;
+  font-family: 'Source Serif 4', serif;
+  font-size: .82rem;
+  color: var(--ink-3);
+  line-height: 1.65;
 }
 
 /* ── Sidebar ── */
-.widget { border:1px solid #1a1a1a; margin-bottom:22px; }
-.widget-head {
-  background:#0f0f0f; border-bottom:1px solid #1a1a1a;
-  padding:9px 14px;
-  font-family:'Oswald',sans-serif; font-size:.6rem; font-weight:600;
-  letter-spacing:.2em; text-transform:uppercase; color:var(--gold);
+.sidebar { padding-left: 8px; }
+
+.widget {
+  margin-bottom: 30px;
+  animation: fadeUp .4s ease both;
 }
-.widget-body { padding:14px; }
+.widget-head {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .6rem;
+  font-weight: 600;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--lake);
+  padding-bottom: 9px;
+  margin-bottom: 12px;
+  border-bottom: 2px solid var(--lake);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.widget-head .wh-icon { font-size: .85rem; }
+.widget-body {
+  font-family: 'Source Serif 4', serif;
+  font-size: .82rem;
+  color: var(--ink-2);
+}
 
 /* AIS rows */
 .ais-row {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:6px 0; border-bottom:1px solid #161616;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--rule-light);
 }
-.ais-row:last-child { border-bottom:none; }
+.ais-row:last-child { border-bottom: none; }
 .ais-port {
-  font-family:'Oswald',sans-serif; font-size:.62rem; font-weight:400;
-  letter-spacing:.06em; text-transform:uppercase; color:#999;
+  font-family: 'Source Serif 4', serif;
+  font-size: .8rem;
+  color: var(--ink-2);
 }
 .ais-status {
-  font-family:'Oswald',sans-serif; font-size:.6rem; font-weight:300;
-  letter-spacing:.06em; text-transform:uppercase; color:#444;
-  display:flex; align-items:center; gap:5px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .58rem;
+  font-weight: 400;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 .dot {
-  width:6px; height:6px; border-radius:50%; background:#2a2a2a; flex-shrink:0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--paper-ruled);
+  flex-shrink: 0;
 }
-.dot.live { background:#4caf50; box-shadow:0 0 5px #4caf5044; }
+.dot.live {
+  background: #2a9a4c;
+  box-shadow: 0 0 0 2px rgba(42,154,76,.2);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(42,154,76,.2); }
+  50% { box-shadow: 0 0 0 4px rgba(42,154,76,.1); }
+}
+
+/* Hist entries */
+.hist-entry {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule-light);
+}
+.hist-entry:last-child { border-bottom: none; }
+.hist-year {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--lake);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.hist-text {
+  font-family: 'Source Serif 4', serif;
+  font-style: italic;
+  font-size: .79rem;
+  color: var(--ink-3);
+  line-height: 1.55;
+}
 
 /* Link rows */
 .link-row {
-  display:flex; align-items:center; gap:8px; padding:8px 0;
-  border-bottom:1px solid #161616; text-decoration:none;
-  font-family:'Oswald',sans-serif; font-size:.68rem; font-weight:400;
-  letter-spacing:.06em; text-transform:uppercase; color:#666;
-  transition:color .15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--rule-light);
+  text-decoration: none;
+  font-family: 'Source Serif 4', serif;
+  font-size: .81rem;
+  color: var(--lake);
+  transition: color .15s, padding-left .15s;
 }
-.link-row:last-child { border-bottom:none; }
-.link-row:hover { color:var(--gold); }
+.link-row:last-child { border-bottom: none; }
+.link-row:hover { color: var(--ink); padding-left: 4px; }
 
-/* History */
-.hist-entry { padding:8px 0; border-bottom:1px solid #161616; }
-.hist-entry:last-child { border-bottom:none; }
-.hist-year {
-  font-family:'Oswald',sans-serif; font-size:.65rem; font-weight:600;
-  letter-spacing:.1em; color:var(--rust); margin-bottom:2px;
+/* ── Loading spinner ── */
+.spin {
+  width: 26px;
+  height: 26px;
+  border: 1.5px solid var(--rule-mid);
+  border-top-color: var(--lake);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  margin: 0 auto;
 }
-.hist-text { font-family:'Libre Baskerville',serif; font-size:.75rem; color:#666; line-height:1.5; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Error ── */
+/* ── Error block ── */
 .error-block {
-  border:1px solid #5a1f1f; background:#130808; padding:20px 22px;
-  font-family:'Libre Baskerville',serif; font-size:.82rem; color:#cc6666; line-height:1.5;
+  padding: 24px;
+  border: 1px solid rgba(120,32,0,.2);
+  background: rgba(120,32,0,.04);
+  font-family: 'Source Serif 4', serif;
+  font-size: .84rem;
+  color: var(--rust);
+  line-height: 1.6;
 }
-.error-block strong { display:block; margin-bottom:5px; color:#e88; }
+.error-block strong { display: block; margin-bottom: 5px; font-size: .9rem; }
 
 /* ── Footer ── */
 .footer {
-  border-top:1px solid #171717; padding:24px; text-align:center;
-  font-family:'Oswald',sans-serif; font-size:.6rem; font-weight:300;
-  letter-spacing:.14em; text-transform:uppercase; color:#333;
+  border-top: 2px solid var(--rule-heavy);
+  padding: 28px 0 0;
+  margin-top: 48px;
+  text-align: center;
 }
-.footer a { color:#3a3a3a; text-decoration:none; }
-.footer a:hover { color:var(--gold); }
+.footer-ornament {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: .85rem;
+  color: var(--ink-4);
+  letter-spacing: .08em;
+  margin-bottom: 12px;
+}
+.footer p {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .58rem;
+  font-weight: 300;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  line-height: 1.8;
+}
+.footer a { color: var(--lake); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.brief-wrap   { animation-delay: .05s; }
+.report-card:nth-child(1) { animation-delay: .1s; }
+.report-card:nth-child(2) { animation-delay: .18s; }
+.report-card:nth-child(3) { animation-delay: .26s; }
+.report-card:nth-child(4) { animation-delay: .34s; }
+.news-item:nth-child(1) { animation-delay: .12s; }
+.news-item:nth-child(2) { animation-delay: .2s; }
+.news-item:nth-child(3) { animation-delay: .28s; }
+.widget:nth-child(1) { animation-delay: .08s; }
+.widget:nth-child(2) { animation-delay: .16s; }
+.widget:nth-child(3) { animation-delay: .24s; }
+
+/* ── Expand button ── */
+.expand-btn {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .58rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--ink-4);
+  border: 1px solid var(--rule-mid);
+  padding: 6px 14px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: color .15s, border-color .15s;
+  display: inline-block;
+}
+.expand-btn:hover { color: var(--lake); border-color: var(--lake); }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .mast-top { flex-direction: column; gap: 6px; text-align: center; }
+  .page { padding: 20px 16px 60px; }
+  .main-col { border-right: none; padding-right: 0; }
+  .season-banner { flex-direction: column; }
+  .season-banner-left { flex-direction: row; justify-content: center; gap: 16px; min-width: auto; padding: 12px 20px; }
+}
 </style>
 </head>
 <body>
 
-<!-- Ticker -->
+<!-- ── Vessel ticker ── -->
 <div class="ticker-wrap">
-  <div class="ticker-badge">⚓ Vessels</div>
+  <div class="ticker-badge">⚓ AIS</div>
   <div class="ticker-scroll" id="ticker">
-    <span class="ticker-item">Loading vessel traffic <em>…</em></span>
-    <span class="ticker-item">Soo Locks open <em>March 25, 2026</em></span>
-    <span class="ticker-item">Coast Guard icebreakers <em>St. Marys River</em></span>
-    <span class="ticker-item">2026 season <em>commencing</em></span>
-    <span class="ticker-item">Loading vessel traffic <em>…</em></span>
-    <span class="ticker-item">Soo Locks open <em>March 25, 2026</em></span>
-    <span class="ticker-item">Coast Guard icebreakers <em>St. Marys River</em></span>
-    <span class="ticker-item">2026 season <em>commencing</em></span>
+    <span class="ticker-item">Great Lakes Gazette <em>loading vessel data…</em></span>
+    <span class="ticker-sep">✦</span>
+    <span class="ticker-item">Poe Lock <em>opens March 25</em></span>
+    <span class="ticker-sep">✦</span>
+    <span class="ticker-item">2026 Season <em>beginning</em></span>
+    <span class="ticker-sep">✦</span>
   </div>
 </div>
 
-<!-- Masthead -->
+<!-- ── Masthead ── -->
 <header class="masthead">
-  <div class="mast-meta">
-    <span>Bay City, Michigan<br>Est. 2026 · Vol. I</span>
-    <span id="mastDate" style="text-align:center">—</span>
-    <span style="text-align:right">Live AIS Vessel Data<br>BoatNerd · US Seaway</span>
+  <div class="mast-top">
+    <span class="mast-top-label">Vol. I &nbsp;·&nbsp; <strong>Great Lakes Maritime Chronicle</strong></span>
+    <span class="mast-top-label" id="mastDate"></span>
+    <span class="mast-top-label">Live AIS · BoatNerd · US Seaway</span>
   </div>
-  <div class="mast-rule"><hr><div class="diamond"></div><hr></div>
-  <div class="flag">Great Lakes Gazette</div>
-  <div class="tagline">The freshwater sea's journal of commerce &amp; navigation</div>
-  <div class="mast-rule2">
-    <hr>
-    <span class="center-txt">All movements sourced from live AIS data · Nothing invented</span>
-    <hr>
+  <div class="mast-center">
+    <div class="mast-rule-triple">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="flag">Great Lakes <em>Gazette</em></div>
+    <div class="tagline">Vessel Movements &amp; Maritime Intelligence from the Upper Midwest Waterways</div>
+    <div class="mast-ornament">
+      <hr>
+      <span class="orn">✦ &nbsp; All movements sourced from live AIS data &nbsp; · &nbsp; Nothing invented &nbsp; ✦</span>
+      <hr>
+    </div>
   </div>
 </header>
 
+<!-- ── Nav ── -->
 <nav class="nav">
   <a href="/" class="active">Port Reports</a>
-  <a href="/matchmaker.html">Seed Matchmaker</a>
-  <a href="https://freighterviewfarms.com" target="_blank">Freighter View Farms</a>
-  <a href="https://chrisizworski.com" target="_blank">About</a>
+  <a href="/">Shipping News</a>
+  <a href="/">AIS Live</a>
+  <a href="/">History</a>
+  <a href="/matchmaker.html">Heirloom Matchmaker</a>
+  <a href="https://freighterviewfarms.com" target="_blank">Freighter View Farms ↗</a>
 </nav>
 
+<!-- ── Page ── -->
 <main class="page">
 
-  <!-- Season status -->
-  <div class="season-bar" id="seasonBar">
-    <div class="season-icon" id="seasonIcon">⚓</div>
-    <div class="season-copy" id="seasonCopy">
+  <!-- Season banner -->
+  <div class="season-banner">
+    <div class="season-banner-left">
+      <span class="season-days" id="daysNum">—</span>
+      <span class="season-days-lbl" id="daysLbl">days until<br>Soo Locks</span>
+    </div>
+    <div class="season-body">
       <h3 id="seasonTitle">2026 Navigation Season</h3>
       <p id="seasonDesc">Poe Lock opens March 25 at 12:01 a.m. — Coast Guard icebreakers working the St. Marys River. Early-season vessels active in the lower lakes.</p>
     </div>
-    <div class="season-right">
-      <div class="days-num" id="daysNum">—</div>
-      <div class="days-lbl" id="daysLbl">days until<br>Soo Locks</div>
-    </div>
   </div>
 
-  <div class="grid">
+  <!-- Main grid -->
+  <div class="main-grid">
 
     <!-- Main column -->
-    <div>
-      <!-- Gazette Brief (AI editorial) -->
+    <div class="main-col">
+
+      <!-- Gazette Brief -->
       <div id="briefArea">
         <div class="brief-loading">
           <div class="spin"></div>
-          <p style="font-family:'Oswald',sans-serif;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:#333;margin-top:12px;">Composing today's brief…</p>
+          <p>Composing today's brief…</p>
         </div>
       </div>
 
-            <!-- Port Reports -->
-      <div class="sec-head"><div class="sec-lbl">Port Reports</div><hr></div>
+      <!-- Port Reports -->
+      <div class="sec-head">
+        <span class="sec-lbl">Port Reports</span>
+        <div class="sec-rule"></div>
+        <span class="sec-num">I</span>
+      </div>
       <div id="reportsArea">
-        <div class="loading-state">
+        <div class="brief-loading">
           <div class="spin"></div>
-          <p>Fetching live port reports from BoatNerd…</p>
+          <p>Fetching live port reports…</p>
         </div>
       </div>
 
       <!-- Shipping News -->
-      <div class="sec-head" style="margin-top:36px"><div class="sec-lbl">Shipping News</div><hr></div>
-      <div id="newsArea">
-        <div class="loading-state"><div class="spin"></div><p>Loading…</p></div>
+      <div class="sec-head" style="margin-top:44px">
+        <span class="sec-lbl">Shipping News</span>
+        <div class="sec-rule"></div>
+        <span class="sec-num">II</span>
       </div>
-    </div>
+      <div class="news-grid" id="newsArea">
+        <div class="brief-loading" style="grid-column:1/-1">
+          <div class="spin"></div>
+          <p>Loading…</p>
+        </div>
+      </div>
+
+    </div><!-- /main-col -->
 
     <!-- Sidebar -->
-    <aside>
+    <aside class="sidebar">
 
-      <!-- AIS Stations -->
+      <!-- AIS Station Status -->
       <div class="widget">
-        <div class="widget-head">📡 AIS Station Status</div>
+        <div class="widget-head">
+          <span class="wh-icon">📡</span> AIS Station Status
+        </div>
         <div class="widget-body" id="aisWidget">
-          <div class="ais-row"><span class="ais-port">Loading…</span></div>
+          <div class="ais-row">
+            <span class="ais-port" style="color:var(--ink-4);font-style:italic">Loading…</span>
+          </div>
         </div>
       </div>
 
       <!-- Today in History -->
       <div class="widget" id="histWidget" style="display:none">
-        <div class="widget-head">📜 Today in GL History</div>
+        <div class="widget-head">
+          <span class="wh-icon">🗓</span> This Day in History
+        </div>
         <div class="widget-body" id="histBody"></div>
       </div>
 
       <!-- Links -->
       <div class="widget">
-        <div class="widget-head">🔗 Track Vessels</div>
+        <div class="widget-head">
+          <span class="wh-icon">🔗</span> Resources
+        </div>
         <div class="widget-body">
           <a class="link-row" href="https://ais.boatnerd.com" target="_blank">⚓ BoatNerd AIS Live Map</a>
           <a class="link-row" href="https://boatnerd.com" target="_blank">📰 BoatNerd.com</a>
-          <a class="link-row" href="https://www.seaway.dot.gov" target="_blank">🇺🇸 US Seaway Authority</a>
-          <a class="link-row" href="https://greatlakes-seaway.com" target="_blank">🍁 St. Lawrence Seaway</a>
+          <a class="link-row" href="https://greatlakes-seaway.com" target="_blank">🌊 St. Lawrence Seaway</a>
           <a class="link-row" href="https://freighterviewfarms.com" target="_blank">🌱 Freighter View Farms</a>
-          <a class="link-row" href="/matchmaker.html">🌿 Seed Matchmaker</a>
         </div>
       </div>
 
     </aside>
-  </div>
-</main>
+  </div><!-- /main-grid -->
 
-<footer class="footer">
-  <p>Great Lakes Gazette · <a href="https://freighterviewfarms.com">Freighter View Farms</a> · <a href="https://chrisizworski.com">Chris Izworski</a> · Bay City, Michigan</p>
-</footer>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-ornament">❧ &nbsp; Great Lakes Gazette &nbsp; ❧</div>
+    <p>
+      Published from Bay City, Mich. &nbsp;·&nbsp; Data sourced from <a href="https://boatnerd.com">BoatNerd.com</a> &amp; live AIS feeds<br>
+      All vessel movements are real — nothing is invented &nbsp;·&nbsp; <a href="https://freighterviewfarms.com">Freighter View Farms</a>
+    </p>
+  </footer>
+
+</main>
 
 <script>
 // ── Init ──────────────────────────────────────────────────────────────────────
@@ -448,7 +903,6 @@ const diff = Math.ceil((seasonOpen - new Date()) / 86400000);
 document.getElementById('daysNum').textContent = diff > 0 ? diff : '✓';
 if (diff <= 0) {
   document.getElementById('daysLbl').textContent = 'season open!';
-  document.getElementById('seasonIcon').textContent = '🚢';
   document.getElementById('seasonTitle').textContent = '2026 Navigation Season — Open';
   document.getElementById('seasonDesc').textContent = 'The Poe Lock is open. Vessels are moving. Live AIS tracking active for all seven Great Lakes ports.';
 }
@@ -468,27 +922,27 @@ async function load() {
     renderHistory(todayInHistory || []);
     updateTicker(portReports || [], shippingNews || []);
 
-    // Cache freshness in masthead meta
     if (d.cache_age_minutes !== undefined) {
       const age = d.cache_age_minutes;
       const ageStr = age < 2 ? 'Just updated' : age < 60 ? `${age}m ago` : `${Math.floor(age/60)}h ago`;
-      const metaEl = document.querySelector('.mast-meta span:last-child');
-      if (metaEl) metaEl.innerHTML = `Data refreshed ${ageStr}<br>Source: BoatNerd AIS`;
+      const metaEl = document.querySelector('.mast-top-label:last-child');
+      if (metaEl) metaEl.textContent = `Refreshed ${ageStr} · BoatNerd AIS`;
     }
   } catch(e) {
     document.getElementById('reportsArea').innerHTML =
       `<div class="error-block"><strong>Could not load vessel data</strong>${e.message}<br><br>
-       <button onclick="load()" style="font-family:Oswald,sans-serif;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;background:transparent;color:#888;border:1px solid #333;padding:8px 16px;cursor:pointer;">Retry</button>
+       <button onclick="load()" class="expand-btn">Retry</button>
        </div>`;
     document.getElementById('newsArea').innerHTML = '';
+    document.getElementById('briefArea').innerHTML = '';
   }
 }
 
-// ── Gazette Brief ────────────────────────────────────────────────────────────
+// ── Gazette Brief ─────────────────────────────────────────────────────────────
 function renderBrief(brief) {
   const el = document.getElementById('briefArea');
   if (!brief || !brief.brief) {
-    el.innerHTML = '';  // hide silently if no brief yet
+    el.innerHTML = '';
     return;
   }
 
@@ -500,16 +954,15 @@ function renderBrief(brief) {
     .join('');
 
   const spotlight = brief.spotlight
-    ? `<div class="brief-spotlight"><strong>Vessel Spotlight</strong>${brief.spotlight}</div>`
+    ? `<div class="brief-spotlight"><strong>✦ Vessel Spotlight</strong>${brief.spotlight}</div>`
     : '';
 
   el.innerHTML = `
     <div class="brief-wrap">
-      <div class="brief-kicker">Great Lakes Gazette · Issue ${brief.issueNumber}</div>
+      <div class="brief-kicker">Great Lakes Gazette · Issue ${brief.issueNumber || 1}</div>
       <div class="brief-headline">${brief.headline}</div>
       <div class="brief-dateline">${brief.dateline || brief.issueDate}</div>
-      <div class="brief-body">${paras}</div>
-      ${spotlight}
+      <div class="brief-body">${paras}${spotlight}</div>
     </div>`;
 }
 
@@ -523,13 +976,12 @@ function renderReports(reports) {
   const good = reports.filter(r => r.text && r.text.length > 60);
   if (!good.length) {
     document.getElementById('reportsArea').innerHTML =
-      '<div style="font-family:Oswald,sans-serif;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#444;padding:24px 0">No port reports available today</div>';
+      '<p style="font-family:\'Josefin Sans\',sans-serif;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-4);padding:20px 0">No port reports available today</p>';
     return;
   }
 
   document.getElementById('reportsArea').innerHTML = good.map((r, i) => {
     const dateStr = r.date ? new Date(r.date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) : '';
-    // Split text into paragraphs at port/city markers
     const paras = splitIntoParagraphs(r.text);
     const preview = paras.slice(0, i === 0 ? 4 : 2).map(p => `<p>${p}</p>`).join('');
     const more = paras.length > (i === 0 ? 4 : 2);
@@ -537,24 +989,19 @@ function renderReports(reports) {
       <div class="report-dateline">${dateStr}</div>
       <div class="report-title"><a href="${r.url||'#'}" target="_blank">${r.title}</a></div>
       <div class="report-body" id="rb${i}">${preview}</div>
-      ${more ? `<button onclick="expandReport(${i}, '${encodeURIComponent(JSON.stringify(paras))}')" 
-        style="font-family:Oswald,sans-serif;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;background:transparent;color:#555;border:1px solid #2a2a2a;padding:6px 14px;cursor:pointer;margin-top:8px;transition:color .15s"
-        onmouseover="this.style.color='#c4973a'" onmouseout="this.style.color='#555'">
-        Read more ↓</button>` : ''}
+      ${more ? `<button onclick="expandReport(${i}, '${encodeURIComponent(JSON.stringify(paras))}')" class="expand-btn">Read more ↓</button>` : ''}
       ${r.url ? `<a class="report-readmore" href="${r.url}" target="_blank">Full report on BoatNerd →</a>` : ''}
     </article>`;
   }).join('');
 }
 
 function splitIntoParagraphs(text) {
-  // Split on port/city markers (ALL CAPS followed by comma or dash) and double spaces
   const chunks = text
     .replace(/(DUE:|ARRIVES|DEPARTS|PORT REPORT)/g, '\n$1')
     .replace(/([A-Z]{2,},\s[A-Z]{2,})\s*[–-]/g, '\n$1 —')
     .split(/\n+/)
     .map(s => s.trim())
     .filter(s => s.length > 10);
-  // Group into readable chunks ~100 words
   const paras = [];
   let buf = '';
   for (const c of chunks) {
@@ -569,7 +1016,7 @@ function expandReport(i, encodedParas) {
   const paras = JSON.parse(decodeURIComponent(encodedParas));
   const el = document.getElementById('rb' + i);
   el.innerHTML = paras.map(p => `<p>${p}</p>`).join('');
-  el.nextElementSibling?.remove(); // remove expand button
+  el.nextElementSibling?.remove();
 }
 
 // ── Shipping news ─────────────────────────────────────────────────────────────
@@ -594,23 +1041,21 @@ function renderAIS(ports) {
   const allOffSeason = ports.every(p => p.status === 'HTTP 500' || p.status === 'Off-season');
   const anyLive = ports.some(p => p.status === 'ok' && p.vessels?.length > 0);
 
-  // Off-season: show a single clean card instead of 7 dead dots
   if (allOffSeason) {
     const open = new Date('2026-03-25T00:01:00');
-    const diff = Math.ceil((open - new Date()) / 86400000);
-    const msg = diff > 0
-      ? `Poe Lock opens in <strong>${diff} day${diff!==1?'s':''}</strong> — March 25 at 12:01 a.m.`
+    const d2 = Math.ceil((open - new Date()) / 86400000);
+    const msg = d2 > 0
+      ? `Poe Lock opens in <strong>${d2} day${d2!==1?'s':''}</strong> — March 25 at 12:01 a.m.`
       : 'Navigation season is <strong>open</strong> — AIS data loading shortly.';
     el.innerHTML = `
-      <div style="padding:14px 0; font-family:'Libre Baskerville',serif; font-size:.78rem; color:#666; line-height:1.6;">
-        <div style="font-family:'Oswald',sans-serif; font-size:.6rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin-bottom:8px;">Off-Season</div>
-        <p style="margin-bottom:8px;">${msg}</p>
-        <p style="font-size:.72rem; color:#444;">AIS live vessel tracking resumes when the Soo Locks open. Port reports and shipping news are active year-round.</p>
+      <div style="padding:10px 0;">
+        <div style="font-family:'Josefin Sans',sans-serif;font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600;">Off-Season</div>
+        <p style="font-family:'Source Serif 4',serif;font-size:.8rem;color:var(--ink-2);line-height:1.6;margin-bottom:8px;">${msg}</p>
+        <p style="font-family:'Source Serif 4',serif;font-style:italic;font-size:.76rem;color:var(--ink-4);line-height:1.55;">AIS live tracking resumes when the Soo Locks open. Port reports are active year-round.</p>
       </div>`;
     return;
   }
 
-  // Season open — render port-by-port
   el.innerHTML = ports.map(p => {
     const live = p.status === 'ok' && p.vessels?.length > 0;
     const label = live
@@ -625,17 +1070,16 @@ function renderAIS(ports) {
     </div>`;
   }).join('');
 
-  // If live, also expand first port with vessel names
   if (anyLive) {
     const firstLive = ports.find(p => p.status === 'ok' && p.vessels?.length > 0);
     if (firstLive?.vessels?.length) {
       const names = firstLive.vessels.slice(0, 3).map(v =>
-        `<div style="font-family:'Libre Baskerville',serif; font-size:.72rem; color:#666; padding:2px 0; border-bottom:1px solid #1a1a1a;">
-          ${v.name}${v.direction ? ` <em style="color:#444;font-size:.68rem;">${v.direction}</em>` : ''}
+        `<div style="font-family:'Source Serif 4',serif;font-size:.78rem;color:var(--ink-2);padding:5px 0;border-bottom:1px solid var(--rule-light);">
+          ${v.name}${v.direction ? ` <em style="color:var(--ink-4);font-size:.74rem;">${v.direction}</em>` : ''}
         </div>`
       ).join('');
-      el.innerHTML += `<div style="padding:10px 0 4px; margin-top:4px;">
-        <div style="font-family:'Oswald',sans-serif; font-size:.55rem; letter-spacing:.16em; text-transform:uppercase; color:#333; margin-bottom:6px;">${firstLive.port}</div>
+      el.innerHTML += `<div style="margin-top:10px;">
+        <div style="font-family:'Josefin Sans',sans-serif;font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;color:var(--lake);margin-bottom:6px;font-weight:600;">${firstLive.port}</div>
         ${names}
       </div>`;
     }
@@ -647,7 +1091,6 @@ function renderHistory(items) {
   if (!items.length) return;
   const widget = document.getElementById('histWidget');
   const body = document.getElementById('histBody');
-  // Extract year entries from history text
   const entries = [];
   for (const item of items) {
     const years = [...item.text.matchAll(/\b(1[89]\d\d|20\d\d)\b[\s\S]{0,300}/g)];
@@ -667,14 +1110,14 @@ function renderHistory(items) {
   widget.style.display = 'block';
 }
 
-// ── Ticker update ─────────────────────────────────────────────────────────────
+// ── Ticker ────────────────────────────────────────────────────────────────────
 function updateTicker(reports, news) {
   const names = extractVesselNames([...reports, ...news]);
   if (!names.length) return;
 
   const moves = ['inbound','outbound','upbound','downbound','at anchor','underway','departed'];
   const items = names.map(n =>
-    `<span class="ticker-item">${n} <em>${moves[Math.floor(Math.random()*moves.length)]}</em></span>`
+    `<span class="ticker-item">${n} <em>${moves[Math.floor(Math.random()*moves.length)]}</em></span><span class="ticker-sep">✦</span>`
   );
   const doubled = [...items, ...items].join('');
   document.getElementById('ticker').innerHTML = doubled;

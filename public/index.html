@@ -315,14 +315,14 @@ body::before {
 
   <!-- Season status -->
   <div class="season-bar" id="seasonBar">
-    <div class="season-icon">⚓</div>
-    <div class="season-copy">
-      <h3>2026 Navigation Season</h3>
-      <p>Poe Lock opens March 25 at 12:01 a.m. — Coast Guard icebreakers working the St. Marys River. Early-season vessels active in the lower lakes.</p>
+    <div class="season-icon" id="seasonIcon">⚓</div>
+    <div class="season-copy" id="seasonCopy">
+      <h3 id="seasonTitle">2026 Navigation Season</h3>
+      <p id="seasonDesc">Poe Lock opens March 25 at 12:01 a.m. — Coast Guard icebreakers working the St. Marys River. Early-season vessels active in the lower lakes.</p>
     </div>
     <div class="season-right">
       <div class="days-num" id="daysNum">—</div>
-      <div class="days-lbl">days until<br>Soo Locks</div>
+      <div class="days-lbl" id="daysLbl">days until<br>Soo Locks</div>
     </div>
   </div>
 
@@ -389,10 +389,15 @@ body::before {
 document.getElementById('mastDate').textContent =
   new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
-const open = new Date('2026-03-25T00:01:00');
-const diff = Math.ceil((open - new Date()) / 86400000);
+const seasonOpen = new Date('2026-03-25T00:01:00');
+const diff = Math.ceil((seasonOpen - new Date()) / 86400000);
 document.getElementById('daysNum').textContent = diff > 0 ? diff : '✓';
-if (diff <= 0) document.querySelector('.days-lbl').textContent = 'season open!';
+if (diff <= 0) {
+  document.getElementById('daysLbl').textContent = 'season open!';
+  document.getElementById('seasonIcon').textContent = '🚢';
+  document.getElementById('seasonTitle').textContent = '2026 Navigation Season — Open';
+  document.getElementById('seasonDesc').textContent = 'The Poe Lock is open. Vessels are moving. Live AIS tracking active for all seven Great Lakes ports.';
+}
 
 // ── Fetch & render ────────────────────────────────────────────────────────────
 async function load() {
@@ -407,6 +412,14 @@ async function load() {
     renderAIS(aisPassages || []);
     renderHistory(todayInHistory || []);
     updateTicker(portReports || [], shippingNews || []);
+
+    // Show subtle cache freshness in masthead meta
+    if (d.cache_age_minutes !== undefined) {
+      const age = d.cache_age_minutes;
+      const ageStr = age < 2 ? 'Just updated' : age < 60 ? `${age}m ago` : `${Math.floor(age/60)}h ago`;
+      const metaEl = document.querySelector('.mast-meta span:last-child');
+      if (metaEl) metaEl.innerHTML = `Data refreshed ${ageStr}<br>Source: BoatNerd AIS`;
+    }
   } catch(e) {
     document.getElementById('reportsArea').innerHTML =
       `<div class="error-block"><strong>Could not load vessel data</strong>${e.message}<br><br>
@@ -493,10 +506,32 @@ function renderNews(news) {
 
 // ── AIS sidebar ───────────────────────────────────────────────────────────────
 function renderAIS(ports) {
-  document.getElementById('aisWidget').innerHTML = ports.map(p => {
+  const el = document.getElementById('aisWidget');
+  const allOffSeason = ports.every(p => p.status === 'HTTP 500' || p.status === 'Off-season');
+  const anyLive = ports.some(p => p.status === 'ok' && p.vessels?.length > 0);
+
+  // Off-season: show a single clean card instead of 7 dead dots
+  if (allOffSeason) {
+    const open = new Date('2026-03-25T00:01:00');
+    const diff = Math.ceil((open - new Date()) / 86400000);
+    const msg = diff > 0
+      ? `Poe Lock opens in <strong>${diff} day${diff!==1?'s':''}</strong> — March 25 at 12:01 a.m.`
+      : 'Navigation season is <strong>open</strong> — AIS data loading shortly.';
+    el.innerHTML = `
+      <div style="padding:14px 0; font-family:'Libre Baskerville',serif; font-size:.78rem; color:#666; line-height:1.6;">
+        <div style="font-family:'Oswald',sans-serif; font-size:.6rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin-bottom:8px;">Off-Season</div>
+        <p style="margin-bottom:8px;">${msg}</p>
+        <p style="font-size:.72rem; color:#444;">AIS live vessel tracking resumes when the Soo Locks open. Port reports and shipping news are active year-round.</p>
+      </div>`;
+    return;
+  }
+
+  // Season open — render port-by-port
+  el.innerHTML = ports.map(p => {
     const live = p.status === 'ok' && p.vessels?.length > 0;
-    const label = live ? `${p.vessels.length} vessel${p.vessels.length!==1?'s':''}` :
-                  p.status === 'HTTP 500' ? 'Off-season' : p.status;
+    const label = live
+      ? `${p.vessels.length} vessel${p.vessels.length!==1?'s':''}`
+      : (p.status === 'HTTP 500' ? 'Off-season' : (p.status || 'No data'));
     const portName = p.port
       .replace(' / St. Clair River','')
       .replace('Duluth / Superior','Duluth–Superior');
@@ -505,6 +540,22 @@ function renderAIS(ports) {
       <span class="ais-status"><div class="dot${live?' live':''}"></div>${label}</span>
     </div>`;
   }).join('');
+
+  // If live, also expand first port with vessel names
+  if (anyLive) {
+    const firstLive = ports.find(p => p.status === 'ok' && p.vessels?.length > 0);
+    if (firstLive?.vessels?.length) {
+      const names = firstLive.vessels.slice(0, 3).map(v =>
+        `<div style="font-family:'Libre Baskerville',serif; font-size:.72rem; color:#666; padding:2px 0; border-bottom:1px solid #1a1a1a;">
+          ${v.name}${v.direction ? ` <em style="color:#444;font-size:.68rem;">${v.direction}</em>` : ''}
+        </div>`
+      ).join('');
+      el.innerHTML += `<div style="padding:10px 0 4px; margin-top:4px;">
+        <div style="font-family:'Oswald',sans-serif; font-size:.55rem; letter-spacing:.16em; text-transform:uppercase; color:#333; margin-bottom:6px;">${firstLive.port}</div>
+        ${names}
+      </div>`;
+    }
+  }
 }
 
 // ── History ───────────────────────────────────────────────────────────────────

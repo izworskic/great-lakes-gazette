@@ -84,84 +84,210 @@ body{font-family:Georgia,'Times New Roman',serif;background:#f5f1e8;color:#2a2a2
 <script>
 let currentBrief = null;
 
-function renderBrief(data) {
-  currentBrief = data;
-  document.getElementById('issueNum').textContent = data.issueNumber || '1';
-  document.getElementById('issueDate').textContent = data.issueDate || '';
+// ── Build Claude prompt from scraped data ────────────────────────────────────
+function buildPrompt(data) {
+  const lines = [];
+  const today = new Date().toLocaleDateString('en-US', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  lines.push(`Today is ${today}. Write the Great Lakes Gazette weekly brief using ONLY facts present in the data below. Do not invent or assume any vessel names, cargo, ports, or events not listed here.
+`);
 
-  const paras = (data.brief || '').split('\n\n').filter(p => p.trim());
-  const html = paras.map(p => `<p>${p.replace(/\n/g,'<br>')}</p>`).join('');
+  // AIS
+  lines.push('=== LIVE AIS VESSEL PASSAGES ===');
+  const activePorts = (data.aisPassages||[]).filter(p => p.status==='ok' && p.vessels.length > 0);
+  if (activePorts.length > 0) {
+    activePorts.forEach(port => {
+      lines.push(`
+${port.port.toUpperCase()} — ${port.vessels.length} vessel(s):`);
+      port.vessels.forEach(v => {
+        const dir = v.direction ? ` [${v.direction}]` : '';
+        const dest = v.destination ? ` → ${v.destination}` : '';
+        const cargo = v.cargo ? ` | Cargo: ${v.cargo}` : '';
+        lines.push(`  • ${v.name}${dir}${dest}${cargo}`);
+      });
+    });
+  } else {
+    lines.push('AIS live passage data unavailable — navigation season not yet open (opens March 25, 2026). Do NOT invent vessel positions.');
+  }
 
-  const sourcesHtml = buildSourcesHtml(data.sources);
+  // Port Reports
+  lines.push('
+=== PORT REPORTS ===');
+  (data.portReports||[]).filter(p => p.text && p.text.length > 50).forEach(r => {
+    lines.push(`
+--- ${r.title} (${r.date?.slice(0,10)||''}) ---`);
+    lines.push(r.text.slice(0, 5000));
+  });
 
+  // News
+  lines.push('
+=== SHIPPING NEWS ===');
+  (data.shippingNews||[]).filter(n => n.text && n.text.length > 50).forEach(n => {
+    lines.push(`
+--- ${n.title} (${n.date?.slice(0,10)||''}) ---`);
+    lines.push(n.text.slice(0, 2500));
+  });
+
+  // History
+  if (data.todayInHistory?.length > 0) {
+    lines.push('
+=== TODAY IN GREAT LAKES HISTORY ===');
+    data.todayInHistory.forEach(h => {
+      lines.push(`
+--- ${h.title} ---`);
+      lines.push(h.text.slice(0, 1200));
+    });
+  }
+
+  return lines.join('
+');
+}
+
+const SYSTEM_PROMPT = `You are the editor of the Great Lakes Gazette, a weekly shipping newsletter for maritime enthusiasts, freighter watchers, and people who love the Great Lakes. Your voice is warm, authoritative, and specific — like a lifelong lake watcher writing from Bay City, Michigan.
+
+CRITICAL RULES:
+1. Only report on vessels, ports, cargo, and events explicitly present in the provided data.
+2. Never invent vessel names, cargo, ports, companies, or dates not in the data.
+3. If AIS shows no live passages (off-season), say so and focus on port report and news content.
+4. You may add nautical color and editorial voice, but every factual claim must trace to the data.
+5. If data is thin, write shorter — never pad with invented detail.
+
+FORMAT:
+- Lead paragraph (2–3 sentences): scene-setting, time of year, season status
+- Port-by-port highlights using data from port reports (only ports with actual data)
+- Fleet & Industry News: anything notable from the news posts
+- Historical Note if available from the history data
+- Closing line in your editorial voice
+- Target: 400–550 words`;
+
+async function callClaude(data) {
+  const prompt = buildPrompt(data);
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1200,
+      system: SYSTEM_PROMPT,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  if (!resp.ok) throw new Error(`Claude API ${resp.status}`);
+  const result = await resp.json();
+  return result.content[0].text;
+}
+
+function getIssueNumber() {
+  const start = new Date('2026-03-16');
+  return Math.max(1, Math.floor((new Date() - start) / (7*24*60*60*1000)) + 1);
+}
+
+function renderBrief(brief, data) {
+  const paras = brief.split('
+
+').filter(p => p.trim());
+  const html = paras.map(p => `<p>${p.replace(/
+/g,'<br>')}</p>`).join('');
+  const sourcesHtml = buildSourcesHtml(data);
+  const summary = data;
+  const issueNum = getIssueNumber();
+  const issueDate = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  const portReportsCount = (data.portReports||[]).filter(p=>p.text?.length>50).length;
+  const newsCount = (data.shippingNews||[]).filter(n=>n.text?.length>50).length;
+  const aisActive = (data.aisPassages||[]).filter(p=>p.status==='ok'&&p.vessels.length>0).length;
+
+  document.getElementById('issueNum').textContent = issueNum;
+  document.getElementById('issueDate').textContent = issueDate;
   document.getElementById('briefArea').innerHTML = `
     <div class="brief-content">${html}</div>
     ${sourcesHtml}
-    ${data.data_summary ? `<p style="font-family:-apple-system,sans-serif;font-size:.72rem;color:#bbb;margin-top:8px;text-align:right">
-      ${data.data_summary.port_reports_found} port reports · ${data.data_summary.news_items_found} news items · ${data.data_summary.ais_ports_with_data} AIS ports active
-    </p>` : ''}`;
-
+    <p style="font-family:-apple-system,sans-serif;font-size:.68rem;color:#bbb;margin-top:8px;text-align:right">
+      ${portReportsCount} port reports · ${newsCount} news items · ${aisActive} AIS ports active
+    </p>`;
   document.getElementById('btnRow').style.display = 'block';
   document.getElementById('refreshBtn').disabled = false;
   document.getElementById('refreshBtn').textContent = 'Generate fresh edition';
+
+  // Store for publish
+  currentBrief = {
+    brief, issueDate, issueNumber: issueNum,
+    sources: {
+      portReports: (data.portReports||[]).filter(p=>p.url).map(p=>({title:p.title,url:p.url})),
+      newsItems: (data.shippingNews||[]).filter(n=>n.url).map(n=>({title:n.title,url:n.url})),
+      aisPassages: (data.aisPassages||[]).filter(p=>p.status==='ok'&&p.vessels.length>0).map(p=>({port:p.port,count:p.vessels.length})),
+    }
+  };
 }
 
-function buildSourcesHtml(sources) {
-  if (!sources) return '';
+function buildSourcesHtml(data) {
   const links = [];
-  (sources.portReports || []).forEach(p =>
+  (data.portReports||[]).filter(p=>p.url&&p.text?.length>50).forEach(p =>
     links.push(`<a href="${p.url}" target="_blank">${p.title}</a>`)
   );
-  (sources.newsItems || []).slice(0,2).forEach(n =>
+  (data.shippingNews||[]).slice(0,2).filter(n=>n.url).forEach(n =>
     links.push(`<a href="${n.url}" target="_blank">${n.title}</a>`)
   );
-  const aisText = sources.aisPassages?.length > 0
-    ? `Live AIS: ${sources.aisPassages.map(p => `${p.port} (${p.count})`).join(', ')}`
-    : 'AIS: off-season or unavailable';
+  const aisActive = (data.aisPassages||[]).filter(p=>p.status==='ok'&&p.vessels.length>0);
+  const aisText = aisActive.length > 0
+    ? `Live AIS: ${aisActive.map(p=>`${p.port} (${p.vessels.length})`).join(', ')}`
+    : 'AIS live tracking: off-season (opens March 25)';
+  if (!links.length && !aisText) return '';
   return `<div class="sources-box">
     <strong>Data sources:</strong> ${links.join(' · ')}<br>
-    <span style="color:#999">${aisText} · All facts sourced from live data.</span>
+    <span style="color:#999">${aisText} · All facts sourced from live data — nothing invented.</span>
   </div>`;
 }
 
 async function loadBrief() {
-  document.getElementById('briefArea').innerHTML = `<div class="loading"><div class="spinner"></div>Fetching live vessel data…<br><small>15–20 seconds</small></div>`;
+  document.getElementById('briefArea').innerHTML = `<div class="loading"><div class="spinner"></div>Scraping live vessel data…<br><small style="font-size:.72rem;margin-top:8px;display:block">Pulling BoatNerd port reports + AIS — takes 15–25 seconds</small></div>`;
   document.getElementById('btnRow').style.display = 'none';
   document.getElementById('issueDate').textContent = 'Loading…';
+  document.getElementById('issueNum').textContent = getIssueNumber();
 
   try {
-    const r = await fetch('/api/generate');
-    const data = await r.json();
-    if (data.error) throw new Error(data.error);
-    renderBrief(data);
+    // Step 1: scrape
+    document.querySelector('.loading p, .loading div + div') && (document.querySelector('.loading small').textContent = 'Fetching vessel data…');
+    const scrapeResp = await fetch('/api/generate');
+    const scrapeResult = await scrapeResp.json();
+    if (scrapeResult.error) throw new Error(scrapeResult.error);
+    const data = scrapeResult.data;
+
+    // Step 2: generate with Claude
+    document.getElementById('briefArea').innerHTML = `<div class="loading"><div class="spinner"></div>Writing this week's brief…<br><small style="font-size:.72rem;margin-top:8px;display:block">Generating from ${(data.portReports||[]).filter(p=>p.text?.length>50).length} port reports + ${(data.shippingNews||[]).filter(n=>n.text?.length>50).length} news items</small></div>`;
+    const brief = await callClaude(data);
+
+    renderBrief(brief, data);
   } catch(e) {
-    document.getElementById('briefArea').innerHTML = `<div class="error-box"><strong>Error generating brief:</strong> ${e.message}<br><br>The scraper may have been blocked or the data source is unavailable. <button class="btn-generate" style="margin-top:12px" onclick="loadBrief()">Try again</button></div>`;
+    document.getElementById('briefArea').innerHTML = `<div class="error-box"><strong>Error:</strong> ${e.message}<br><br><button class="btn-generate" onclick="loadBrief()">Try again</button></div>`;
     document.getElementById('issueDate').textContent = 'Error';
     document.getElementById('btnRow').style.display = 'block';
   }
 }
 
 async function publishBrief() {
+  if (!currentBrief) { alert('Generate a brief first.'); return; }
   const btn = document.getElementById('publishBtn');
   btn.textContent = 'Publishing…';
   btn.disabled = true;
   try {
-    const r = await fetch('/api/publish', { method: 'POST' });
+    const r = await fetch('/api/publish', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(currentBrief)
+    });
     const data = await r.json();
     if (data.error) throw new Error(data.error);
-    btn.textContent = '✓ Published as draft';
-    btn.style.background = '#2d6a2d';
-    if (data.wordpress?.edit_url) {
+    btn.textContent = '✓ Saved as draft';
+    if (data.edit_url) {
       setTimeout(() => {
         btn.textContent = 'View in WordPress →';
         btn.disabled = false;
-        btn.onclick = () => window.open(data.wordpress.edit_url, '_blank');
+        btn.onclick = () => window.open(data.edit_url, '_blank');
       }, 1500);
     }
   } catch(e) {
-    btn.textContent = 'Publish failed — try again';
+    btn.textContent = 'Publish failed';
     btn.disabled = false;
-    alert('Publish error: ' + e.message);
+    alert('Error: ' + e.message);
   }
 }
 

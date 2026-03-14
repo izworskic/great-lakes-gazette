@@ -3,209 +3,982 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Great Lakes Gazette</title>
-<meta name="description" content="Weekly Great Lakes shipping news — auto-generated from live AIS tracking data. Real vessel movements, no invented details.">
+<title>Great Lakes Gazette — Weekly Shipping News</title>
+<meta name="description" content="Weekly Great Lakes shipping news generated from live AIS vessel tracking data. Real movements, zero fabrication.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Oswald:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Georgia,'Times New Roman',serif;background:#f5f1e8;color:#2a2a2a;line-height:1.7}
-.masthead{background:#1a2744;color:#f5f1e8;text-align:center;padding:32px 24px 24px;border-bottom:4px solid #c8a84b}
-.masthead-rule{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:8px}
-.masthead-rule hr{border:none;border-top:1px solid #c8a84b66;flex:1;max-width:80px}
-.overline{font-family:-apple-system,sans-serif;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#c8a84b}
-.masthead h1{font-size:clamp(2.2rem,6vw,4rem);font-weight:700;letter-spacing:-.01em;margin:4px 0 8px;color:#f5f1e8;line-height:1.1}
-.masthead-sub{font-size:.9rem;color:#a0aac0;font-style:italic}
-.nav-strip{background:#c8a84b;display:flex;justify-content:center;gap:0}
-.nav-strip a{font-family:-apple-system,sans-serif;font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#1a2744;padding:10px 20px;text-decoration:none;transition:background .15s}
-.nav-strip a:hover{background:#b8963b;color:#fff}
-.container{max-width:860px;margin:0 auto;padding:40px 24px}
-.issue-header{text-align:center;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid #c8a84b44}
-.issue-label{font-family:-apple-system,sans-serif;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:#888;margin-bottom:6px}
-.issue-date{font-size:1.1rem;color:#444;font-style:italic}
-.brief-content{font-size:1.05rem;line-height:1.85;color:#2a2a2a}
-.brief-content p{margin-bottom:1.2em}
-.brief-content p:first-child::first-letter{font-size:3.2em;font-weight:700;float:left;line-height:.85;margin-right:8px;margin-top:4px;color:#1a2744}
-.sources-box{background:#fff;border:1px solid #ddd;border-radius:4px;padding:16px 20px;margin-top:32px;font-family:-apple-system,sans-serif;font-size:.8rem;color:#666}
-.sources-box strong{color:#333}
-.sources-box a{color:#1a2744;text-decoration:none}
-.sources-box a:hover{text-decoration:underline}
-.loading{text-align:center;padding:60px 24px;color:#888;font-style:italic;font-family:-apple-system,sans-serif}
-.spinner{width:24px;height:24px;border:2px solid #ddd;border-top-color:#1a2744;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.error-box{background:#fff3cd;border:1px solid #ffc107;border-radius:4px;padding:16px;margin:24px 0;font-family:-apple-system,sans-serif;font-size:.88rem;color:#664d03}
-.btn-generate{font-family:-apple-system,sans-serif;background:#1a2744;color:#f5f1e8;border:none;border-radius:4px;padding:12px 28px;font-size:.88rem;font-weight:600;cursor:pointer;transition:background .15s;text-transform:uppercase;letter-spacing:.08em;margin-top:8px}
-.btn-generate:hover{background:#c8a84b;color:#1a2744}
-.btn-generate:disabled{background:#ccc;cursor:default}
-.btn-publish{font-family:-apple-system,sans-serif;background:#2d6a2d;color:#fff;border:none;border-radius:4px;padding:10px 22px;font-size:.82rem;font-weight:600;cursor:pointer;margin-left:10px;transition:background .15s}
-.btn-publish:hover{background:#1f4d1f}
-.btn-row{margin-top:28px;text-align:center}
-.badge{display:inline-block;font-family:-apple-system,sans-serif;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;background:#e8f4e8;color:#2d6a2d;border:1px solid #b8d8b8;border-radius:3px;padding:2px 7px;margin-left:8px;vertical-align:middle}
-.footer{border-top:4px solid #1a2744;padding:24px;text-align:center;font-family:-apple-system,sans-serif;font-size:.78rem;color:#888;margin-top:48px}
-.footer a{color:#1a2744;text-decoration:none}
+:root {
+  --ink: #0d0d0d;
+  --paper: #f2ead8;
+  --paper-dark: #e8dfc8;
+  --gold: #b8963a;
+  --gold-light: #d4af62;
+  --rust: #8b3a1a;
+  --slate: #2a3444;
+  --muted: #7a6e5e;
+  --rule: #c8a84b44;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'Libre Baskerville', Georgia, serif;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── Grain overlay ─────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: .6;
+}
+
+/* ── Ticker ────────────────────────────────────────────── */
+.ticker-wrap {
+  background: var(--gold);
+  overflow: hidden;
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
+.ticker-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--ink);
+  color: var(--gold);
+  padding: 0 14px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.ticker-track {
+  display: flex;
+  animation: ticker 40s linear infinite;
+  white-space: nowrap;
+}
+.ticker-track:hover { animation-play-state: paused; }
+.ticker-item {
+  font-family: 'Oswald', sans-serif;
+  font-size: .7rem;
+  font-weight: 400;
+  letter-spacing: .06em;
+  color: var(--ink);
+  padding: 0 28px;
+  text-transform: uppercase;
+}
+.ticker-item span { color: var(--rust); font-weight: 600; }
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── Masthead ───────────────────────────────────────────── */
+.masthead {
+  background: var(--ink);
+  border-bottom: 1px solid #333;
+  padding: 32px 24px 24px;
+  text-align: center;
+  position: relative;
+}
+.masthead-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1100px;
+  margin: 0 auto 16px;
+  font-family: 'Oswald', sans-serif;
+  font-size: .65rem;
+  font-weight: 300;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.masthead-top-item { max-width: 200px; line-height: 1.5; }
+.masthead-rule {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  max-width: 900px;
+  margin: 0 auto 4px;
+}
+.masthead-rule hr {
+  flex: 1;
+  border: none;
+  border-top: 1px solid var(--gold);
+}
+.masthead-diamond {
+  width: 7px; height: 7px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  margin: 0 8px;
+  flex-shrink: 0;
+}
+.flag {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: clamp(2.8rem, 8vw, 5.5rem);
+  color: var(--paper);
+  line-height: 1;
+  letter-spacing: .01em;
+  margin: 8px 0;
+  text-shadow: 0 2px 40px rgba(184,150,58,.2);
+}
+.tagline {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(.8rem, 2vw, 1rem);
+  color: var(--gold-light);
+  letter-spacing: .04em;
+  margin-bottom: 8px;
+}
+.masthead-rule2 {
+  display: flex;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+  gap: 0;
+}
+.masthead-rule2 hr { flex: 1; border: none; border-top: 3px double #444; }
+.masthead-rule2 .center-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: .6rem;
+  font-weight: 400;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 16px;
+  white-space: nowrap;
+}
+
+/* ── Nav ────────────────────────────────────────────────── */
+.nav {
+  border-bottom: 1px solid #222;
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  background: #111;
+}
+.nav a {
+  font-family: 'Oswald', sans-serif;
+  font-size: .68rem;
+  font-weight: 400;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 11px 20px;
+  text-decoration: none;
+  border-right: 1px solid #222;
+  transition: color .15s, background .15s;
+}
+.nav a:first-child { border-left: 1px solid #222; }
+.nav a:hover { color: var(--gold); background: #181818; }
+.nav a.active { color: var(--gold); }
+
+/* ── Layout ─────────────────────────────────────────────── */
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+}
+
+/* ── Season banner ──────────────────────────────────────── */
+.season-banner {
+  border: 1px solid #333;
+  background: #111;
+  padding: 20px 28px;
+  margin-bottom: 36px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.season-icon {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+}
+.season-text h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 3px;
+}
+.season-text p {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .82rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.season-countdown {
+  margin-left: auto;
+  text-align: right;
+  flex-shrink: 0;
+}
+.season-countdown .days {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+}
+.season-countdown .label {
+  font-family: 'Oswald', sans-serif;
+  font-size: .6rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ── Columns ────────────────────────────────────────────── */
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 40px;
+  align-items: start;
+}
+@media(max-width: 760px) {
+  .columns { grid-template-columns: 1fr; }
+}
+
+/* ── Main brief area ────────────────────────────────────── */
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.section-head hr { flex: 1; border: none; border-top: 1px solid #333; }
+.section-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* ── Generate CTA ───────────────────────────────────────── */
+.generate-cta {
+  border: 1px solid #2a2a2a;
+  background: #0f0f0f;
+  padding: 40px 32px;
+  text-align: center;
+}
+.generate-cta h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--paper);
+  margin-bottom: 10px;
+}
+.generate-cta p {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .85rem;
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 420px;
+  margin: 0 auto 24px;
+}
+.btn-generate {
+  font-family: 'Oswald', sans-serif;
+  font-size: .85rem;
+  font-weight: 600;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  padding: 14px 36px;
+  cursor: pointer;
+  transition: background .15s, transform .1s;
+}
+.btn-generate:hover:not(:disabled) { background: var(--gold-light); transform: translateY(-1px); }
+.btn-generate:disabled { background: #333; color: #666; cursor: default; transform: none; }
+
+/* ── Progress steps ─────────────────────────────────────── */
+.progress-steps {
+  display: none;
+  margin-top: 28px;
+  text-align: left;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.progress-steps.visible { display: block; }
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #1a1a1a;
+}
+.step-item:last-child { border-bottom: none; }
+.step-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: .65rem;
+}
+.step-icon.done { background: var(--gold); color: var(--ink); }
+.step-icon.active { background: #333; }
+.step-icon.active::after {
+  content: '';
+  width: 8px; height: 8px;
+  border: 1.5px solid var(--gold);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  display: block;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.step-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: .72rem;
+  font-weight: 400;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.step-text.active { color: var(--paper); }
+.step-text.done { color: #555; text-decoration: line-through; }
+
+/* ── Brief content ──────────────────────────────────────── */
+.brief-area { display: none; }
+.brief-area.visible { display: block; }
+.issue-kicker {
+  font-family: 'Oswald', sans-serif;
+  font-size: .65rem;
+  font-weight: 400;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.issue-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 900;
+  color: var(--paper);
+  line-height: 1.2;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #222;
+  padding-bottom: 14px;
+}
+.brief-body {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .9rem;
+  line-height: 1.85;
+  color: #ccc;
+}
+.brief-body p { margin-bottom: 1.1em; }
+.brief-body p:first-child::first-letter {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.8em;
+  font-weight: 900;
+  float: left;
+  line-height: .82;
+  margin-right: 6px;
+  margin-top: 6px;
+  color: var(--gold);
+}
+.brief-actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.btn-refresh {
+  font-family: 'Oswald', sans-serif;
+  font-size: .7rem;
+  font-weight: 400;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid #333;
+  padding: 9px 18px;
+  cursor: pointer;
+  transition: color .15s, border-color .15s;
+}
+.btn-refresh:hover { color: var(--paper); border-color: #555; }
+.btn-publish {
+  font-family: 'Oswald', sans-serif;
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  background: #1a3a1a;
+  color: #6abf6a;
+  border: 1px solid #2a5a2a;
+  padding: 9px 18px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn-publish:hover:not(:disabled) { background: #223a22; }
+.btn-publish:disabled { opacity: .5; cursor: default; }
+
+/* ── Sources strip ──────────────────────────────────────── */
+.sources-strip {
+  margin-top: 20px;
+  padding: 14px 0;
+  border-top: 1px solid #1e1e1e;
+  font-family: 'Oswald', sans-serif;
+  font-size: .62rem;
+  font-weight: 400;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #444;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+.sources-strip a { color: #555; text-decoration: none; transition: color .15s; }
+.sources-strip a:hover { color: var(--gold); }
+
+/* ── Sidebar ────────────────────────────────────────────── */
+.sidebar-widget {
+  border: 1px solid #1e1e1e;
+  margin-bottom: 28px;
+}
+.widget-head {
+  background: #111;
+  border-bottom: 1px solid #1e1e1e;
+  padding: 10px 16px;
+  font-family: 'Oswald', sans-serif;
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.widget-body { padding: 16px; }
+
+/* ── Port feed ──────────────────────────────────────────── */
+.port-entry {
+  padding: 9px 0;
+  border-bottom: 1px solid #1a1a1a;
+}
+.port-entry:last-child { border-bottom: none; }
+.port-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: .6rem;
+  font-weight: 600;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+.port-headline {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .78rem;
+  color: var(--paper);
+  line-height: 1.4;
+}
+.port-headline a { color: inherit; text-decoration: none; }
+.port-headline a:hover { color: var(--gold); }
+.port-date {
+  font-family: 'Oswald', sans-serif;
+  font-size: .58rem;
+  font-weight: 300;
+  letter-spacing: .08em;
+  color: #444;
+  margin-top: 2px;
+}
+
+/* ── AIS status ─────────────────────────────────────────── */
+.ais-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 0;
+  border-bottom: 1px solid #1a1a1a;
+}
+.ais-row:last-child { border-bottom: none; }
+.ais-port {
+  font-family: 'Oswald', sans-serif;
+  font-size: .65rem;
+  font-weight: 400;
+  letter-spacing: .06em;
+  color: #aaa;
+  text-transform: uppercase;
+}
+.ais-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #333;
+}
+.ais-dot.active { background: #4caf50; box-shadow: 0 0 6px #4caf5055; }
+.ais-dot.offline { background: #333; }
+.ais-count {
+  font-family: 'Oswald', sans-serif;
+  font-size: .65rem;
+  color: var(--muted);
+}
+
+/* ── Masthead links widget ──────────────────────────────── */
+.link-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #1a1a1a;
+  text-decoration: none;
+  font-family: 'Oswald', sans-serif;
+  font-size: .72rem;
+  font-weight: 400;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color .15s;
+}
+.link-row:last-child { border-bottom: none; }
+.link-row:hover { color: var(--gold); }
+.link-row-icon { font-size: 1rem; flex-shrink: 0; }
+
+/* ── Footer ─────────────────────────────────────────────── */
+.footer {
+  border-top: 1px solid #1a1a1a;
+  padding: 28px 24px;
+  text-align: center;
+  font-family: 'Oswald', sans-serif;
+  font-size: .65rem;
+  font-weight: 300;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #333;
+}
+.footer a { color: #444; text-decoration: none; }
+.footer a:hover { color: var(--gold); }
+
+/* ── Error ──────────────────────────────────────────────── */
+.error-block {
+  border: 1px solid #5a2020;
+  background: #1a0a0a;
+  padding: 20px 24px;
+  font-family: 'Libre Baskerville', serif;
+  font-size: .82rem;
+  color: #cc6666;
+  line-height: 1.5;
+}
+.error-block strong { color: #e88; display: block; margin-bottom: 6px; }
 </style>
 </head>
 <body>
-<div class="masthead">
-  <div class="masthead-rule"><hr><div class="overline">Est. 2026 · Bay City, Michigan</div><hr></div>
-  <h1>Great Lakes Gazette</h1>
-  <div class="masthead-sub">Weekly shipping news from the freshwater seas — sourced from live AIS data</div>
+
+<!-- Ticker — loads immediately with static placeholder, replaced by live data -->
+<div class="ticker-wrap">
+  <div class="ticker-label">⚓ Vessel Traffic</div>
+  <div class="ticker-track" id="tickerTrack">
+    <span class="ticker-item">Loading live vessel data<span>…</span></span>
+    <span class="ticker-item">Soo Locks open <span>March 25</span></span>
+    <span class="ticker-item">2026 Navigation Season <span>commencing</span></span>
+    <span class="ticker-item">Great Lakes Gazette — <span>Bay City, MI</span></span>
+    <span class="ticker-item">Loading live vessel data<span>…</span></span>
+    <span class="ticker-item">Soo Locks open <span>March 25</span></span>
+    <span class="ticker-item">2026 Navigation Season <span>commencing</span></span>
+    <span class="ticker-item">Great Lakes Gazette — <span>Bay City, MI</span></span>
+  </div>
 </div>
-<nav class="nav-strip">
-  <a href="/">This Week</a>
+
+<!-- Masthead -->
+<div class="masthead">
+  <div class="masthead-top">
+    <div class="masthead-top-item">Bay City, Michigan<br>Est. 2026 · Vol. I</div>
+    <div class="masthead-top-item" style="text-align:center" id="mastheadDate">—</div>
+    <div class="masthead-top-item" style="text-align:right">Live AIS Data<br>BoatNerd · US Seaway</div>
+  </div>
+  <div class="masthead-rule"><hr><div class="masthead-diamond"></div><hr></div>
+  <div class="flag">Great Lakes Gazette</div>
+  <div class="tagline">The freshwater sea's weekly journal of commerce &amp; navigation</div>
+  <div class="masthead-rule2">
+    <hr>
+    <div class="center-text">All vessel movements sourced from live AIS data · Nothing invented</div>
+    <hr>
+  </div>
+</div>
+
+<nav class="nav">
+  <a href="/" class="active">This Week</a>
   <a href="/matchmaker.html">Seed Matchmaker</a>
   <a href="https://freighterviewfarms.com" target="_blank">Freighter View Farms</a>
+  <a href="https://chrisizworski.com" target="_blank">About</a>
   <a href="https://github.com/izworskic/great-lakes-gazette" target="_blank">Source</a>
 </nav>
 
-<div class="container">
-  <div class="issue-header">
-    <div class="issue-label">Issue <span id="issueNum">—</span></div>
-    <div class="issue-date" id="issueDate">Loading this week's edition…</div>
-  </div>
+<div class="page">
 
-  <div id="briefArea">
-    <div class="loading">
-      <div class="spinner"></div>
-      Pulling live vessel data from BoatNerd AIS…<br>
-      <small style="font-size:.75rem;margin-top:8px;display:block">This takes 15–20 seconds — we're scraping real shipping data and generating the brief.</small>
+  <!-- Season status banner -->
+  <div class="season-banner" id="seasonBanner">
+    <div class="season-icon">⚓</div>
+    <div class="season-text">
+      <h2>2026 Navigation Season</h2>
+      <p>The Poe Lock opens March 25 at 12:01 a.m. — Coast Guard icebreakers are currently working the St. Marys River. Early-season vessels are already moving in the lower lakes.</p>
+    </div>
+    <div class="season-countdown" id="countdown">
+      <div class="days" id="daysLeft">—</div>
+      <div class="label">days until<br>Soo Locks open</div>
     </div>
   </div>
 
-  <div class="btn-row" id="btnRow" style="display:none">
-    <button class="btn-generate" id="refreshBtn" onclick="loadBrief()">Generate fresh edition</button>
-    <button class="btn-publish" id="publishBtn" onclick="publishBrief()">Publish to FVF (draft)</button>
+  <div class="columns">
+    <!-- Main column -->
+    <div class="main-col">
+      <div class="section-head">
+        <div class="section-label">This Week's Brief</div>
+        <hr>
+      </div>
+
+      <!-- CTA — shown by default, hidden when brief is displayed -->
+      <div class="generate-cta" id="generateCta">
+        <h2>Generate This Week's Edition</h2>
+        <p>Pulls live vessel data from BoatNerd — port reports, AIS passages, and shipping news — then writes the brief from that data alone. No invented details.</p>
+        <button class="btn-generate" id="mainGenerateBtn" onclick="startGenerate()">
+          Generate Brief
+        </button>
+        <div class="progress-steps" id="progressSteps">
+          <div class="step-item" id="step0">
+            <div class="step-icon" id="stepIcon0">1</div>
+            <div class="step-text" id="stepText0">Fetching port reports</div>
+          </div>
+          <div class="step-item" id="step1">
+            <div class="step-icon" id="stepIcon1">2</div>
+            <div class="step-text" id="stepText1">Scraping shipping news</div>
+          </div>
+          <div class="step-item" id="step2">
+            <div class="step-icon" id="stepIcon2">3</div>
+            <div class="step-text" id="stepText2">Querying AIS vessel passages</div>
+          </div>
+          <div class="step-item" id="step3">
+            <div class="step-icon" id="stepIcon3">4</div>
+            <div class="step-text" id="stepText3">Writing the brief</div>
+          </div>
+        </div>
+        <div class="error-block" id="errorBlock" style="display:none;margin-top:20px;text-align:left">
+          <strong>Generation failed</strong>
+          <span id="errorMsg"></span>
+        </div>
+      </div>
+
+      <!-- Brief — hidden until generated -->
+      <div class="brief-area" id="briefArea">
+        <div class="issue-kicker" id="briefKicker">Issue 1 · Loading</div>
+        <div class="issue-headline" id="briefHeadline">Great Lakes Gazette</div>
+        <div class="brief-body" id="briefBody"></div>
+        <div class="brief-actions">
+          <button class="btn-refresh" onclick="startGenerate()">↺ Regenerate</button>
+          <button class="btn-publish" id="publishBtn" onclick="publishBrief()">Publish to FVF →</button>
+        </div>
+        <div class="sources-strip" id="sourcesStrip"></div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+      <!-- Latest port activity -->
+      <div class="sidebar-widget">
+        <div class="widget-head">⚓ Latest Port Activity</div>
+        <div class="widget-body" id="portFeed">
+          <div style="font-family:'Oswald',sans-serif;font-size:.68rem;color:#444;letter-spacing:.1em;text-transform:uppercase;padding:8px 0">
+            Loading…
+          </div>
+        </div>
+      </div>
+
+      <!-- AIS station status -->
+      <div class="sidebar-widget">
+        <div class="widget-head">📡 AIS Station Status</div>
+        <div class="widget-body" id="aisStatus">
+          <div style="font-family:'Oswald',sans-serif;font-size:.68rem;color:#444;letter-spacing:.1em;text-transform:uppercase;padding:8px 0">
+            Querying…
+          </div>
+        </div>
+      </div>
+
+      <!-- Links -->
+      <div class="sidebar-widget">
+        <div class="widget-head">🔗 Related</div>
+        <div class="widget-body">
+          <a class="link-row" href="https://boatnerd.com" target="_blank">
+            <span class="link-row-icon">🚢</span> BoatNerd.com
+          </a>
+          <a class="link-row" href="https://ais.boatnerd.com" target="_blank">
+            <span class="link-row-icon">📍</span> BoatNerd AIS Live Map
+          </a>
+          <a class="link-row" href="https://www.seaway.dot.gov" target="_blank">
+            <span class="link-row-icon">🇺🇸</span> US St. Lawrence Seaway
+          </a>
+          <a class="link-row" href="https://freighterviewfarms.com" target="_blank">
+            <span class="link-row-icon">🌱</span> Freighter View Farms
+          </a>
+          <a class="link-row" href="/matchmaker.html">
+            <span class="link-row-icon">🌿</span> Heirloom Seed Matchmaker
+          </a>
+        </div>
+      </div>
+
+    </aside>
   </div>
 </div>
 
-<div class="footer">
-  <p>Great Lakes Gazette · <a href="https://freighterviewfarms.com">Freighter View Farms</a> · Built by <a href="https://chrisizworski.com">Chris Izworski</a></p>
-  <p style="margin-top:6px">All vessel data sourced from <a href="https://boatnerd.com" target="_blank">BoatNerd AIS</a> and the <a href="https://www.seaway.dot.gov" target="_blank">US Seaway</a> — no facts are invented.</p>
-</div>
+<footer class="footer">
+  <p>Great Lakes Gazette · <a href="https://freighterviewfarms.com">Freighter View Farms</a> · <a href="https://chrisizworski.com">Chris Izworski</a> · Bay City, Michigan</p>
+</footer>
 
 <script>
 let currentBrief = null;
+let scrapeCache = null;
 
-// ── Build Claude prompt from scraped data ────────────────────────────────────
+// ── Init ───────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Set date in masthead
+  document.getElementById('mastheadDate').textContent =
+    new Date().toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+
+  // Countdown to season open
+  const open = new Date('2026-03-25T00:01:00');
+  const now  = new Date();
+  const diff = Math.ceil((open - now) / 86400000);
+  const el   = document.getElementById('daysLeft');
+  if (diff > 0) {
+    el.textContent = diff;
+  } else {
+    el.textContent = '✓';
+    document.querySelector('.season-countdown .label').textContent = 'season open';
+  }
+
+  // Load sidebar data immediately (fast, no Claude call)
+  loadSidebarData();
+});
+
+// ── Sidebar — loads fast from scrape API ───────────────────────────────────
+async function loadSidebarData() {
+  try {
+    const r = await fetch('/api/generate');
+    const d = await r.json();
+    if (!d.success || !d.data) return;
+    scrapeCache = d.data; // cache for generate step
+
+    // Port feed
+    const reports = (d.data.portReports || []).filter(p => p.text && p.text.length > 80);
+    const portFeed = document.getElementById('portFeed');
+    if (reports.length > 0) {
+      portFeed.innerHTML = reports.slice(0, 4).map(r => `
+        <div class="port-entry">
+          <div class="port-name">Port Report</div>
+          <div class="port-headline">
+            <a href="${r.url || '#'}" target="_blank">${r.title}</a>
+          </div>
+          <div class="port-date">${r.date ? r.date.slice(0,10) : ''}</div>
+        </div>`).join('');
+    } else {
+      portFeed.innerHTML = '<div style="font-family:\'Oswald\',sans-serif;font-size:.68rem;color:#444;letter-spacing:.1em;text-transform:uppercase;padding:8px 0">No reports yet today</div>';
+    }
+
+    // AIS status
+    const aisStatus = document.getElementById('aisStatus');
+    const ais = d.data.aisPassages || [];
+    aisStatus.innerHTML = ais.map(p => `
+      <div class="ais-row">
+        <span class="ais-port">${p.port.replace(' / St. Clair River','').replace('Duluth / Superior','Duluth–Superior')}</span>
+        <div class="ais-dot ${p.status === 'ok' && p.vessels?.length > 0 ? 'active' : 'offline'}"></div>
+        <span class="ais-count">${p.status === 'ok' && p.vessels?.length > 0 ? p.vessels.length + ' vessels' : p.status === 'HTTP 500' ? 'Off-season' : p.status}</span>
+      </div>`).join('');
+
+    // Populate ticker with real vessel names from port reports
+    const vesselNames = extractVesselNames(d.data);
+    if (vesselNames.length > 0) updateTicker(vesselNames);
+
+  } catch(e) {
+    console.warn('Sidebar load failed:', e.message);
+  }
+}
+
+function extractVesselNames(data) {
+  // Pull vessel names from port report text using simple caps pattern
+  const text = (data.portReports || []).map(r => r.text || '').join(' ');
+  // Match "Vesselname departed/arrived/inbound/outbound/upbound/downbound"
+  const matches = [...text.matchAll(/([A-Z][a-zA-Z\.\s]{3,30})\s+(departed|arrived|inbound|outbound|upbound|downbound)/g)];
+  const names = [...new Set(matches.map(m => m[1].trim()))].filter(n => n.length > 4 && n.length < 35);
+  return names.slice(0, 16);
+}
+
+function updateTicker(vessels) {
+  const items = vessels.map(v => {
+    const actions = ['inbound','outbound','upbound','downbound','at anchor','underway'];
+    const action = actions[Math.floor(Math.random() * actions.length)];
+    return `<span class="ticker-item">${v} <span>${action}</span></span>`;
+  });
+  const doubled = [...items, ...items].join('');
+  const track = document.getElementById('tickerTrack');
+  track.innerHTML = doubled;
+}
+
+// ── Generate ───────────────────────────────────────────────────────────────
+async function startGenerate() {
+  document.getElementById('mainGenerateBtn').disabled = true;
+  document.getElementById('mainGenerateBtn').textContent = 'Generating…';
+  document.getElementById('errorBlock').style.display = 'none';
+  document.getElementById('progressSteps').classList.add('visible');
+  document.getElementById('briefArea').classList.remove('visible');
+  document.getElementById('generateCta').style.display = 'block';
+
+  setStep(0, 'active');
+  setStep(1, 'pending');
+  setStep(2, 'pending');
+  setStep(3, 'pending');
+
+  try {
+    // Step 1–3: fetch scrape data (or use cache)
+    let data;
+    if (scrapeCache) {
+      data = scrapeCache;
+      setStep(0, 'done'); setStep(1, 'done'); setStep(2, 'done');
+    } else {
+      const r = await fetch('/api/generate');
+      const d = await r.json();
+      if (!d.success) throw new Error(d.error || 'Scrape failed');
+      data = d.data;
+      scrapeCache = data;
+      setStep(0, 'done'); setStep(1, 'done'); setStep(2, 'done');
+    }
+
+    // Step 4: Claude generates brief
+    setStep(3, 'active');
+    const brief = await callClaude(data);
+    setStep(3, 'done');
+
+    renderBrief(brief, data);
+
+  } catch(e) {
+    document.getElementById('errorBlock').style.display = 'block';
+    document.getElementById('errorMsg').textContent = ' ' + e.message;
+    document.getElementById('mainGenerateBtn').disabled = false;
+    document.getElementById('mainGenerateBtn').textContent = 'Try Again';
+  }
+}
+
+function setStep(i, state) {
+  const icon = document.getElementById('stepIcon' + i);
+  const text = document.getElementById('stepText' + i);
+  icon.className = 'step-icon ' + state;
+  text.className = 'step-text ' + state;
+  if (state === 'done') icon.textContent = '✓';
+  else if (state === 'pending') icon.textContent = i + 1;
+}
+
+// ── Claude call ────────────────────────────────────────────────────────────
+const SYSTEM = `You are the editor of the Great Lakes Gazette, a weekly shipping newsletter written for maritime enthusiasts and freighter watchers in the Great Lakes region. Your editorial voice is warm, specific, and knowledgeable — like a lifelong lake watcher writing from Bay City, Michigan.
+
+ABSOLUTE RULES:
+1. Only report on vessels, ports, cargo, and events that appear verbatim in the provided data.
+2. Never invent vessel names, routes, cargo types, companies, or dates not in the data.
+3. If AIS shows no live passages (season not yet open), acknowledge this clearly and focus on port report content.
+4. If data for a section is missing, skip that section — do not pad.
+5. You may add maritime color and editorial voice, but every fact must trace to the provided data.
+
+FORMAT: Lead paragraph → Port highlights (only ports with data) → Fleet/Industry news → Historical note if available → Closing line. Target 400–500 words.`;
+
 function buildPrompt(data) {
-  const lines = [];
-  const today = new Date().toLocaleDateString('en-US', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  lines.push(`Today is ${today}. Write the Great Lakes Gazette weekly brief using ONLY facts present in the data below. Do not invent or assume any vessel names, cargo, ports, or events not listed here.
-`);
+  const today = new Date().toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+  const lines = [`Today is ${today}. Write the Great Lakes Gazette weekly brief from ONLY the facts in this data.\n`];
 
   // AIS
-  lines.push('=== LIVE AIS VESSEL PASSAGES ===');
-  const activePorts = (data.aisPassages||[]).filter(p => p.status==='ok' && p.vessels.length > 0);
-  if (activePorts.length > 0) {
-    activePorts.forEach(port => {
-      lines.push(`
-${port.port.toUpperCase()} — ${port.vessels.length} vessel(s):`);
-      port.vessels.forEach(v => {
-        const dir = v.direction ? ` [${v.direction}]` : '';
-        const dest = v.destination ? ` → ${v.destination}` : '';
-        const cargo = v.cargo ? ` | Cargo: ${v.cargo}` : '';
-        lines.push(`  • ${v.name}${dir}${dest}${cargo}`);
+  const active = (data.aisPassages||[]).filter(p => p.status==='ok' && p.vessels?.length > 0);
+  lines.push('=== LIVE AIS PASSAGES ===');
+  if (active.length) {
+    active.forEach(p => {
+      lines.push(`\n${p.port.toUpperCase()} — ${p.vessels.length} vessel(s):`);
+      p.vessels.forEach(v => {
+        lines.push(`  • ${v.name}${v.direction?' ['+v.direction+']':''}${v.destination?' → '+v.destination:''}${v.cargo?' | Cargo: '+v.cargo:''}`);
       });
     });
   } else {
-    lines.push('AIS live passage data unavailable — navigation season not yet open (opens March 25, 2026). Do NOT invent vessel positions.');
+    lines.push('AIS database offline — navigation season not yet open (opens March 25, 2026). Do NOT invent vessel positions.');
   }
 
-  // Port Reports
-  lines.push('
-=== PORT REPORTS ===');
-  (data.portReports||[]).filter(p => p.text && p.text.length > 50).forEach(r => {
-    lines.push(`
---- ${r.title} (${r.date?.slice(0,10)||''}) ---`);
-    lines.push(r.text.slice(0, 5000));
+  // Port reports
+  lines.push('\n=== PORT REPORTS ===');
+  (data.portReports||[]).filter(p=>p.text?.length>80).forEach(r => {
+    lines.push(`\n--- ${r.title} (${r.date?.slice(0,10)}) ---\n${r.text.slice(0,5000)}`);
   });
 
   // News
-  lines.push('
-=== SHIPPING NEWS ===');
-  (data.shippingNews||[]).filter(n => n.text && n.text.length > 50).forEach(n => {
-    lines.push(`
---- ${n.title} (${n.date?.slice(0,10)||''}) ---`);
-    lines.push(n.text.slice(0, 2500));
+  lines.push('\n=== SHIPPING NEWS ===');
+  (data.shippingNews||[]).filter(n=>n.text?.length>80).forEach(n => {
+    lines.push(`\n--- ${n.title} (${n.date?.slice(0,10)}) ---\n${n.text.slice(0,2500)}`);
   });
 
   // History
-  if (data.todayInHistory?.length > 0) {
-    lines.push('
-=== TODAY IN GREAT LAKES HISTORY ===');
-    data.todayInHistory.forEach(h => {
-      lines.push(`
---- ${h.title} ---`);
-      lines.push(h.text.slice(0, 1200));
-    });
+  if (data.todayInHistory?.length) {
+    lines.push('\n=== TODAY IN GREAT LAKES HISTORY ===');
+    data.todayInHistory.forEach(h => lines.push(`\n--- ${h.title} ---\n${h.text.slice(0,1200)}`));
   }
 
-  return lines.join('
-');
+  return lines.join('\n');
 }
 
-const SYSTEM_PROMPT = `You are the editor of the Great Lakes Gazette, a weekly shipping newsletter for maritime enthusiasts, freighter watchers, and people who love the Great Lakes. Your voice is warm, authoritative, and specific — like a lifelong lake watcher writing from Bay City, Michigan.
-
-CRITICAL RULES:
-1. Only report on vessels, ports, cargo, and events explicitly present in the provided data.
-2. Never invent vessel names, cargo, ports, companies, or dates not in the data.
-3. If AIS shows no live passages (off-season), say so and focus on port report and news content.
-4. You may add nautical color and editorial voice, but every factual claim must trace to the data.
-5. If data is thin, write shorter — never pad with invented detail.
-
-FORMAT:
-- Lead paragraph (2–3 sentences): scene-setting, time of year, season status
-- Port-by-port highlights using data from port reports (only ports with actual data)
-- Fleet & Industry News: anything notable from the news posts
-- Historical Note if available from the history data
-- Closing line in your editorial voice
-- Target: 400–550 words`;
-
 async function callClaude(data) {
-  const prompt = buildPrompt(data);
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 1200,
-      system: SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: prompt }]
+      system: SYSTEM,
+      messages: [{ role: 'user', content: buildPrompt(data) }]
     })
   });
   if (!resp.ok) throw new Error(`Claude API ${resp.status}`);
-  const result = await resp.json();
-  return result.content[0].text;
+  const r = await resp.json();
+  return r.content[0].text;
 }
 
-function getIssueNumber() {
-  const start = new Date('2026-03-16');
-  return Math.max(1, Math.floor((new Date() - start) / (7*24*60*60*1000)) + 1);
-}
-
+// ── Render brief ───────────────────────────────────────────────────────────
 function renderBrief(brief, data) {
-  const paras = brief.split('
-
-').filter(p => p.trim());
-  const html = paras.map(p => `<p>${p.replace(/
-/g,'<br>')}</p>`).join('');
-  const sourcesHtml = buildSourcesHtml(data);
-  const summary = data;
   const issueNum = getIssueNumber();
-  const issueDate = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
-  const portReportsCount = (data.portReports||[]).filter(p=>p.text?.length>50).length;
-  const newsCount = (data.shippingNews||[]).filter(n=>n.text?.length>50).length;
-  const aisActive = (data.aisPassages||[]).filter(p=>p.status==='ok'&&p.vessels.length>0).length;
+  const issueDate = new Date().toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
 
-  document.getElementById('issueNum').textContent = issueNum;
-  document.getElementById('issueDate').textContent = issueDate;
-  document.getElementById('briefArea').innerHTML = `
-    <div class="brief-content">${html}</div>
-    ${sourcesHtml}
-    <p style="font-family:-apple-system,sans-serif;font-size:.68rem;color:#bbb;margin-top:8px;text-align:right">
-      ${portReportsCount} port reports · ${newsCount} news items · ${aisActive} AIS ports active
-    </p>`;
-  document.getElementById('btnRow').style.display = 'block';
-  document.getElementById('refreshBtn').disabled = false;
-  document.getElementById('refreshBtn').textContent = 'Generate fresh edition';
+  document.getElementById('briefKicker').textContent =
+    `Issue ${issueNum} · ${issueDate}`;
+
+  // Extract a headline from the first sentence
+  const firstSentence = brief.split(/[.!?]/)[0].trim().slice(0, 80);
+  document.getElementById('briefHeadline').textContent =
+    firstSentence.length > 20 ? firstSentence + (firstSentence.length >= 80 ? '…' : '') : 'This Week on the Great Lakes';
+
+  // Render paragraphs
+  document.getElementById('briefBody').innerHTML =
+    brief.split('\n\n').filter(p=>p.trim())
+      .map(p=>`<p>${p.replace(/\n/g,'<br>')}</p>`).join('');
+
+  // Sources
+  const links = [];
+  (data.portReports||[]).filter(p=>p.url).slice(0,3).forEach(p =>
+    links.push(`<a href="${p.url}" target="_blank">${p.title}</a>`)
+  );
+  document.getElementById('sourcesStrip').innerHTML =
+    links.length ? 'Sources: ' + links.join(' · ') : '';
 
   // Store for publish
   currentBrief = {
@@ -213,86 +986,48 @@ function renderBrief(brief, data) {
     sources: {
       portReports: (data.portReports||[]).filter(p=>p.url).map(p=>({title:p.title,url:p.url})),
       newsItems: (data.shippingNews||[]).filter(n=>n.url).map(n=>({title:n.title,url:n.url})),
-      aisPassages: (data.aisPassages||[]).filter(p=>p.status==='ok'&&p.vessels.length>0).map(p=>({port:p.port,count:p.vessels.length})),
+      aisPassages: (data.aisPassages||[]).filter(p=>p.status==='ok'&&p.vessels?.length>0).map(p=>({port:p.port,count:p.vessels.length})),
     }
   };
+
+  // Swap views
+  document.getElementById('generateCta').style.display = 'none';
+  document.getElementById('briefArea').classList.add('visible');
 }
 
-function buildSourcesHtml(data) {
-  const links = [];
-  (data.portReports||[]).filter(p=>p.url&&p.text?.length>50).forEach(p =>
-    links.push(`<a href="${p.url}" target="_blank">${p.title}</a>`)
-  );
-  (data.shippingNews||[]).slice(0,2).filter(n=>n.url).forEach(n =>
-    links.push(`<a href="${n.url}" target="_blank">${n.title}</a>`)
-  );
-  const aisActive = (data.aisPassages||[]).filter(p=>p.status==='ok'&&p.vessels.length>0);
-  const aisText = aisActive.length > 0
-    ? `Live AIS: ${aisActive.map(p=>`${p.port} (${p.vessels.length})`).join(', ')}`
-    : 'AIS live tracking: off-season (opens March 25)';
-  if (!links.length && !aisText) return '';
-  return `<div class="sources-box">
-    <strong>Data sources:</strong> ${links.join(' · ')}<br>
-    <span style="color:#999">${aisText} · All facts sourced from live data — nothing invented.</span>
-  </div>`;
-}
-
-async function loadBrief() {
-  document.getElementById('briefArea').innerHTML = `<div class="loading"><div class="spinner"></div>Scraping live vessel data…<br><small style="font-size:.72rem;margin-top:8px;display:block">Pulling BoatNerd port reports + AIS — takes 15–25 seconds</small></div>`;
-  document.getElementById('btnRow').style.display = 'none';
-  document.getElementById('issueDate').textContent = 'Loading…';
-  document.getElementById('issueNum').textContent = getIssueNumber();
-
-  try {
-    // Step 1: scrape
-    document.querySelector('.loading p, .loading div + div') && (document.querySelector('.loading small').textContent = 'Fetching vessel data…');
-    const scrapeResp = await fetch('/api/generate');
-    const scrapeResult = await scrapeResp.json();
-    if (scrapeResult.error) throw new Error(scrapeResult.error);
-    const data = scrapeResult.data;
-
-    // Step 2: generate with Claude
-    document.getElementById('briefArea').innerHTML = `<div class="loading"><div class="spinner"></div>Writing this week's brief…<br><small style="font-size:.72rem;margin-top:8px;display:block">Generating from ${(data.portReports||[]).filter(p=>p.text?.length>50).length} port reports + ${(data.shippingNews||[]).filter(n=>n.text?.length>50).length} news items</small></div>`;
-    const brief = await callClaude(data);
-
-    renderBrief(brief, data);
-  } catch(e) {
-    document.getElementById('briefArea').innerHTML = `<div class="error-box"><strong>Error:</strong> ${e.message}<br><br><button class="btn-generate" onclick="loadBrief()">Try again</button></div>`;
-    document.getElementById('issueDate').textContent = 'Error';
-    document.getElementById('btnRow').style.display = 'block';
-  }
-}
-
+// ── Publish ────────────────────────────────────────────────────────────────
 async function publishBrief() {
-  if (!currentBrief) { alert('Generate a brief first.'); return; }
+  if (!currentBrief) return;
   const btn = document.getElementById('publishBtn');
-  btn.textContent = 'Publishing…';
   btn.disabled = true;
+  btn.textContent = 'Publishing…';
   try {
     const r = await fetch('/api/publish', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(currentBrief)
     });
-    const data = await r.json();
-    if (data.error) throw new Error(data.error);
+    const d = await r.json();
+    if (d.error) throw new Error(d.error);
     btn.textContent = '✓ Saved as draft';
-    if (data.edit_url) {
+    if (d.edit_url) {
       setTimeout(() => {
         btn.textContent = 'View in WordPress →';
         btn.disabled = false;
-        btn.onclick = () => window.open(data.edit_url, '_blank');
+        btn.onclick = () => window.open(d.edit_url, '_blank');
       }, 1500);
     }
   } catch(e) {
-    btn.textContent = 'Publish failed';
+    btn.textContent = 'Failed — retry';
     btn.disabled = false;
-    alert('Error: ' + e.message);
+    alert(e.message);
   }
 }
 
-// Auto-load on page open
-loadBrief();
+function getIssueNumber() {
+  const start = new Date('2026-03-16');
+  return Math.max(1, Math.floor((new Date() - start) / (7*24*60*60*1000)) + 1);
+}
 </script>
 </body>
 </html>

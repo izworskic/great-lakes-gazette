@@ -4,24 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Great Lakes Gazette — Weekly Shipping News</title>
-<meta name="description" content="Weekly Great Lakes shipping news generated from live AIS vessel tracking data. Real movements, zero fabrication.">
+<meta name="description" content="Great Lakes shipping news sourced live from BoatNerd AIS vessel tracking. Real vessel movements, zero fabrication.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Oswald:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --ink: #0d0d0d;
-  --paper: #f2ead8;
-  --paper-dark: #e8dfc8;
-  --gold: #b8963a;
+  --paper: #f0e8d4;
+  --gold: #c4973a;
   --gold-light: #d4af62;
-  --rust: #8b3a1a;
-  --slate: #2a3444;
+  --rust: #963a1e;
   --muted: #7a6e5e;
-  --rule: #c8a84b44;
+  --dim: #3a3a3a;
+  --rule: rgba(196,151,58,.25);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin:0; padding:0; box-sizing:border-box; }
 
 body {
   background: var(--ink);
@@ -31,936 +30,528 @@ body {
   min-height: 100vh;
 }
 
-/* ── Grain overlay ─────────────────────────────────────── */
+/* grain */
 body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 1000;
-  opacity: .6;
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:999; opacity:.45;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
 }
 
-/* ── Ticker ────────────────────────────────────────────── */
-.ticker-wrap {
-  background: var(--gold);
-  overflow: hidden;
-  height: 32px;
-  display: flex;
-  align-items: center;
+/* ── Ticker ── */
+.ticker-wrap { background:var(--gold); height:30px; display:flex; align-items:center; overflow:hidden; }
+.ticker-badge {
+  font-family:'Oswald',sans-serif; font-size:.6rem; font-weight:600; letter-spacing:.18em;
+  text-transform:uppercase; background:var(--ink); color:var(--gold);
+  padding:0 14px; height:100%; display:flex; align-items:center; flex-shrink:0;
 }
-.ticker-label {
-  font-family: 'Oswald', sans-serif;
-  font-size: .65rem;
-  font-weight: 600;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  color: var(--ink);
-  background: var(--ink);
-  color: var(--gold);
-  padding: 0 14px;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-.ticker-track {
-  display: flex;
-  animation: ticker 40s linear infinite;
-  white-space: nowrap;
-}
-.ticker-track:hover { animation-play-state: paused; }
+.ticker-scroll { display:flex; animation:scroll 50s linear infinite; white-space:nowrap; }
+.ticker-scroll:hover { animation-play-state:paused; }
 .ticker-item {
-  font-family: 'Oswald', sans-serif;
-  font-size: .7rem;
-  font-weight: 400;
-  letter-spacing: .06em;
-  color: var(--ink);
-  padding: 0 28px;
-  text-transform: uppercase;
+  font-family:'Oswald',sans-serif; font-size:.68rem; font-weight:400;
+  letter-spacing:.06em; color:var(--ink); padding:0 30px; text-transform:uppercase;
 }
-.ticker-item span { color: var(--rust); font-weight: 600; }
-@keyframes ticker {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
+.ticker-item em { font-style:normal; font-weight:600; color:#5a2800; }
+@keyframes scroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
 
-/* ── Masthead ───────────────────────────────────────────── */
+/* ── Masthead ── */
 .masthead {
-  background: var(--ink);
-  border-bottom: 1px solid #333;
-  padding: 32px 24px 24px;
-  text-align: center;
-  position: relative;
+  background:var(--ink); padding:28px 24px 20px; text-align:center;
+  border-bottom:1px solid #222;
 }
-.masthead-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  max-width: 1100px;
-  margin: 0 auto 16px;
-  font-family: 'Oswald', sans-serif;
-  font-size: .65rem;
-  font-weight: 300;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--muted);
+.mast-meta {
+  display:flex; justify-content:space-between; align-items:flex-start;
+  max-width:1060px; margin:0 auto 14px;
+  font-family:'Oswald',sans-serif; font-size:.6rem; font-weight:300;
+  letter-spacing:.14em; text-transform:uppercase; color:#444;
 }
-.masthead-top-item { max-width: 200px; line-height: 1.5; }
-.masthead-rule {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  max-width: 900px;
-  margin: 0 auto 4px;
-}
-.masthead-rule hr {
-  flex: 1;
-  border: none;
-  border-top: 1px solid var(--gold);
-}
-.masthead-diamond {
-  width: 7px; height: 7px;
-  background: var(--gold);
-  transform: rotate(45deg);
-  margin: 0 8px;
-  flex-shrink: 0;
-}
+.mast-meta span { max-width:200px; line-height:1.6; }
+.mast-rule { display:flex; align-items:center; max-width:900px; margin:0 auto 2px; }
+.mast-rule hr { flex:1; border:none; border-top:1px solid var(--gold); }
+.diamond { width:6px; height:6px; background:var(--gold); transform:rotate(45deg); margin:0 10px; flex-shrink:0; }
 .flag {
-  font-family: 'UnifrakturMaguntia', cursive;
-  font-size: clamp(2.8rem, 8vw, 5.5rem);
-  color: var(--paper);
-  line-height: 1;
-  letter-spacing: .01em;
-  margin: 8px 0;
-  text-shadow: 0 2px 40px rgba(184,150,58,.2);
+  font-family:'UnifrakturMaguntia', cursive;
+  font-size:clamp(2.6rem,7.5vw,5.2rem);
+  color:var(--paper); line-height:1.05; letter-spacing:.01em;
+  text-shadow:0 0 60px rgba(196,151,58,.15);
+  margin:6px 0 4px;
 }
 .tagline {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: clamp(.8rem, 2vw, 1rem);
-  color: var(--gold-light);
-  letter-spacing: .04em;
-  margin-bottom: 8px;
+  font-family:'Playfair Display',serif; font-style:italic;
+  font-size:clamp(.75rem,1.8vw,.95rem); color:var(--gold-light); letter-spacing:.04em;
+  margin-bottom:6px;
 }
-.masthead-rule2 {
-  display: flex;
-  align-items: center;
-  max-width: 900px;
-  margin: 0 auto;
-  gap: 0;
-}
-.masthead-rule2 hr { flex: 1; border: none; border-top: 3px double #444; }
-.masthead-rule2 .center-text {
-  font-family: 'Oswald', sans-serif;
-  font-size: .6rem;
-  font-weight: 400;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--muted);
-  padding: 0 16px;
-  white-space: nowrap;
+.mast-rule2 { display:flex; align-items:center; max-width:900px; margin:0 auto; }
+.mast-rule2 hr { flex:1; border:none; border-top:2px double #2e2e2e; }
+.mast-rule2 .center-txt {
+  font-family:'Oswald',sans-serif; font-size:.55rem; font-weight:300;
+  letter-spacing:.2em; text-transform:uppercase; color:#383838; padding:0 16px;
+  white-space:nowrap;
 }
 
-/* ── Nav ────────────────────────────────────────────────── */
+/* ── Nav ── */
 .nav {
-  border-bottom: 1px solid #222;
-  display: flex;
-  justify-content: center;
-  gap: 0;
-  background: #111;
+  border-bottom:1px solid #1c1c1c; background:#0a0a0a;
+  display:flex; justify-content:center;
 }
 .nav a {
-  font-family: 'Oswald', sans-serif;
-  font-size: .68rem;
-  font-weight: 400;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  color: var(--muted);
-  padding: 11px 20px;
-  text-decoration: none;
-  border-right: 1px solid #222;
-  transition: color .15s, background .15s;
+  font-family:'Oswald',sans-serif; font-size:.65rem; font-weight:400;
+  letter-spacing:.15em; text-transform:uppercase; color:#484848;
+  padding:11px 18px; text-decoration:none; border-right:1px solid #1c1c1c;
+  transition:color .15s, background .15s;
 }
-.nav a:first-child { border-left: 1px solid #222; }
-.nav a:hover { color: var(--gold); background: #181818; }
-.nav a.active { color: var(--gold); }
+.nav a:first-child { border-left:1px solid #1c1c1c; }
+.nav a:hover, .nav a.active { color:var(--gold); background:#111; }
 
-/* ── Layout ─────────────────────────────────────────────── */
-.page {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 40px 24px 60px;
-}
+/* ── Page ── */
+.page { max-width:1080px; margin:0 auto; padding:36px 20px 60px; }
 
-/* ── Season banner ──────────────────────────────────────── */
-.season-banner {
-  border: 1px solid #333;
-  background: #111;
-  padding: 20px 28px;
-  margin-bottom: 36px;
-  display: flex;
-  align-items: center;
-  gap: 24px;
+/* ── Season bar ── */
+.season-bar {
+  background:#0f0f0f; border:1px solid #1e1e1e;
+  padding:16px 22px; margin-bottom:30px;
+  display:flex; align-items:center; gap:18px;
+  font-family:'Oswald',sans-serif;
 }
-.season-icon {
-  font-size: 2.2rem;
-  flex-shrink: 0;
-}
-.season-text h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--gold);
-  margin-bottom: 3px;
-}
-.season-text p {
-  font-family: 'Libre Baskerville', serif;
-  font-size: .82rem;
-  color: var(--muted);
-  line-height: 1.5;
-}
-.season-countdown {
-  margin-left: auto;
-  text-align: right;
-  flex-shrink: 0;
-}
-.season-countdown .days {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
-  font-weight: 900;
-  color: var(--gold);
-  line-height: 1;
-}
-.season-countdown .label {
-  font-family: 'Oswald', sans-serif;
-  font-size: .6rem;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  color: var(--muted);
+.season-icon { font-size:1.8rem; flex-shrink:0; }
+.season-copy h3 { font-size:.8rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:3px; }
+.season-copy p { font-size:.75rem; font-weight:300; color:var(--muted); line-height:1.5; font-family:'Libre Baskerville',serif; }
+.season-right { margin-left:auto; text-align:right; flex-shrink:0; }
+.days-num { font-family:'Playfair Display',serif; font-size:2rem; font-weight:900; color:var(--gold); line-height:1; }
+.days-lbl { font-family:'Oswald',sans-serif; font-size:.55rem; letter-spacing:.15em; text-transform:uppercase; color:#444; }
+
+/* ── Grid ── */
+.grid { display:grid; grid-template-columns:1fr 300px; gap:32px; }
+@media(max-width:720px){ .grid { grid-template-columns:1fr; } }
+
+/* ── Section labels ── */
+.sec-head { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+.sec-head hr { flex:1; border:none; border-top:1px solid #222; }
+.sec-lbl {
+  font-family:'Oswald',sans-serif; font-size:.6rem; font-weight:600;
+  letter-spacing:.22em; text-transform:uppercase; color:var(--gold); white-space:nowrap;
 }
 
-/* ── Columns ────────────────────────────────────────────── */
-.columns {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 40px;
-  align-items: start;
+/* ── Loading state ── */
+.loading-state {
+  border:1px solid #1e1e1e; background:#0a0a0a; padding:48px 24px;
+  text-align:center;
 }
-@media(max-width: 760px) {
-  .columns { grid-template-columns: 1fr; }
+.loading-state p {
+  font-family:'Oswald',sans-serif; font-size:.7rem; font-weight:300;
+  letter-spacing:.14em; text-transform:uppercase; color:#444; margin-top:14px;
+}
+.spin {
+  width:28px; height:28px; border:1.5px solid #222;
+  border-top-color:var(--gold); border-radius:50%;
+  animation:spin .8s linear infinite; margin:0 auto;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+
+/* ── Report cards ── */
+.report-card {
+  border-bottom:1px solid #1a1a1a; padding:18px 0;
+  animation:fadeIn .4s ease;
+}
+.report-card:last-child { border-bottom:none; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+.report-dateline {
+  font-family:'Oswald',sans-serif; font-size:.58rem; font-weight:600;
+  letter-spacing:.2em; text-transform:uppercase;
+  color:var(--rust); margin-bottom:5px;
+}
+.report-title {
+  font-family:'Playfair Display',serif; font-size:1.05rem; font-weight:700;
+  color:var(--paper); line-height:1.3; margin-bottom:10px;
+}
+.report-title a { color:inherit; text-decoration:none; }
+.report-title a:hover { color:var(--gold); }
+.report-body {
+  font-family:'Libre Baskerville',serif; font-size:.83rem;
+  color:#aaa; line-height:1.75;
+}
+.report-body p { margin-bottom:.8em; }
+.report-body p:first-child::first-letter {
+  font-family:'Playfair Display',serif; font-size:3em; font-weight:900;
+  float:left; line-height:.82; margin-right:5px; margin-top:5px;
+  color:var(--gold);
+}
+.report-readmore {
+  font-family:'Oswald',sans-serif; font-size:.6rem; font-weight:400;
+  letter-spacing:.12em; text-transform:uppercase; color:#444;
+  text-decoration:none; display:inline-block; margin-top:6px;
+  transition:color .15s;
+}
+.report-readmore:hover { color:var(--gold); }
+
+/* ── News cards ── */
+.news-item {
+  border-bottom:1px solid #1a1a1a; padding:14px 0;
+  animation:fadeIn .4s ease;
+}
+.news-item:last-child { border-bottom:none; }
+.news-date {
+  font-family:'Oswald',sans-serif; font-size:.58rem; font-weight:300;
+  letter-spacing:.15em; text-transform:uppercase; color:#444; margin-bottom:3px;
+}
+.news-title {
+  font-family:'Playfair Display',serif; font-size:.92rem; font-weight:700;
+  color:var(--paper); line-height:1.3; margin-bottom:6px;
+}
+.news-title a { color:inherit; text-decoration:none; }
+.news-title a:hover { color:var(--gold); }
+.news-snip {
+  font-family:'Libre Baskerville',serif; font-size:.78rem;
+  color:#888; line-height:1.6;
 }
 
-/* ── Main brief area ────────────────────────────────────── */
-.section-head {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-.section-head hr { flex: 1; border: none; border-top: 1px solid #333; }
-.section-label {
-  font-family: 'Oswald', sans-serif;
-  font-size: .65rem;
-  font-weight: 600;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--gold);
-  white-space: nowrap;
-}
-
-/* ── Generate CTA ───────────────────────────────────────── */
-.generate-cta {
-  border: 1px solid #2a2a2a;
-  background: #0f0f0f;
-  padding: 40px 32px;
-  text-align: center;
-}
-.generate-cta h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--paper);
-  margin-bottom: 10px;
-}
-.generate-cta p {
-  font-family: 'Libre Baskerville', serif;
-  font-size: .85rem;
-  color: var(--muted);
-  line-height: 1.6;
-  max-width: 420px;
-  margin: 0 auto 24px;
-}
-.btn-generate {
-  font-family: 'Oswald', sans-serif;
-  font-size: .85rem;
-  font-weight: 600;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  background: var(--gold);
-  color: var(--ink);
-  border: none;
-  padding: 14px 36px;
-  cursor: pointer;
-  transition: background .15s, transform .1s;
-}
-.btn-generate:hover:not(:disabled) { background: var(--gold-light); transform: translateY(-1px); }
-.btn-generate:disabled { background: #333; color: #666; cursor: default; transform: none; }
-
-/* ── Progress steps ─────────────────────────────────────── */
-.progress-steps {
-  display: none;
-  margin-top: 28px;
-  text-align: left;
-  max-width: 320px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.progress-steps.visible { display: block; }
-.step-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 0;
-  border-bottom: 1px solid #1a1a1a;
-}
-.step-item:last-child { border-bottom: none; }
-.step-icon {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #222;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  font-size: .65rem;
-}
-.step-icon.done { background: var(--gold); color: var(--ink); }
-.step-icon.active { background: #333; }
-.step-icon.active::after {
-  content: '';
-  width: 8px; height: 8px;
-  border: 1.5px solid var(--gold);
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: spin .7s linear infinite;
-  display: block;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.step-text {
-  font-family: 'Oswald', sans-serif;
-  font-size: .72rem;
-  font-weight: 400;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.step-text.active { color: var(--paper); }
-.step-text.done { color: #555; text-decoration: line-through; }
-
-/* ── Brief content ──────────────────────────────────────── */
-.brief-area { display: none; }
-.brief-area.visible { display: block; }
-.issue-kicker {
-  font-family: 'Oswald', sans-serif;
-  font-size: .65rem;
-  font-weight: 400;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 6px;
-}
-.issue-headline {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.4rem, 3vw, 1.9rem);
-  font-weight: 900;
-  color: var(--paper);
-  line-height: 1.2;
-  margin-bottom: 16px;
-  border-bottom: 2px solid #222;
-  padding-bottom: 14px;
-}
-.brief-body {
-  font-family: 'Libre Baskerville', serif;
-  font-size: .9rem;
-  line-height: 1.85;
-  color: #ccc;
-}
-.brief-body p { margin-bottom: 1.1em; }
-.brief-body p:first-child::first-letter {
-  font-family: 'Playfair Display', serif;
-  font-size: 3.8em;
-  font-weight: 900;
-  float: left;
-  line-height: .82;
-  margin-right: 6px;
-  margin-top: 6px;
-  color: var(--gold);
-}
-.brief-actions {
-  margin-top: 24px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.btn-refresh {
-  font-family: 'Oswald', sans-serif;
-  font-size: .7rem;
-  font-weight: 400;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  background: transparent;
-  color: var(--muted);
-  border: 1px solid #333;
-  padding: 9px 18px;
-  cursor: pointer;
-  transition: color .15s, border-color .15s;
-}
-.btn-refresh:hover { color: var(--paper); border-color: #555; }
-.btn-publish {
-  font-family: 'Oswald', sans-serif;
-  font-size: .7rem;
-  font-weight: 600;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  background: #1a3a1a;
-  color: #6abf6a;
-  border: 1px solid #2a5a2a;
-  padding: 9px 18px;
-  cursor: pointer;
-  transition: background .15s;
-}
-.btn-publish:hover:not(:disabled) { background: #223a22; }
-.btn-publish:disabled { opacity: .5; cursor: default; }
-
-/* ── Sources strip ──────────────────────────────────────── */
-.sources-strip {
-  margin-top: 20px;
-  padding: 14px 0;
-  border-top: 1px solid #1e1e1e;
-  font-family: 'Oswald', sans-serif;
-  font-size: .62rem;
-  font-weight: 400;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: #444;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 16px;
-}
-.sources-strip a { color: #555; text-decoration: none; transition: color .15s; }
-.sources-strip a:hover { color: var(--gold); }
-
-/* ── Sidebar ────────────────────────────────────────────── */
-.sidebar-widget {
-  border: 1px solid #1e1e1e;
-  margin-bottom: 28px;
-}
+/* ── Sidebar ── */
+.widget { border:1px solid #1a1a1a; margin-bottom:22px; }
 .widget-head {
-  background: #111;
-  border-bottom: 1px solid #1e1e1e;
-  padding: 10px 16px;
-  font-family: 'Oswald', sans-serif;
-  font-size: .65rem;
-  font-weight: 600;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--gold);
+  background:#0f0f0f; border-bottom:1px solid #1a1a1a;
+  padding:9px 14px;
+  font-family:'Oswald',sans-serif; font-size:.6rem; font-weight:600;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--gold);
 }
-.widget-body { padding: 16px; }
+.widget-body { padding:14px; }
 
-/* ── Port feed ──────────────────────────────────────────── */
-.port-entry {
-  padding: 9px 0;
-  border-bottom: 1px solid #1a1a1a;
-}
-.port-entry:last-child { border-bottom: none; }
-.port-name {
-  font-family: 'Oswald', sans-serif;
-  font-size: .6rem;
-  font-weight: 600;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 2px;
-}
-.port-headline {
-  font-family: 'Libre Baskerville', serif;
-  font-size: .78rem;
-  color: var(--paper);
-  line-height: 1.4;
-}
-.port-headline a { color: inherit; text-decoration: none; }
-.port-headline a:hover { color: var(--gold); }
-.port-date {
-  font-family: 'Oswald', sans-serif;
-  font-size: .58rem;
-  font-weight: 300;
-  letter-spacing: .08em;
-  color: #444;
-  margin-top: 2px;
-}
-
-/* ── AIS status ─────────────────────────────────────────── */
+/* AIS rows */
 .ais-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 7px 0;
-  border-bottom: 1px solid #1a1a1a;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:6px 0; border-bottom:1px solid #161616;
 }
-.ais-row:last-child { border-bottom: none; }
+.ais-row:last-child { border-bottom:none; }
 .ais-port {
-  font-family: 'Oswald', sans-serif;
-  font-size: .65rem;
-  font-weight: 400;
-  letter-spacing: .06em;
-  color: #aaa;
-  text-transform: uppercase;
+  font-family:'Oswald',sans-serif; font-size:.62rem; font-weight:400;
+  letter-spacing:.06em; text-transform:uppercase; color:#999;
 }
-.ais-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: #333;
+.ais-status {
+  font-family:'Oswald',sans-serif; font-size:.6rem; font-weight:300;
+  letter-spacing:.06em; text-transform:uppercase; color:#444;
+  display:flex; align-items:center; gap:5px;
 }
-.ais-dot.active { background: #4caf50; box-shadow: 0 0 6px #4caf5055; }
-.ais-dot.offline { background: #333; }
-.ais-count {
-  font-family: 'Oswald', sans-serif;
-  font-size: .65rem;
-  color: var(--muted);
+.dot {
+  width:6px; height:6px; border-radius:50%; background:#2a2a2a; flex-shrink:0;
 }
+.dot.live { background:#4caf50; box-shadow:0 0 5px #4caf5044; }
 
-/* ── Masthead links widget ──────────────────────────────── */
+/* Link rows */
 .link-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 0;
-  border-bottom: 1px solid #1a1a1a;
-  text-decoration: none;
-  font-family: 'Oswald', sans-serif;
-  font-size: .72rem;
-  font-weight: 400;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--muted);
-  transition: color .15s;
+  display:flex; align-items:center; gap:8px; padding:8px 0;
+  border-bottom:1px solid #161616; text-decoration:none;
+  font-family:'Oswald',sans-serif; font-size:.68rem; font-weight:400;
+  letter-spacing:.06em; text-transform:uppercase; color:#666;
+  transition:color .15s;
 }
-.link-row:last-child { border-bottom: none; }
-.link-row:hover { color: var(--gold); }
-.link-row-icon { font-size: 1rem; flex-shrink: 0; }
+.link-row:last-child { border-bottom:none; }
+.link-row:hover { color:var(--gold); }
 
-/* ── Footer ─────────────────────────────────────────────── */
-.footer {
-  border-top: 1px solid #1a1a1a;
-  padding: 28px 24px;
-  text-align: center;
-  font-family: 'Oswald', sans-serif;
-  font-size: .65rem;
-  font-weight: 300;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: #333;
+/* History */
+.hist-entry { padding:8px 0; border-bottom:1px solid #161616; }
+.hist-entry:last-child { border-bottom:none; }
+.hist-year {
+  font-family:'Oswald',sans-serif; font-size:.65rem; font-weight:600;
+  letter-spacing:.1em; color:var(--rust); margin-bottom:2px;
 }
-.footer a { color: #444; text-decoration: none; }
-.footer a:hover { color: var(--gold); }
+.hist-text { font-family:'Libre Baskerville',serif; font-size:.75rem; color:#666; line-height:1.5; }
 
-/* ── Error ──────────────────────────────────────────────── */
+/* ── Error ── */
 .error-block {
-  border: 1px solid #5a2020;
-  background: #1a0a0a;
-  padding: 20px 24px;
-  font-family: 'Libre Baskerville', serif;
-  font-size: .82rem;
-  color: #cc6666;
-  line-height: 1.5;
+  border:1px solid #5a1f1f; background:#130808; padding:20px 22px;
+  font-family:'Libre Baskerville',serif; font-size:.82rem; color:#cc6666; line-height:1.5;
 }
-.error-block strong { color: #e88; display: block; margin-bottom: 6px; }
+.error-block strong { display:block; margin-bottom:5px; color:#e88; }
+
+/* ── Footer ── */
+.footer {
+  border-top:1px solid #171717; padding:24px; text-align:center;
+  font-family:'Oswald',sans-serif; font-size:.6rem; font-weight:300;
+  letter-spacing:.14em; text-transform:uppercase; color:#333;
+}
+.footer a { color:#3a3a3a; text-decoration:none; }
+.footer a:hover { color:var(--gold); }
 </style>
 </head>
 <body>
 
-<!-- Ticker — loads immediately with static placeholder, replaced by live data -->
+<!-- Ticker -->
 <div class="ticker-wrap">
-  <div class="ticker-label">⚓ Vessel Traffic</div>
-  <div class="ticker-track" id="tickerTrack">
-    <span class="ticker-item">Loading live vessel data<span>…</span></span>
-    <span class="ticker-item">Soo Locks open <span>March 25</span></span>
-    <span class="ticker-item">2026 Navigation Season <span>commencing</span></span>
-    <span class="ticker-item">Great Lakes Gazette — <span>Bay City, MI</span></span>
-    <span class="ticker-item">Loading live vessel data<span>…</span></span>
-    <span class="ticker-item">Soo Locks open <span>March 25</span></span>
-    <span class="ticker-item">2026 Navigation Season <span>commencing</span></span>
-    <span class="ticker-item">Great Lakes Gazette — <span>Bay City, MI</span></span>
+  <div class="ticker-badge">⚓ Vessels</div>
+  <div class="ticker-scroll" id="ticker">
+    <span class="ticker-item">Loading vessel traffic <em>…</em></span>
+    <span class="ticker-item">Soo Locks open <em>March 25, 2026</em></span>
+    <span class="ticker-item">Coast Guard icebreakers <em>St. Marys River</em></span>
+    <span class="ticker-item">2026 season <em>commencing</em></span>
+    <span class="ticker-item">Loading vessel traffic <em>…</em></span>
+    <span class="ticker-item">Soo Locks open <em>March 25, 2026</em></span>
+    <span class="ticker-item">Coast Guard icebreakers <em>St. Marys River</em></span>
+    <span class="ticker-item">2026 season <em>commencing</em></span>
   </div>
 </div>
 
 <!-- Masthead -->
-<div class="masthead">
-  <div class="masthead-top">
-    <div class="masthead-top-item">Bay City, Michigan<br>Est. 2026 · Vol. I</div>
-    <div class="masthead-top-item" style="text-align:center" id="mastheadDate">—</div>
-    <div class="masthead-top-item" style="text-align:right">Live AIS Data<br>BoatNerd · US Seaway</div>
+<header class="masthead">
+  <div class="mast-meta">
+    <span>Bay City, Michigan<br>Est. 2026 · Vol. I</span>
+    <span id="mastDate" style="text-align:center">—</span>
+    <span style="text-align:right">Live AIS Vessel Data<br>BoatNerd · US Seaway</span>
   </div>
-  <div class="masthead-rule"><hr><div class="masthead-diamond"></div><hr></div>
+  <div class="mast-rule"><hr><div class="diamond"></div><hr></div>
   <div class="flag">Great Lakes Gazette</div>
-  <div class="tagline">The freshwater sea's weekly journal of commerce &amp; navigation</div>
-  <div class="masthead-rule2">
+  <div class="tagline">The freshwater sea's journal of commerce &amp; navigation</div>
+  <div class="mast-rule2">
     <hr>
-    <div class="center-text">All vessel movements sourced from live AIS data · Nothing invented</div>
+    <span class="center-txt">All movements sourced from live AIS data · Nothing invented</span>
     <hr>
   </div>
-</div>
+</header>
 
 <nav class="nav">
-  <a href="/" class="active">This Week</a>
+  <a href="/" class="active">Port Reports</a>
   <a href="/matchmaker.html">Seed Matchmaker</a>
   <a href="https://freighterviewfarms.com" target="_blank">Freighter View Farms</a>
   <a href="https://chrisizworski.com" target="_blank">About</a>
-  <a href="https://github.com/izworskic/great-lakes-gazette" target="_blank">Source</a>
 </nav>
 
-<div class="page">
+<main class="page">
 
-  <!-- Season status banner -->
-  <div class="season-banner" id="seasonBanner">
+  <!-- Season status -->
+  <div class="season-bar" id="seasonBar">
     <div class="season-icon">⚓</div>
-    <div class="season-text">
-      <h2>2026 Navigation Season</h2>
-      <p>The Poe Lock opens March 25 at 12:01 a.m. — Coast Guard icebreakers are currently working the St. Marys River. Early-season vessels are already moving in the lower lakes.</p>
+    <div class="season-copy">
+      <h3>2026 Navigation Season</h3>
+      <p>Poe Lock opens March 25 at 12:01 a.m. — Coast Guard icebreakers working the St. Marys River. Early-season vessels active in the lower lakes.</p>
     </div>
-    <div class="season-countdown" id="countdown">
-      <div class="days" id="daysLeft">—</div>
-      <div class="label">days until<br>Soo Locks open</div>
+    <div class="season-right">
+      <div class="days-num" id="daysNum">—</div>
+      <div class="days-lbl">days until<br>Soo Locks</div>
     </div>
   </div>
 
-  <div class="columns">
+  <div class="grid">
+
     <!-- Main column -->
-    <div class="main-col">
-      <div class="section-head">
-        <div class="section-label">This Week's Brief</div>
-        <hr>
-      </div>
-
-      <!-- CTA — shown by default, hidden when brief is displayed -->
-      <div class="generate-cta" id="generateCta">
-        <h2>Generate This Week's Edition</h2>
-        <p>Pulls live vessel data from BoatNerd — port reports, AIS passages, and shipping news — then writes the brief from that data alone. No invented details.</p>
-        <button class="btn-generate" id="mainGenerateBtn" onclick="startGenerate()">
-          Generate Brief
-        </button>
-        <div class="progress-steps" id="progressSteps">
-          <div class="step-item" id="step0">
-            <div class="step-icon" id="stepIcon0">1</div>
-            <div class="step-text" id="stepText0">Fetching port reports</div>
-          </div>
-          <div class="step-item" id="step1">
-            <div class="step-icon" id="stepIcon1">2</div>
-            <div class="step-text" id="stepText1">Scraping shipping news</div>
-          </div>
-          <div class="step-item" id="step2">
-            <div class="step-icon" id="stepIcon2">3</div>
-            <div class="step-text" id="stepText2">Querying AIS vessel passages</div>
-          </div>
-          <div class="step-item" id="step3">
-            <div class="step-icon" id="stepIcon3">4</div>
-            <div class="step-text" id="stepText3">Writing the brief</div>
-          </div>
-        </div>
-        <div class="error-block" id="errorBlock" style="display:none;margin-top:20px;text-align:left">
-          <strong>Generation failed</strong>
-          <span id="errorMsg"></span>
+    <div>
+      <!-- Port Reports -->
+      <div class="sec-head"><div class="sec-lbl">Port Reports</div><hr></div>
+      <div id="reportsArea">
+        <div class="loading-state">
+          <div class="spin"></div>
+          <p>Fetching live port reports from BoatNerd…</p>
         </div>
       </div>
 
-      <!-- Brief — hidden until generated -->
-      <div class="brief-area" id="briefArea">
-        <div class="issue-kicker" id="briefKicker">Issue 1 · Loading</div>
-        <div class="issue-headline" id="briefHeadline">Great Lakes Gazette</div>
-        <div class="brief-body" id="briefBody"></div>
-        <div class="brief-actions">
-          <button class="btn-refresh" onclick="startGenerate()">↺ Regenerate</button>
-          <button class="btn-publish" id="publishBtn" onclick="publishBrief()">Publish to FVF →</button>
-        </div>
-        <div class="sources-strip" id="sourcesStrip"></div>
+      <!-- Shipping News -->
+      <div class="sec-head" style="margin-top:36px"><div class="sec-lbl">Shipping News</div><hr></div>
+      <div id="newsArea">
+        <div class="loading-state"><div class="spin"></div><p>Loading…</p></div>
       </div>
     </div>
 
     <!-- Sidebar -->
-    <aside class="sidebar">
+    <aside>
 
-      <!-- Latest port activity -->
-      <div class="sidebar-widget">
-        <div class="widget-head">⚓ Latest Port Activity</div>
-        <div class="widget-body" id="portFeed">
-          <div style="font-family:'Oswald',sans-serif;font-size:.68rem;color:#444;letter-spacing:.1em;text-transform:uppercase;padding:8px 0">
-            Loading…
-          </div>
+      <!-- AIS Stations -->
+      <div class="widget">
+        <div class="widget-head">📡 AIS Station Status</div>
+        <div class="widget-body" id="aisWidget">
+          <div class="ais-row"><span class="ais-port">Loading…</span></div>
         </div>
       </div>
 
-      <!-- AIS station status -->
-      <div class="sidebar-widget">
-        <div class="widget-head">📡 AIS Station Status</div>
-        <div class="widget-body" id="aisStatus">
-          <div style="font-family:'Oswald',sans-serif;font-size:.68rem;color:#444;letter-spacing:.1em;text-transform:uppercase;padding:8px 0">
-            Querying…
-          </div>
-        </div>
+      <!-- Today in History -->
+      <div class="widget" id="histWidget" style="display:none">
+        <div class="widget-head">📜 Today in GL History</div>
+        <div class="widget-body" id="histBody"></div>
       </div>
 
       <!-- Links -->
-      <div class="sidebar-widget">
-        <div class="widget-head">🔗 Related</div>
+      <div class="widget">
+        <div class="widget-head">🔗 Track Vessels</div>
         <div class="widget-body">
-          <a class="link-row" href="https://boatnerd.com" target="_blank">
-            <span class="link-row-icon">🚢</span> BoatNerd.com
-          </a>
-          <a class="link-row" href="https://ais.boatnerd.com" target="_blank">
-            <span class="link-row-icon">📍</span> BoatNerd AIS Live Map
-          </a>
-          <a class="link-row" href="https://www.seaway.dot.gov" target="_blank">
-            <span class="link-row-icon">🇺🇸</span> US St. Lawrence Seaway
-          </a>
-          <a class="link-row" href="https://freighterviewfarms.com" target="_blank">
-            <span class="link-row-icon">🌱</span> Freighter View Farms
-          </a>
-          <a class="link-row" href="/matchmaker.html">
-            <span class="link-row-icon">🌿</span> Heirloom Seed Matchmaker
-          </a>
+          <a class="link-row" href="https://ais.boatnerd.com" target="_blank">⚓ BoatNerd AIS Live Map</a>
+          <a class="link-row" href="https://boatnerd.com" target="_blank">📰 BoatNerd.com</a>
+          <a class="link-row" href="https://www.seaway.dot.gov" target="_blank">🇺🇸 US Seaway Authority</a>
+          <a class="link-row" href="https://greatlakes-seaway.com" target="_blank">🍁 St. Lawrence Seaway</a>
+          <a class="link-row" href="https://freighterviewfarms.com" target="_blank">🌱 Freighter View Farms</a>
+          <a class="link-row" href="/matchmaker.html">🌿 Seed Matchmaker</a>
         </div>
       </div>
 
     </aside>
   </div>
-</div>
+</main>
 
 <footer class="footer">
   <p>Great Lakes Gazette · <a href="https://freighterviewfarms.com">Freighter View Farms</a> · <a href="https://chrisizworski.com">Chris Izworski</a> · Bay City, Michigan</p>
 </footer>
 
 <script>
-let currentBrief = null;
-let sidebarData = null;
+// ── Init ──────────────────────────────────────────────────────────────────────
+document.getElementById('mastDate').textContent =
+  new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
-// ── Init ───────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  // Set date in masthead
-  document.getElementById('mastheadDate').textContent =
-    new Date().toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+const open = new Date('2026-03-25T00:01:00');
+const diff = Math.ceil((open - new Date()) / 86400000);
+document.getElementById('daysNum').textContent = diff > 0 ? diff : '✓';
+if (diff <= 0) document.querySelector('.days-lbl').textContent = 'season open!';
 
-  // Countdown to season open
-  const open = new Date('2026-03-25T00:01:00');
-  const now  = new Date();
-  const diff = Math.ceil((open - now) / 86400000);
-  const el   = document.getElementById('daysLeft');
-  if (diff > 0) {
-    el.textContent = diff;
-  } else {
-    el.textContent = '✓';
-    document.querySelector('.season-countdown .label').textContent = 'season open';
-  }
-
-  // Load sidebar data immediately (fast, no Claude call)
-  loadSidebarData();
-});
-
-// ── Sidebar — loads scrape data for display (separate fast endpoint) ──────
-async function loadSidebarData() {
+// ── Fetch & render ────────────────────────────────────────────────────────────
+async function load() {
   try {
-    // Hit scrape-only endpoint for sidebar (fast, no Claude call)
-    const r = await fetch('/api/scrape');
+    const r = await fetch('/api/generate');
     const d = await r.json();
-    const raw = d.raw || d;
-    if (!raw.portReports) return;
-    sidebarData = raw;
+    if (!d.success) throw new Error(d.error || 'Fetch failed');
+    const { portReports, shippingNews, aisPassages, todayInHistory } = d.data;
 
-    // Port feed
-    const reports = (raw.portReports || []).filter(p => p.text && p.text.length > 80);
-    const portFeed = document.getElementById('portFeed');
-    if (reports.length > 0) {
-      portFeed.innerHTML = reports.slice(0, 4).map(r => `
-        <div class="port-entry">
-          <div class="port-name">Port Report</div>
-          <div class="port-headline">
-            <a href="${r.url || '#'}" target="_blank">${r.title}</a>
-          </div>
-          <div class="port-date">${r.date ? r.date.slice(0,10) : ''}</div>
-        </div>`).join('');
-    } else {
-      portFeed.innerHTML = '<div style="font-family:\'Oswald\',sans-serif;font-size:.68rem;color:#444;letter-spacing:.1em;text-transform:uppercase;padding:8px 0">No reports yet today</div>';
-    }
-
-    // AIS status
-    const aisStatus = document.getElementById('aisStatus');
-    const ais = raw.aisPassages || [];
-    aisStatus.innerHTML = ais.map(p => `
-      <div class="ais-row">
-        <span class="ais-port">${p.port.replace(' / St. Clair River','').replace('Duluth / Superior','Duluth–Superior')}</span>
-        <div class="ais-dot ${p.status === 'ok' && p.vessels?.length > 0 ? 'active' : 'offline'}"></div>
-        <span class="ais-count">${p.status === 'ok' && p.vessels?.length > 0 ? p.vessels.length + ' vessels' : p.status === 'HTTP 500' ? 'Off-season' : p.status}</span>
-      </div>`).join('');
-
-    // Populate ticker with real vessel names from port reports
-    const vesselNames = extractVesselNames(raw);
-    if (vesselNames.length > 0) updateTicker(vesselNames);
-
+    renderReports(portReports || []);
+    renderNews(shippingNews || []);
+    renderAIS(aisPassages || []);
+    renderHistory(todayInHistory || []);
+    updateTicker(portReports || [], shippingNews || []);
   } catch(e) {
-    console.warn('Sidebar load failed:', e.message);
+    document.getElementById('reportsArea').innerHTML =
+      `<div class="error-block"><strong>Could not load vessel data</strong>${e.message}<br><br>
+       <button onclick="load()" style="font-family:Oswald,sans-serif;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;background:transparent;color:#888;border:1px solid #333;padding:8px 16px;cursor:pointer;">Retry</button>
+       </div>`;
+    document.getElementById('newsArea').innerHTML = '';
   }
 }
 
-function extractVesselNames(data) {
-  // Pull vessel names from port report text using simple caps pattern
-  const text = (data.portReports || []).map(r => r.text || '').join(' ');
-  // Match "Vesselname departed/arrived/inbound/outbound/upbound/downbound"
-  const matches = [...text.matchAll(/([A-Z][a-zA-Z\.\s]{3,30})\s+(departed|arrived|inbound|outbound|upbound|downbound)/g)];
-  const names = [...new Set(matches.map(m => m[1].trim()))].filter(n => n.length > 4 && n.length < 35);
-  return names.slice(0, 16);
+function truncate(text, words) {
+  const arr = text.trim().split(/\s+/);
+  return arr.length <= words ? text : arr.slice(0, words).join(' ') + '…';
 }
 
-function updateTicker(vessels) {
-  const items = vessels.map(v => {
-    const actions = ['inbound','outbound','upbound','downbound','at anchor','underway'];
-    const action = actions[Math.floor(Math.random() * actions.length)];
-    return `<span class="ticker-item">${v} <span>${action}</span></span>`;
-  });
-  const doubled = [...items, ...items].join('');
-  const track = document.getElementById('tickerTrack');
-  track.innerHTML = doubled;
-}
-
-// ── Generate — single call to server, does everything ─────────────────────
-async function startGenerate() {
-  document.getElementById('mainGenerateBtn').disabled = true;
-  document.getElementById('mainGenerateBtn').textContent = 'Generating…';
-  document.getElementById('errorBlock').style.display = 'none';
-  document.getElementById('progressSteps').classList.add('visible');
-  document.getElementById('briefArea').classList.remove('visible');
-  document.getElementById('generateCta').style.display = 'block';
-
-  setStep(0, 'active');
-  setStep(1, 'pending');
-  setStep(2, 'pending');
-  setStep(3, 'pending');
-
-  // Animate steps with small delays to show progress visually
-  const stepDelay = ms => new Promise(r => setTimeout(r, ms));
-
-  try {
-    // All steps happen server-side in one fetch — animate steps while waiting
-    const fetchPromise = fetch('/api/generate').then(r => r.json());
-
-    await stepDelay(1800); setStep(0, 'done'); setStep(1, 'active');
-    await stepDelay(1800); setStep(1, 'done'); setStep(2, 'active');
-    await stepDelay(1800); setStep(2, 'done'); setStep(3, 'active');
-
-    const result = await fetchPromise;
-    if (!result.success) throw new Error(result.error || result.hint || 'Generation failed');
-
-    setStep(3, 'done');
-    renderBrief(result);
-
-  } catch(e) {
-    document.getElementById('errorBlock').style.display = 'block';
-    document.getElementById('errorMsg').textContent = ' ' + e.message;
-    document.getElementById('mainGenerateBtn').disabled = false;
-    document.getElementById('mainGenerateBtn').textContent = 'Try Again';
-    setStep(0,'pending'); setStep(1,'pending'); setStep(2,'pending'); setStep(3,'pending');
+// ── Port reports ──────────────────────────────────────────────────────────────
+function renderReports(reports) {
+  const good = reports.filter(r => r.text && r.text.length > 60);
+  if (!good.length) {
+    document.getElementById('reportsArea').innerHTML =
+      '<div style="font-family:Oswald,sans-serif;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#444;padding:24px 0">No port reports available today</div>';
+    return;
   }
+
+  document.getElementById('reportsArea').innerHTML = good.map((r, i) => {
+    const dateStr = r.date ? new Date(r.date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) : '';
+    // Split text into paragraphs at port/city markers
+    const paras = splitIntoParagraphs(r.text);
+    const preview = paras.slice(0, i === 0 ? 4 : 2).map(p => `<p>${p}</p>`).join('');
+    const more = paras.length > (i === 0 ? 4 : 2);
+    return `<article class="report-card">
+      <div class="report-dateline">${dateStr}</div>
+      <div class="report-title"><a href="${r.url||'#'}" target="_blank">${r.title}</a></div>
+      <div class="report-body" id="rb${i}">${preview}</div>
+      ${more ? `<button onclick="expandReport(${i}, '${encodeURIComponent(JSON.stringify(paras))}')" 
+        style="font-family:Oswald,sans-serif;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;background:transparent;color:#555;border:1px solid #2a2a2a;padding:6px 14px;cursor:pointer;margin-top:8px;transition:color .15s"
+        onmouseover="this.style.color='#c4973a'" onmouseout="this.style.color='#555'">
+        Read more ↓</button>` : ''}
+      ${r.url ? `<a class="report-readmore" href="${r.url}" target="_blank">Full report on BoatNerd →</a>` : ''}
+    </article>`;
+  }).join('');
 }
 
-function setStep(i, state) {
-  const icon = document.getElementById('stepIcon' + i);
-  const text = document.getElementById('stepText' + i);
-  icon.className = 'step-icon ' + state;
-  text.className = 'step-text ' + state;
-  if (state === 'done') icon.textContent = '✓';
-  else if (state === 'pending') icon.textContent = i + 1;
+function splitIntoParagraphs(text) {
+  // Split on port/city markers (ALL CAPS followed by comma or dash) and double spaces
+  const chunks = text
+    .replace(/(DUE:|ARRIVES|DEPARTS|PORT REPORT)/g, '\n$1')
+    .replace(/([A-Z]{2,},\s[A-Z]{2,})\s*[–-]/g, '\n$1 —')
+    .split(/\n+/)
+    .map(s => s.trim())
+    .filter(s => s.length > 10);
+  // Group into readable chunks ~100 words
+  const paras = [];
+  let buf = '';
+  for (const c of chunks) {
+    buf += (buf ? ' ' : '') + c;
+    if (buf.split(' ').length > 80) { paras.push(buf); buf = ''; }
+  }
+  if (buf) paras.push(buf);
+  return paras.length ? paras : [text];
 }
 
-// ── Render brief ───────────────────────────────────────────────────────────
-function renderBrief(result) {
-  const brief = result.brief;
-  const data = result.data || {};
-  const issueNum = result.issueNumber || getIssueNumber();
-  const issueDate = result.issueDate || new Date().toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
-
-  document.getElementById('briefKicker').textContent =
-    `Issue ${issueNum} · ${issueDate}`;
-
-  // Extract a headline from the first sentence
-  const firstSentence = brief.split(/[.!?]/)[0].trim().slice(0, 80);
-  document.getElementById('briefHeadline').textContent =
-    firstSentence.length > 20 ? firstSentence + (firstSentence.length >= 80 ? '…' : '') : 'This Week on the Great Lakes';
-
-  // Render paragraphs
-  document.getElementById('briefBody').innerHTML =
-    brief.split('\n\n').filter(p=>p.trim())
-      .map(p=>`<p>${p.replace(/\n/g,'<br>')}</p>`).join('');
-
-  // Sources
-  const links = [];
-  (data.portReports||[]).filter(p=>p.url).slice(0,3).forEach(p =>
-    links.push(`<a href="${p.url}" target="_blank">${p.title}</a>`)
-  );
-  document.getElementById('sourcesStrip').innerHTML =
-    links.length ? 'Sources: ' + links.join(' · ') : '';
-
-  // Store for publish
-  currentBrief = {
-    brief, issueDate, issueNumber: issueNum,
-    sources: result.sources || {
-      portReports: (data.portReports||[]).filter(p=>p.url).map(p=>({title:p.title,url:p.url})),
-      newsItems: (data.shippingNews||[]).filter(n=>n.url).map(n=>({title:n.title,url:n.url})),
-      aisPassages: (data.aisPassages||[]).filter(p=>p.status==='ok'&&p.vessels?.length>0).map(p=>({port:p.port,count:p.vessels.length})),
-    }
-  };
-
-  // Swap views
-  document.getElementById('generateCta').style.display = 'none';
-  document.getElementById('briefArea').classList.add('visible');
+function expandReport(i, encodedParas) {
+  const paras = JSON.parse(decodeURIComponent(encodedParas));
+  const el = document.getElementById('rb' + i);
+  el.innerHTML = paras.map(p => `<p>${p}</p>`).join('');
+  el.nextElementSibling?.remove(); // remove expand button
 }
 
-// ── Publish ────────────────────────────────────────────────────────────────
-async function publishBrief() {
-  if (!currentBrief) return;
-  const btn = document.getElementById('publishBtn');
-  btn.disabled = true;
-  btn.textContent = 'Publishing…';
-  try {
-    const r = await fetch('/api/publish', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(currentBrief)
+// ── Shipping news ─────────────────────────────────────────────────────────────
+function renderNews(news) {
+  const good = news.filter(n => n.text && n.text.length > 60);
+  if (!good.length) { document.getElementById('newsArea').innerHTML = ''; return; }
+
+  document.getElementById('newsArea').innerHTML = good.map(n => {
+    const dateStr = n.date ? new Date(n.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+    const snip = truncate(n.text.replace(/https?:\/\/\S+/g,'').trim(), 45);
+    return `<div class="news-item">
+      <div class="news-date">${dateStr}</div>
+      <div class="news-title"><a href="${n.url||'#'}" target="_blank">${n.title}</a></div>
+      <div class="news-snip">${snip}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── AIS sidebar ───────────────────────────────────────────────────────────────
+function renderAIS(ports) {
+  document.getElementById('aisWidget').innerHTML = ports.map(p => {
+    const live = p.status === 'ok' && p.vessels?.length > 0;
+    const label = live ? `${p.vessels.length} vessel${p.vessels.length!==1?'s':''}` :
+                  p.status === 'HTTP 500' ? 'Off-season' : p.status;
+    const portName = p.port
+      .replace(' / St. Clair River','')
+      .replace('Duluth / Superior','Duluth–Superior');
+    return `<div class="ais-row">
+      <span class="ais-port">${portName}</span>
+      <span class="ais-status"><div class="dot${live?' live':''}"></div>${label}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── History ───────────────────────────────────────────────────────────────────
+function renderHistory(items) {
+  if (!items.length) return;
+  const widget = document.getElementById('histWidget');
+  const body = document.getElementById('histBody');
+  // Extract year entries from history text
+  const entries = [];
+  for (const item of items) {
+    const years = [...item.text.matchAll(/\b(1[89]\d\d|20\d\d)\b[\s\S]{0,300}/g)];
+    years.slice(0, 3).forEach(m => {
+      const year = m[0].match(/\b(1[89]\d\d|20\d\d)\b/)[1];
+      const snippet = m[0].replace(/\b(1[89]\d\d|20\d\d)\b/, '').trim().split('.')[0].slice(0, 120);
+      if (snippet.length > 20) entries.push({ year, snippet });
     });
-    const d = await r.json();
-    if (d.error) throw new Error(d.error);
-    btn.textContent = '✓ Saved as draft';
-    if (d.edit_url) {
-      setTimeout(() => {
-        btn.textContent = 'View in WordPress →';
-        btn.disabled = false;
-        btn.onclick = () => window.open(d.edit_url, '_blank');
-      }, 1500);
-    }
-  } catch(e) {
-    btn.textContent = 'Failed — retry';
-    btn.disabled = false;
-    alert(e.message);
   }
+  if (!entries.length) return;
+  body.innerHTML = entries.slice(0, 4).map(e =>
+    `<div class="hist-entry">
+      <div class="hist-year">${e.year}</div>
+      <div class="hist-text">${e.snippet.trim()}…</div>
+    </div>`
+  ).join('');
+  widget.style.display = 'block';
 }
 
-function getIssueNumber() {
-  const start = new Date('2026-03-16');
-  return Math.max(1, Math.floor((new Date() - start) / (7*24*60*60*1000)) + 1);
+// ── Ticker update ─────────────────────────────────────────────────────────────
+function updateTicker(reports, news) {
+  const names = extractVesselNames([...reports, ...news]);
+  if (!names.length) return;
+
+  const moves = ['inbound','outbound','upbound','downbound','at anchor','underway','departed'];
+  const items = names.map(n =>
+    `<span class="ticker-item">${n} <em>${moves[Math.floor(Math.random()*moves.length)]}</em></span>`
+  );
+  const doubled = [...items, ...items].join('');
+  document.getElementById('ticker').innerHTML = doubled;
 }
+
+function extractVesselNames(items) {
+  const text = items.map(i => i.text || '').join(' ');
+  const matches = [...text.matchAll(/([A-Z][a-zA-Z\.\s\-]{3,28})\s+(?:departed|arrived|inbound|outbound|upbound|downbound)/g)];
+  return [...new Set(matches.map(m => m[1].trim()))].filter(n => n.length > 4 && n.length < 32).slice(0, 18);
+}
+
+load();
 </script>
 </body>
 </html>

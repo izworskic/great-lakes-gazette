@@ -129,6 +129,52 @@ body::before {
   font-family:'Oswald',sans-serif; font-size:.6rem; font-weight:600;
   letter-spacing:.22em; text-transform:uppercase; color:var(--gold); white-space:nowrap;
 }
+/* ── Gazette Brief (AI editorial) ── */
+.brief-wrap {
+  border:1px solid #1e1e1e; background:#0a0a0a;
+  padding:28px 28px 22px; margin-bottom:36px;
+  animation:fadeIn .5s ease;
+}
+.brief-kicker {
+  font-family:'Oswald',sans-serif; font-size:.58rem; font-weight:600;
+  letter-spacing:.26em; text-transform:uppercase; color:var(--rust);
+  margin-bottom:10px;
+}
+.brief-headline {
+  font-family:'Playfair Display',serif; font-size:1.55rem; font-weight:900;
+  color:var(--paper); line-height:1.2; margin-bottom:6px;
+}
+.brief-dateline {
+  font-family:'Oswald',sans-serif; font-size:.6rem; font-weight:300;
+  letter-spacing:.14em; text-transform:uppercase; color:#555;
+  margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid #1c1c1c;
+}
+.brief-body {
+  font-family:'Libre Baskerville',serif; font-size:.86rem;
+  color:#bbb; line-height:1.8;
+}
+.brief-body p { margin-bottom:1em; }
+.brief-body p:first-child::first-letter {
+  font-family:'Playfair Display',serif; font-size:3.2em; font-weight:900;
+  float:left; line-height:.8; margin-right:6px; margin-top:6px;
+  color:var(--gold);
+}
+.brief-spotlight {
+  margin-top:18px; padding:14px 16px;
+  border-left:2px solid var(--gold); background:#0d0d0d;
+  font-family:'Libre Baskerville',serif; font-size:.78rem;
+  font-style:italic; color:#777; line-height:1.6;
+}
+.brief-spotlight strong {
+  font-family:'Oswald',sans-serif; font-size:.58rem; font-weight:600;
+  letter-spacing:.18em; text-transform:uppercase; color:#444;
+  font-style:normal; display:block; margin-bottom:5px;
+}
+.brief-loading {
+  border:1px solid #1e1e1e; background:#0a0a0a; padding:36px 24px;
+  text-align:center; margin-bottom:36px;
+}
+
 
 /* ── Loading state ── */
 .loading-state {
@@ -330,7 +376,15 @@ body::before {
 
     <!-- Main column -->
     <div>
-      <!-- Port Reports -->
+      <!-- Gazette Brief (AI editorial) -->
+      <div id="briefArea">
+        <div class="brief-loading">
+          <div class="spin"></div>
+          <p style="font-family:'Oswald',sans-serif;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:#333;margin-top:12px;">Composing today's brief…</p>
+        </div>
+      </div>
+
+            <!-- Port Reports -->
       <div class="sec-head"><div class="sec-lbl">Port Reports</div><hr></div>
       <div id="reportsArea">
         <div class="loading-state">
@@ -407,13 +461,14 @@ async function load() {
     if (!d.success) throw new Error(d.error || 'Fetch failed');
     const { portReports, shippingNews, aisPassages, todayInHistory } = d.data;
 
+    renderBrief(d.brief || null);
     renderReports(portReports || []);
     renderNews(shippingNews || []);
     renderAIS(aisPassages || []);
     renderHistory(todayInHistory || []);
     updateTicker(portReports || [], shippingNews || []);
 
-    // Show subtle cache freshness in masthead meta
+    // Cache freshness in masthead meta
     if (d.cache_age_minutes !== undefined) {
       const age = d.cache_age_minutes;
       const ageStr = age < 2 ? 'Just updated' : age < 60 ? `${age}m ago` : `${Math.floor(age/60)}h ago`;
@@ -427,6 +482,35 @@ async function load() {
        </div>`;
     document.getElementById('newsArea').innerHTML = '';
   }
+}
+
+// ── Gazette Brief ────────────────────────────────────────────────────────────
+function renderBrief(brief) {
+  const el = document.getElementById('briefArea');
+  if (!brief || !brief.brief) {
+    el.innerHTML = '';  // hide silently if no brief yet
+    return;
+  }
+
+  const paras = brief.brief
+    .split(/\n{1,}/)
+    .map(p => p.trim())
+    .filter(p => p.length > 20)
+    .map(p => `<p>${p}</p>`)
+    .join('');
+
+  const spotlight = brief.spotlight
+    ? `<div class="brief-spotlight"><strong>Vessel Spotlight</strong>${brief.spotlight}</div>`
+    : '';
+
+  el.innerHTML = `
+    <div class="brief-wrap">
+      <div class="brief-kicker">Great Lakes Gazette · Issue ${brief.issueNumber}</div>
+      <div class="brief-headline">${brief.headline}</div>
+      <div class="brief-dateline">${brief.dateline || brief.issueDate}</div>
+      <div class="brief-body">${paras}</div>
+      ${spotlight}
+    </div>`;
 }
 
 function truncate(text, words) {

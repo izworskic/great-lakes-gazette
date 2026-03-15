@@ -1267,23 +1267,44 @@ if (diff <= 0) {
 }
 
 // ── Fetch & render ────────────────────────────────────────────────────────────
+function clearAllSpinners(errMsg) {
+  const ids = ['briefArea','reportsArea','newsArea','glnArea'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = '';
+  });
+  ['aisWidget','waterLevelsWidget','weatherWidget'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = `<div class="ais-row"><span class="ais-port" style="font-style:italic;color:var(--ink-4)">Unavailable</span></div>`;
+  });
+  if (errMsg) {
+    const el = document.getElementById('reportsArea');
+    if (el) el.innerHTML = `<div class="error-block"><strong>Could not load vessel data</strong> ${errMsg}<br><br><button onclick="load()" class="expand-btn">Retry</button></div>`;
+  }
+}
+
 async function load() {
+  // 15s timeout — prevents infinite spin on cold-start or Vercel timeout
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 15000);
+
   try {
-    // Bust CDN cache daily — ?bust=YYYY-MM-DD ensures today's deploy is always fresh
     const today = new Date().toISOString().slice(0, 10);
-    const r = await fetch(`/api/generate?bust=${today}`);
+    const r = await fetch(`/api/generate?bust=${today}`, { signal: ctrl.signal });
+    clearTimeout(timer);
     const d = await r.json();
     if (!d.success) throw new Error(d.error || 'Fetch failed');
     const { portReports, shippingNews, aisPassages, todayInHistory, waterLevels, greatLakesNow } = d.data;
 
-    renderBrief(d.brief || null);
-    renderReports(portReports || []);
-    renderNews(shippingNews || []);
-    renderAIS(aisPassages || []);
-    renderHistory(todayInHistory || []);
-    renderWaterLevels(waterLevels || []);
-    renderGreatLakesNow(greatLakesNow || { items: [] });
-    updateTicker(portReports || [], shippingNews || []);
+    // Each render is isolated — one failure won't stop the others
+    try { renderBrief(d.brief || null); }           catch(e) { console.warn('renderBrief:', e); }
+    try { renderReports(portReports || []); }        catch(e) { console.warn('renderReports:', e); document.getElementById('reportsArea').innerHTML = ''; }
+    try { renderNews(shippingNews || []); }          catch(e) { console.warn('renderNews:', e); document.getElementById('newsArea').innerHTML = ''; }
+    try { renderAIS(aisPassages || []); }            catch(e) { console.warn('renderAIS:', e); }
+    try { renderHistory(todayInHistory || []); }     catch(e) { console.warn('renderHistory:', e); }
+    try { renderWaterLevels(waterLevels || []); }    catch(e) { console.warn('renderWaterLevels:', e); }
+    try { renderGreatLakesNow(greatLakesNow || { items: [] }); } catch(e) { console.warn('renderGreatLakesNow:', e); document.getElementById('glnArea').innerHTML = ''; }
+    try { updateTicker(portReports || [], shippingNews || []); } catch(e) { console.warn('updateTicker:', e); }
 
     if (d.cache_age_minutes !== undefined) {
       const age = d.cache_age_minutes;
@@ -1292,12 +1313,9 @@ async function load() {
       if (metaEl) metaEl.textContent = `Refreshed ${ageStr} · BoatNerd · NOAA · NWS`;
     }
   } catch(e) {
-    document.getElementById('reportsArea').innerHTML =
-      `<div class="error-block"><strong>Could not load vessel data</strong>${e.message}<br><br>
-       <button onclick="load()" class="expand-btn">Retry</button>
-       </div>`;
-    document.getElementById('newsArea').innerHTML = '';
-    document.getElementById('briefArea').innerHTML = '';
+    clearTimeout(timer);
+    const msg = e.name === 'AbortError' ? 'Request timed out — try again in a moment.' : e.message;
+    clearAllSpinners(msg);
   }
 }
 
@@ -1713,3 +1731,4 @@ loadWeather();
 </script>
 </body>
 </html>
+

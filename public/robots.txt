@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://great-lakes-gazette.vercel.app/sitemap.xml

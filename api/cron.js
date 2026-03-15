@@ -63,6 +63,24 @@ export default async function handler(req, res) {
     const post = await publishToWordPress(brief);
     log.push(`[${ts()}] Published to FVF — ${post.edit_url}`);
 
+    // Submit new issue URL to IndexNow (Bing, Yandex, Seznam)
+    try {
+      const issueUrl = `https://great-lakes-gazette.vercel.app/issue/${today}`;
+      const inResp = await fetch('https://api.indexnow.org/indexnow', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+        body: JSON.stringify({
+          host:        'great-lakes-gazette.vercel.app',
+          key:         '0476a3c706866ff2744d876891a8d782',
+          keyLocation: 'https://great-lakes-gazette.vercel.app/0476a3c706866ff2744d876891a8d782.txt',
+          urlList:     ['https://great-lakes-gazette.vercel.app', issueUrl],
+        })
+      });
+      log.push(`[${ts()}] IndexNow submitted — HTTP ${inResp.status}`);
+    } catch(e) {
+      log.push(`[${ts()}] IndexNow failed (non-fatal): ${e.message}`);
+    }
+
     return res.status(200).json({ success: true, log, post });
 
   } catch(e) {
@@ -71,4 +89,5 @@ export default async function handler(req, res) {
     return res.status(500).json({ success: false, error: e.message, log });
   }
 }
+
 

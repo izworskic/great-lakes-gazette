@@ -919,12 +919,125 @@ body::before {
 .expand-btn:hover { color: var(--lake); border-color: var(--lake); }
 
 /* ── Responsive ── */
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE & DEVICE-AWARE STYLES
+   Classes applied to <html> by JS: device-mobile / device-tablet / device-desktop
+   Touch vs. pointer also detected and applied.
+═══════════════════════════════════════════════════════ */
+
+/* ── Tablet (641–1024px) ──────────────────────────────── */
+@media (max-width: 1024px) and (min-width: 641px) {
+  .page { padding: 24px 20px 60px; }
+  .main-grid { grid-template-columns: 1fr 260px; gap: 0 28px; }
+  .brief-body { column-count: 1; }
+  .flag { font-size: clamp(2.6rem, 7vw, 4.2rem); }
+  .gln-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── Mobile (≤640px) ─────────────────────────────────── */
 @media (max-width: 640px) {
-  .mast-top { flex-direction: column; gap: 6px; text-align: center; }
-  .page { padding: 20px 16px 60px; }
+  /* Typography scale down */
+  body { font-size: 15px; }
+  .flag { font-size: 2.6rem; letter-spacing: .04em; }
+  .tagline { font-size: .6rem; letter-spacing: .12em; }
+
+  /* Masthead */
+  .masthead { padding: 16px 0 12px; }
+  .mast-top { flex-direction: column; gap: 4px; text-align: center; }
+  .mast-top-label { font-size: .48rem; }
+  .mast-ornament { margin: 8px 0 0; }
+
+  /* Ticker — slow it down on mobile */
+  .ticker-scroll { animation-duration: 90s; }
+  .ticker-item { font-size: .6rem; padding: 0 20px; }
+
+  /* Nav — horizontal scroll, no wrapping */
+  .nav { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; justify-content: flex-start; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a { padding: 12px 16px; font-size: .56rem; flex-shrink: 0; }
+
+  /* Layout */
+  .page { padding: 16px 14px 60px; }
+  .main-grid { grid-template-columns: 1fr; gap: 0; }
   .main-col { border-right: none; padding-right: 0; }
+  .sidebar { order: 2; margin-top: 32px; }
+
+  /* Season banner */
   .season-banner { flex-direction: column; }
   .season-banner-left { flex-direction: row; justify-content: center; gap: 16px; min-width: auto; padding: 12px 20px; }
+  .season-days { font-size: 2rem; }
+
+  /* Brief — single column */
+  .brief-body { column-count: 1; }
+  .brief-headline { font-size: 1.5rem; }
+
+  /* Report cards — full width, bigger touch targets */
+  .report-card { padding: 16px 0 20px; }
+  .expand-btn { padding: 10px 18px; font-size: .56rem; }
+
+  /* News grid — single column */
+  .news-grid { grid-template-columns: 1fr; }
+  .gln-grid { grid-template-columns: 1fr; }
+
+  /* Widgets stacked */
+  .widget { margin-bottom: 20px; }
+  .widget-head { font-size: .6rem; padding: 10px 14px; }
+  .widget-body { padding: 10px 14px; }
+
+  /* Water level bars — slightly thicker for visibility */
+  .water-bar-wrap { height: 6px; }
+
+  /* Sidebar moves below — show compact AIS, hide weather by default */
+  .sidebar .widget:nth-child(3) { display: none; }
+}
+
+/* ── Touch device enhancements ────────────────────────── */
+.touch-device .nav a { padding: 14px 18px; }
+.touch-device .expand-btn { min-height: 40px; min-width: 80px; }
+.touch-device .link-row { padding: 10px 0; min-height: 40px; display: flex; align-items: center; }
+.touch-device .report-readmore { padding: 6px 0; display: inline-block; min-height: 36px; line-height: 36px; }
+
+/* ── Reduced motion ───────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .ticker-scroll { animation: none; }
+  .brief-wrap, .report-card, .news-item, .gln-card, .widget { animation: none; opacity: 1; transform: none; }
+}
+
+/* ── Mobile bottom nav bar ────────────────────────────── */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 56px;
+  background: var(--paper-card);
+  border-top: 2px solid var(--rule-heavy);
+  z-index: 100;
+  flex-direction: row;
+  align-items: stretch;
+}
+.mobile-bottom-nav a {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .48rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-decoration: none;
+  gap: 3px;
+  transition: color .15s, background .15s;
+}
+.mobile-bottom-nav a:hover,
+.mobile-bottom-nav a.active { color: var(--lake); background: rgba(27,58,86,.06); }
+.mobile-bottom-nav .mbn-icon { font-size: 1.1rem; line-height: 1; }
+
+@media (max-width: 640px) {
+  .mobile-bottom-nav { display: flex; }
+  .page { padding-bottom: 72px; }
 }
 </style>
 </head>
@@ -1432,16 +1545,24 @@ function renderWaterLevels(levels) {
     el.innerHTML = `<div class="ais-row"><span class="ais-port" style="font-style:italic;color:var(--ink-4)">Water level data unavailable</span></div>`;
     return;
   }
-  // Normalize bar widths: min/max across all lakes
   const vals = good.map(l => l.level_ft);
   const minV = Math.min(...vals), maxV = Math.max(...vals);
   const range = maxV - minV || 1;
+  const isMobile = window.GLG_DEVICE?.isMobile;
 
   el.innerHTML = good.map(l => {
-    const pct = Math.round(((l.level_ft - minV) / range) * 65 + 20); // 20–85%
+    const pct = Math.round(((l.level_ft - minV) / range) * 65 + 20);
+    const lakeName = l.lake.replace('Lake ','');
+    if (isMobile) {
+      // Compact row: name + value only, no bar
+      return `<div class="water-row" style="flex-direction:row;justify-content:space-between;align-items:center;gap:0">
+        <span class="water-lake">${lakeName}</span>
+        <span class="water-val">${l.level_ft.toFixed(2)} ft</span>
+      </div>`;
+    }
     return `<div class="water-row">
       <div class="water-lake-row">
-        <span class="water-lake">${l.lake.replace('Lake ','')}</span>
+        <span class="water-lake">${lakeName}</span>
         <span class="water-val">${l.level_ft.toFixed(2)} ft</span>
       </div>
       <div class="water-bar-wrap"><div class="water-bar" style="width:${pct}%"></div></div>
@@ -1491,6 +1612,60 @@ function renderGreatLakesNow(gln) {
   }).join('');
   el.innerHTML = `<div class="gln-grid">${cards}</div>`;
 }
+
+<!-- ── Mobile bottom nav ── -->
+<nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+  <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+    <span class="mbn-icon">⚓</span>Brief
+  </a>
+  <a href="#port-reports">
+    <span class="mbn-icon">🚢</span>Ports
+  </a>
+  <a href="#lakes-now">
+    <span class="mbn-icon">🌿</span>Lakes
+  </a>
+  <a href="#water-levels">
+    <span class="mbn-icon">🌊</span>Levels
+  </a>
+  <a href="https://ais.boatnerd.com" target="_blank">
+    <span class="mbn-icon">📡</span>AIS
+  </a>
+</nav>
+
+<script>
+// ── Device detection ──────────────────────────────────────────────────────────
+(function detectDevice() {
+  const ua = navigator.userAgent;
+  const w  = window.innerWidth;
+  const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+  const isMobile  = w <= 640 || /Android|iPhone|iPod/i.test(ua);
+  const isTablet  = !isMobile && (w <= 1024 || /iPad|Android(?!.*Mobile)/i.test(ua));
+  const isDesktop = !isMobile && !isTablet;
+
+  const html = document.documentElement;
+  html.classList.add(isMobile ? 'device-mobile' : isTablet ? 'device-tablet' : 'device-desktop');
+  if (isTouch) html.classList.add('touch-device');
+
+  // Store for use by other scripts
+  window.GLG_DEVICE = { isMobile, isTablet, isDesktop, isTouch, width: w };
+
+  // Highlight active bottom nav item on scroll
+  if (isMobile) {
+    const sections = ['port-reports','lakes-now','water-levels'];
+    const mbnLinks = document.querySelectorAll('.mobile-bottom-nav a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      for (const id of sections) {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 80) current = id;
+      }
+      mbnLinks.forEach(a => {
+        const href = a.getAttribute('href') || '';
+        a.classList.toggle('active', href === '#' + current);
+      });
+    }, { passive: true });
+  }
+})();
 
 load();
 loadWeather();

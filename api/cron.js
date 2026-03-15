@@ -47,12 +47,12 @@ export default async function handler(req, res) {
     const r = makeRedis();
     if (r) {
       const today    = todayUTC();
-      const ttl      = secondsUntilMidnight() + 120;
+      const ttl      = 30 * 24 * 60 * 60; // 30 days — keeps issues alive for permalinks
       const redisKey = `gazette:daily:${today}`;
       const payload  = { data, brief, generated_at: new Date().toISOString() };
       try {
         await r.set(redisKey, JSON.stringify(payload), { ex: ttl });
-        log.push(`[${ts()}] Redis cache primed for ${today} (TTL ${ttl}s)`);
+        log.push(`[${ts()}] Redis cache primed for ${today} (TTL 30 days)`);
       } catch(e) {
         log.push(`[${ts()}] Redis write failed (non-fatal): ${e.message}`);
       }
@@ -71,3 +71,4 @@ export default async function handler(req, res) {
     return res.status(500).json({ success: false, error: e.message, log });
   }
 }
+

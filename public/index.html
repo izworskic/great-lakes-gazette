@@ -1120,7 +1120,7 @@ async function load() {
     const r = await fetch('/api/generate');
     const d = await r.json();
     if (!d.success) throw new Error(d.error || 'Fetch failed');
-    const { portReports, shippingNews, aisPassages, todayInHistory, waterLevels, marineWeather, greatLakesNow } = d.data;
+    const { portReports, shippingNews, aisPassages, todayInHistory, waterLevels, greatLakesNow } = d.data;
 
     renderBrief(d.brief || null);
     renderReports(portReports || []);
@@ -1128,7 +1128,6 @@ async function load() {
     renderAIS(aisPassages || []);
     renderHistory(todayInHistory || []);
     renderWaterLevels(waterLevels || []);
-    renderMarineWeather(marineWeather || []);
     renderGreatLakesNow(greatLakesNow || { items: [] });
     updateTicker(portReports || [], shippingNews || []);
 
@@ -1145,6 +1144,18 @@ async function load() {
        </div>`;
     document.getElementById('newsArea').innerHTML = '';
     document.getElementById('briefArea').innerHTML = '';
+  }
+}
+
+// Weather loads separately — doesn't block the main feed
+async function loadWeather() {
+  try {
+    const r = await fetch('/api/weather');
+    const d = await r.json();
+    if (d.success && d.weather) renderMarineWeather(d.weather);
+  } catch(e) {
+    document.getElementById('weatherWidget').innerHTML =
+      `<div class="ais-row"><span class="ais-port" style="font-style:italic;color:var(--ink-4)">Forecast unavailable</span></div>`;
   }
 }
 
@@ -1437,6 +1448,7 @@ function renderGreatLakesNow(gln) {
 }
 
 load();
+loadWeather();
 </script>
 </body>
 </html>

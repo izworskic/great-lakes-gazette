@@ -1135,7 +1135,9 @@ if (diff <= 0) {
 // ── Fetch & render ────────────────────────────────────────────────────────────
 async function load() {
   try {
-    const r = await fetch('/api/generate');
+    // Bust CDN cache daily — ?bust=YYYY-MM-DD ensures today's deploy is always fresh
+    const today = new Date().toISOString().slice(0, 10);
+    const r = await fetch(`/api/generate?bust=${today}`);
     const d = await r.json();
     if (!d.success) throw new Error(d.error || 'Fetch failed');
     const { portReports, shippingNews, aisPassages, todayInHistory, waterLevels, greatLakesNow } = d.data;

@@ -37,6 +37,9 @@ function memCacheFresh() {
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
+  // ?bust=anything bypasses CDN but does NOT force a fresh scrape (just skips CDN cache)
+  const bustCDN = !!req.query?.bust;
+
   // Force refresh requires CRON_SECRET
   const forceRefresh = req.query?.refresh === '1';
   if (forceRefresh) {

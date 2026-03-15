@@ -1308,6 +1308,18 @@ body::before {
     </aside>
   </div><!-- /main-grid -->
 
+  <!-- Past Issues Archive -->
+  <section id="past-issues" style="max-width:1200px;margin:48px auto 0;padding:0 32px;scroll-margin-top:64px">
+    <div class="sec-head">
+      <span class="sec-lbl">Past Issues</span>
+      <div class="sec-rule"></div>
+      <span class="sec-num">⚓</span>
+    </div>
+    <div id="archiveArea" style="margin-top:16px;min-height:40px">
+      <p style="font-family:'Josefin Sans',sans-serif;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-4)">Loading archive…</p>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-ornament">❧ &nbsp; Great Lakes Gazette &nbsp; ❧</div>
@@ -1774,6 +1786,27 @@ function renderGreatLakesNow(gln) {
 
 load();
 loadWeather();
+
+// ── Past Issues Archive ───────────────────────────────────────────────────────
+async function loadArchive() {
+  const el = document.getElementById('archiveArea');
+  if (!el) return;
+  try {
+    const r = await fetch('https://great-lakes-gazette.vercel.app/api/issues');
+    const d = await r.json();
+    if (!d.success || !d.dates?.length) { el.innerHTML = ''; return; }
+
+    const links = d.dates.map(date => {
+      const fmtDate = new Date(date + 'T12:00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+      return `<a href="/issue/${date}" style="display:inline-block;font-family:'Josefin Sans',sans-serif;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--lake);text-decoration:none;margin:0 16px 10px 0;padding:4px 0;border-bottom:1px solid var(--rule-light);" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--lake)'">${fmtDate}</a>`;
+    }).join('');
+
+    el.innerHTML = `<div style="line-height:2.2">${links}</div>`;
+  } catch(e) {
+    el.innerHTML = '';
+  }
+}
+loadArchive();
 </script>
 
 <!-- ── Mobile bottom nav ── -->
@@ -1832,6 +1865,7 @@ loadWeather();
 </script>
 </body>
 </html>
+
 
 
 

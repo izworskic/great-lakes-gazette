@@ -1290,7 +1290,7 @@ async function load() {
 
   try {
     const today = new Date().toISOString().slice(0, 10);
-    const r = await fetch(`/api/generate?bust=${today}`, { signal: ctrl.signal });
+    const r = await fetch(`https://great-lakes-gazette.vercel.app/api/generate?bust=${today}`, { signal: ctrl.signal });
     clearTimeout(timer);
     const d = await r.json();
     if (!d.success) throw new Error(d.error || 'Fetch failed');
@@ -1322,7 +1322,7 @@ async function load() {
 // Weather loads separately — doesn't block the main feed
 async function loadWeather() {
   try {
-    const r = await fetch('/api/weather');
+    const r = await fetch('https://great-lakes-gazette.vercel.app/api/weather');
     const d = await r.json();
     if (d.success && d.weather) renderMarineWeather(d.weather);
   } catch(e) {
@@ -1731,4 +1731,5 @@ loadWeather();
 </script>
 </body>
 </html>
+
 

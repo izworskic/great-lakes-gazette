@@ -1,5 +1,5 @@
 // GET /api/issues — returns all stored issue dates from Redis
-// Used by sitemap and archive page
+// Checks last 60 days by probing keys directly — faster than SCAN on cold start
 
 import { Redis } from '@upstash/redis';
 
@@ -17,20 +17,20 @@ export default async function handler(req, res) {
   if (!r) return res.status(503).json({ error: 'Redis not configured' });
 
   try {
-    // Scan for all gazette:daily:* keys
-    let cursor = 0;
-    const keys = [];
-    do {
-      const result = await r.scan(cursor, { match: 'gazette:daily:*', count: 100 });
-      cursor = result[0];
-      keys.push(...result[1]);
-    } while (cursor !== 0);
+    // Generate last 60 days of possible keys and check which exist
+    const candidates = [];
+    const now = new Date();
+    for (let i = 0; i < 60; i++) {
+      const d = new Date(now);
+      d.setDate(now.getDate() - i);
+      candidates.push(d.toISOString().slice(0, 10));
+    }
 
-    // Extract dates, sort descending
-    const dates = keys
-      .map(k => k.replace('gazette:daily:', ''))
-      .filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d))
-      .sort((a, b) => b.localeCompare(a));
+    // Batch existence check using mget — much faster than scan
+    const keys = candidates.map(d => `gazette:daily:${d}`);
+    const results = await r.mget(...keys);
+
+    const dates = candidates.filter((_, i) => results[i] !== null);
 
     res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=300');
     return res.status(200).json({ success: true, dates, count: dates.length });

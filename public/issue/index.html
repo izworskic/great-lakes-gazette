@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Great Lakes Gazette — Loading…</title>
+<meta name="description" content="Great Lakes Gazette daily maritime brief.">
+<link rel="canonical" id="canonical" href="https://great-lakes-gazette.vercel.app">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Great Lakes Gazette">
+<meta property="og:title" id="og-title" content="Great Lakes Gazette">
+<meta property="og:description" id="og-desc" content="Daily Great Lakes maritime news.">
+<meta property="og:image" content="https://great-lakes-gazette.vercel.app/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@izworskic">
+<meta name="twitter:title" id="tw-title" content="Great Lakes Gazette">
+<meta name="twitter:description" id="tw-desc" content="Daily Great Lakes maritime news.">
+<meta name="twitter:image" content="https://great-lakes-gazette.vercel.app/og-image.png">
+<meta name="author" content="Chris Izworski">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚓</text></svg>">
+<script type="application/ld+json" id="ld-json">{}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #f0e8d5; --ink: #110c02; --ink-2: #3d3020; --ink-3: #6b5a42; --ink-4: #9a876c;
+  --lake: #1b3a56; --gold: #8a6500; --rust: #782000;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--paper); color:var(--ink-2); font-family:'Source Serif 4',Georgia,serif; font-size:17px; line-height:1.75; min-height:100vh; }
+.wrap { max-width:760px; margin:0 auto; padding:48px 24px 80px; }
+
+/* Masthead */
+.back { font-family:'Josefin Sans',sans-serif; font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-4); text-decoration:none; display:inline-block; margin-bottom:32px; }
+.back:hover { color:var(--lake); }
+.mast-rule { border:none; border-top:3px solid var(--lake); margin-bottom:6px; }
+.mast-rule-2 { border:none; border-top:1px solid var(--gold); margin-bottom:28px; }
+.kicker { font-family:'Josefin Sans',sans-serif; font-size:.58rem; letter-spacing:.22em; text-transform:uppercase; color:var(--ink-4); margin-bottom:10px; }
+.headline { font-family:'IM Fell English',Georgia,serif; font-size:2.4rem; line-height:1.18; color:var(--ink); margin-bottom:14px; }
+.dateline { font-family:'Josefin Sans',sans-serif; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--lake); margin-bottom:32px; }
+
+/* Body */
+.brief-body p { margin-bottom:1.4em; font-size:1.06rem; }
+.brief-body p:first-child::first-letter { float:left; font-family:'IM Fell English',Georgia,serif; font-size:4.2rem; line-height:.8; margin:6px 10px 0 0; color:var(--lake); }
+.spotlight { border-top:1px solid var(--gold); border-bottom:1px solid var(--gold); padding:18px 0; margin:32px 0; }
+.spotlight-label { font-family:'Josefin Sans',sans-serif; font-size:.56rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+.spotlight-text { font-style:italic; color:var(--ink-2); font-size:.95rem; }
+
+/* Footer */
+.issue-footer { margin-top:56px; border-top:2px solid var(--lake); padding-top:20px; }
+.issue-footer p { font-family:'Josefin Sans',sans-serif; font-size:.64rem; letter-spacing:.12em; color:var(--ink-4); line-height:1.8; }
+.issue-footer a { color:var(--lake); text-decoration:none; }
+.issue-footer a:hover { text-decoration:underline; }
+
+/* Nav */
+.issue-nav { display:flex; justify-content:space-between; margin-top:32px; font-family:'Josefin Sans',sans-serif; font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; }
+.issue-nav a { color:var(--lake); text-decoration:none; }
+
+/* Loading */
+.loading { text-align:center; padding:80px 0; color:var(--ink-4); font-family:'Josefin Sans',sans-serif; font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; }
+.error-msg { text-align:center; padding:80px 0; color:var(--rust); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="https://great-lakes-gazette.vercel.app">← Great Lakes Gazette</a>
+
+  <hr class="mast-rule">
+  <hr class="mast-rule-2">
+
+  <div id="content">
+    <div class="loading">Loading issue…</div>
+  </div>
+</div>
+
+<script>
+async function loadIssue() {
+  // Get date from URL: /issue/2026-03-15 or /issue/?date=2026-03-15
+  const parts = window.location.pathname.split('/').filter(Boolean);
+  const date  = parts[parts.length - 1] || new URLSearchParams(window.location.search).get('date');
+
+  if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    document.getElementById('content').innerHTML =
+      `<div class="error-msg"><strong>Invalid date.</strong><br><a href="https://great-lakes-gazette.vercel.app">Return to Gazette →</a></div>`;
+    return;
+  }
+
+  try {
+    const r = await fetch(`https://great-lakes-gazette.vercel.app/api/issue/${date}`);
+    if (!r.ok) throw new Error(`Issue not found for ${date}`);
+    const d = await r.json();
+    const brief = d.brief;
+    if (!brief) throw new Error('No brief data');
+
+    // Update head meta
+    const title = `${brief.headline} — Great Lakes Gazette`;
+    const firstPara = (brief.brief || '').split('\n\n')[0].replace(/\*([^*]+)\*/g, '$1').slice(0, 155);
+    document.title = title;
+    document.getElementById('og-title').setAttribute('content', title);
+    document.getElementById('og-desc').setAttribute('content', firstPara);
+    document.getElementById('tw-title').setAttribute('content', title);
+    document.getElementById('tw-desc').setAttribute('content', firstPara);
+    document.getElementById('canonical').setAttribute('href', `https://great-lakes-gazette.vercel.app/issue/${date}`);
+
+    // JSON-LD NewsArticle
+    document.getElementById('ld-json').textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": brief.headline,
+      "datePublished": date,
+      "dateModified": date,
+      "description": firstPara,
+      "author": { "@type": "Person", "name": "Chris Izworski", "url": "https://chrisizworski.com" },
+      "publisher": {
+        "@type": "NewsMediaOrganization",
+        "name": "Great Lakes Gazette",
+        "url": "https://great-lakes-gazette.vercel.app",
+        "logo": { "@type": "ImageObject", "url": "https://great-lakes-gazette.vercel.app/og-image.png" }
+      },
+      "image": "https://great-lakes-gazette.vercel.app/og-image.png",
+      "url": `https://great-lakes-gazette.vercel.app/issue/${date}`,
+      "articleSection": "Maritime News",
+      "keywords": "Great Lakes, shipping, vessel movements, maritime news, freighters"
+    });
+
+    // Render
+    const paras = (brief.brief || '')
+      .split(/\n+/).map(p => p.trim()).filter(p => p.length > 20)
+      .map(p => `<p>${p.replace(/\*([^*]+)\*/g, '<em>$1</em>')}</p>`).join('');
+
+    const spotlight = brief.spotlight && brief.spotlight !== 'none'
+      ? `<div class="spotlight">
+           <div class="spotlight-label">✦ Vessel Spotlight</div>
+           <div class="spotlight-text">${brief.spotlight.replace(/\*([^*]+)\*/g, '<em>$1</em>')}</div>
+         </div>` : '';
+
+    const fmtDate = new Date(date + 'T12:00:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+    document.getElementById('content').innerHTML = `
+      <div class="kicker">Great Lakes Gazette · Issue ${brief.issueNumber || 1}</div>
+      <h1 class="headline">${brief.headline}</h1>
+      <div class="dateline">${brief.dateline || fmtDate}</div>
+      <div class="brief-body">${paras}${spotlight}</div>
+      <div class="issue-footer">
+        <p>Great Lakes Gazette is published daily from live data — AIS vessel tracking, NOAA water levels, and NWS marine forecasts.<br>
+        Written by <a href="https://chrisizworski.com">Chris Izworski</a> · <a href="https://freighterviewfarms.com">Freighter View Farms</a> · <a href="https://great-lakes-gazette.vercel.app">All Issues →</a></p>
+      </div>`;
+
+  } catch(e) {
+    document.getElementById('content').innerHTML =
+      `<div class="error-msg"><strong>Issue not available.</strong><br>${e.message}<br><br><a href="https://great-lakes-gazette.vercel.app">Return to Gazette →</a></div>`;
+  }
+}
+
+loadIssue();
+</script>
+</body>
+</html>

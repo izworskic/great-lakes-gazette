@@ -725,7 +725,25 @@ body::before {
   margin-top: 8px;
 }
 
-/* ── Archive link ── */
+/* ── News items ── */
+.news-vessel-name {
+  font-family: 'IM Fell English', serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+.news-source-link {
+  display: block;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .5rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--lake);
+  text-decoration: none;
+  margin-top: 6px;
+}
+.news-source-link:hover { text-decoration: underline; }
 .archive-link {
   margin-top: 16px;
   padding-top: 12px;
@@ -1000,7 +1018,7 @@ body::before {
 
       <!-- Shipping News -->
       <div class="sec-head" id="shipping-news" style="margin-top:44px;scroll-margin-top:64px">
-        <span class="sec-lbl">Shipping News</span>
+        <span class="sec-lbl">Vessel Movements</span>
         <div class="sec-rule"></div>
         <span class="sec-num">II</span>
       </div>
@@ -1260,28 +1278,51 @@ function expandReport(i, encodedParas) {
   el.nextElementSibling?.remove();
 }
 
-// ── Shipping news ─────────────────────────────────────────────────────────────
-function renderNews(news) {
-  const good = news.filter(n => n.text && n.text.length > 60);
-  if (!good.length) { document.getElementById('newsArea').innerHTML = ''; return; }
+// ── Vessel news ───────────────────────────────────────────────────────────────
+function extractVesselName(text) {
+  const m = text.match(/\b(USCGC\s+\w+|CCGS\s+\w+)/);
+  if (m) return m[1];
+  const tc = text.match(/^([A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,3})\s+(?:steams|departed|arrived|began|icebreaking)/i);
+  if (tc) return tc[1];
+  const caps = text.match(/\b([A-Z][a-zA-Z .]+?)\s+(?:departed|arrived|steamed|began)/);
+  if (caps) return caps[1].trim();
+  return null;
+}
 
-  const recent = good.filter(n => isRecentItem(n.date));
-  const older  = good.filter(n => !isRecentItem(n.date));
-  const toShow = recent.length ? recent : good.slice(0, 3);
+function renderNews(newsItems) {
+  const el = document.getElementById('newsArea');
 
-  const html = toShow.map(n => {
-    const dateStr = n.date ? new Date(n.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
-    const snip = truncate(n.text.replace(/https?:\/\/\S+/g,'').trim(), 45);
-    return `<div class="news-item">
+  if (!newsItems?.length) {
+    el.innerHTML = '<div style="grid-column:1/-1;font-family:\'Josefin Sans\',sans-serif;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-4);padding:20px 0">No vessel news available today</div>';
+    return;
+  }
+
+  // Flatten all story chunks from all posts, respect date filter
+  const allStories = [];
+  for (const item of newsItems) {
+    for (const storyText of (item.stories || [])) {
+      allStories.push({ text: storyText, date: item.date, url: item.url });
+    }
+  }
+
+  const recent = allStories.filter(s => isRecentItem(s.date));
+  const toShow = recent.length ? recent : allStories.slice(0, 6);
+  const older  = recent.length ? allStories.filter(s => !isRecentItem(s.date)) : [];
+
+  const cards = toShow.slice(0, 8).map((s, i) => {
+    const vesselName = extractVesselName(s.text);
+    const dateStr = s.date ? new Date(s.date).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '';
+    return `<div class="news-item" style="animation-delay:${.08+i*.06}s">
+      ${vesselName ? `<div class="news-vessel-name">${vesselName}</div>` : ''}
       <div class="news-date">${dateStr}</div>
-      <div class="news-title"><a href="${n.url||'#'}" target="_blank">${n.title}</a></div>
-      <div class="news-snip">${snip}</div>
+      <div class="news-snip">${truncate(s.text, 55)}</div>
+      ${s.url ? `<a class="news-source-link" href="${s.url}" target="_blank">Full report ↗</a>` : ''}
     </div>`;
   }).join('');
 
-  document.getElementById('newsArea').innerHTML = html;
+  el.innerHTML = cards;
   if (older.length) {
-    document.getElementById('newsArea').insertAdjacentHTML('afterend', `<div style="grid-column:1/-1">${archiveLink('shipping news')}</div>`);
+    el.insertAdjacentHTML('afterend', `<div style="grid-column:1/-1">${archiveLink('vessel news')}</div>`);
   }
 }
 

@@ -1,123 +1,108 @@
-// GET /api/generate — scrape + generate brief, cached until midnight UTC.
-// First visitor after midnight triggers a fresh generate.
-// All subsequent visitors get the CDN-cached response until midnight.
-// ?refresh=1 forces regeneration (CRON_SECRET required).
+// GET /api/generate
+// Cache strategy:
+//   1. Upstash Redis (UPSTASH_REDIS_REST_URL + TOKEN) — persistent, keyed by UTC date
+//      → ONE Anthropic API call per day, survives cold starts & redeployments
+//   2. In-memory fallback — if Redis not configured (local dev / no env vars)
 
+import { Redis } from '@upstash/redis';
 import { fetchAllData }  from '../lib/scraper.js';
 import { generateBrief } from '../lib/generator.js';
 
-// In-memory fallback cache (secondary — CDN is the primary cache layer)
-let memCache = {
-  data:        null,
-  brief:       null,
-  generatedAt: null,
-  dateKey:     null,   // YYYY-MM-DD — if date changes, cache is stale
-};
-
-function todayUTC() {
-  return new Date().toISOString().slice(0, 10); // "2026-03-14"
+// ── Redis client — null if env vars missing ───────────────────────────────────
+function makeRedis() {
+  const url   = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) return null;
+  return new Redis({ url, token });
 }
 
-function secondsUntilMidnightUTC() {
+// ── In-memory fallback ────────────────────────────────────────────────────────
+let memCache = { data: null, brief: null, generatedAt: null, dateKey: null };
+
+function todayUTC() { return new Date().toISOString().slice(0, 10); }
+function secondsUntilMidnight() {
   const now = new Date();
-  const midnight = new Date(Date.UTC(
-    now.getUTCFullYear(),
-    now.getUTCMonth(),
-    now.getUTCDate() + 1,  // next day
-    0, 0, 0, 0
-  ));
+  const midnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
   return Math.floor((midnight - now) / 1000);
 }
 
-function memCacheFresh() {
-  return memCache.data !== null &&
-         memCache.dateKey === todayUTC();
+async function redisGet(r, key) {
+  if (!r) return null;
+  try { return await r.get(key); } catch(e) { console.warn('[redis] get:', e.message); return null; }
+}
+async function redisSet(r, key, value, ttl) {
+  if (!r) return;
+  try { await r.set(key, JSON.stringify(value), { ex: ttl }); } catch(e) { console.warn('[redis] set:', e.message); }
 }
 
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  // ?bust=anything bypasses CDN but does NOT force a fresh scrape (just skips CDN cache)
-  const bustCDN = !!req.query?.bust;
-
-  // Force refresh requires CRON_SECRET
   const forceRefresh = req.query?.refresh === '1';
   if (forceRefresh) {
-    const auth = req.headers['authorization'];
-    if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
+    if (req.headers['authorization'] !== `Bearer ${process.env.CRON_SECRET}`) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
   }
 
+  const today = todayUTC();
+  const redisKey = `gazette:daily:${today}`;
+  const ttl = secondsUntilMidnight();
+  const r = makeRedis();
+
   try {
-    // Serve from in-memory cache if same day and not forced
-    if (!forceRefresh && memCacheFresh()) {
-      const ageMinutes = Math.floor((Date.now() - memCache.generatedAt) / 60000);
-      console.log(`[generate] Memory cache hit — ${ageMinutes}m old, date: ${memCache.dateKey}`);
+    if (!forceRefresh) {
+      // 1. Try Redis
+      const cached = await redisGet(r, redisKey);
+      if (cached) {
+        const parsed = typeof cached === 'string' ? JSON.parse(cached) : cached;
+        console.log('[generate] Redis HIT for', today);
+        res.setHeader('Cache-Control', 'no-store');
+        res.setHeader('X-Cache', 'HIT-REDIS');
+        return res.status(200).json({ success: true, cached: true, cache_source: 'redis', ...parsed });
+      }
 
-      const ttl = secondsUntilMidnightUTC();
-      res.setHeader('Cache-Control', `public, s-maxage=${ttl}, stale-while-revalidate=60`);
-      res.setHeader('X-Cache', 'HIT-MEMORY');
-      res.setHeader('X-Cache-Until', new Date(Date.now() + ttl * 1000).toUTCString());
-
-      return res.status(200).json({
-        success: true,
-        cached: true,
-        cache_age_minutes: ageMinutes,
-        cache_until: new Date(Date.now() + ttl * 1000).toISOString(),
-        data:  memCache.data,
-        brief: memCache.brief,
-      });
+      // 2. Try in-memory
+      if (memCache.data && memCache.dateKey === today) {
+        console.log('[generate] Memory HIT');
+        res.setHeader('Cache-Control', 'no-store');
+        res.setHeader('X-Cache', 'HIT-MEMORY');
+        return res.status(200).json({
+          success: true, cached: true, cache_source: 'memory',
+          cache_age_minutes: Math.floor((Date.now() - memCache.generatedAt) / 60000),
+          data: memCache.data, brief: memCache.brief,
+        });
+      }
     }
 
-    console.log('[generate] Cache miss — scraping + generating...');
-    const today = todayUTC();
+    // 3. Cache miss — scrape + generate (one Anthropic call)
+    console.log('[generate] MISS — generating for', today, r ? '(Redis available)' : '(no Redis)');
     const data = await fetchAllData();
 
     let brief = null;
     try {
       brief = await generateBrief(data);
-      console.log('[generate] Brief generated:', brief?.headline);
+      console.log('[generate] Brief:', brief?.headline);
     } catch(e) {
-      console.error('[generate] Brief generation failed (non-fatal):', e.message);
+      console.error('[generate] Brief failed (non-fatal):', e.message);
     }
 
-    // Update in-memory cache
-    memCache = {
-      data,
-      brief,
-      generatedAt: Date.now(),
-      dateKey: today,
-    };
+    const payload = { data, brief, generated_at: new Date().toISOString() };
 
-    // Set CDN cache until midnight UTC — this is the key line
-    // Vercel's edge will serve this response to all visitors until midnight
-    const ttl = secondsUntilMidnightUTC();
-    res.setHeader('Cache-Control', `public, s-maxage=${ttl}, stale-while-revalidate=60`);
+    // 4. Persist to Redis (survives cold starts until midnight)
+    await redisSet(r, redisKey, payload, ttl + 120);
+    if (r) console.log('[generate] Saved to Redis, TTL:', ttl, 's');
+
+    memCache = { data, brief, generatedAt: Date.now(), dateKey: today };
+
+    res.setHeader('Cache-Control', 'no-store');
     res.setHeader('X-Cache', 'MISS');
-    res.setHeader('X-Cache-Until', new Date(Date.now() + ttl * 1000).toUTCString());
-    res.setHeader('X-Cache-Date', today);
-
-    return res.status(200).json({
-      success: true,
-      cached: false,
-      cache_until: new Date(Date.now() + ttl * 1000).toISOString(),
-      data,
-      brief,
-    });
+    return res.status(200).json({ success: true, cached: false, cache_source: 'fresh', ...payload });
 
   } catch(e) {
-    console.error('[generate] Fatal error:', e.message);
-    // Serve stale memory cache on hard failure
+    console.error('[generate] Fatal:', e.message);
     if (memCache.data) {
-      console.log('[generate] Serving stale memory cache after error');
-      return res.status(200).json({
-        success: true,
-        cached: true,
-        stale: true,
-        data:  memCache.data,
-        brief: memCache.brief,
-      });
+      return res.status(200).json({ success: true, cached: true, stale: true, data: memCache.data, brief: memCache.brief });
     }
     return res.status(500).json({ success: false, error: e.message });
   }

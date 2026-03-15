@@ -11,6 +11,14 @@
       "destination": "/api/sitemap"
     },
     {
+      "source": "/api/issue/:date",
+      "destination": "/api/issue/[date]"
+    },
+    {
+      "source": "/issue/:date",
+      "destination": "/issue/index.html"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api/$1"
     }

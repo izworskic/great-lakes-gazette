@@ -4,6 +4,7 @@
   "description": "Great Lakes shipping news — auto-generated from real AIS data",
   "type": "module",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
     "@upstash/redis": "^1.37.0",
     "node-fetch": "^3.3.2"
   }

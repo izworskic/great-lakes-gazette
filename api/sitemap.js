@@ -1,8 +1,48 @@
-// GET /sitemap.xml — dynamic sitemap so lastmod always reflects today
-// Google uses lastmod to decide recrawl frequency — daily update = daily crawl
+// GET /sitemap.xml — dynamic sitemap with today's issue + all archived issues
+// lastmod updates daily — signals Google to recrawl every day
 
-export default function handler(req, res) {
+import { Redis } from '@upstash/redis';
+
+function makeRedis() {
+  const url   = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) return null;
+  return new Redis({ url, token });
+}
+
+export default async function handler(req, res) {
   const today = new Date().toISOString().slice(0, 10);
+
+  // Get all stored issue dates
+  let dates = [];
+  const r = makeRedis();
+  if (r) {
+    try {
+      let cursor = 0;
+      const keys = [];
+      do {
+        const result = await r.scan(cursor, { match: 'gazette:daily:*', count: 100 });
+        cursor = result[0];
+        keys.push(...result[1]);
+      } while (cursor !== 0);
+      dates = keys
+        .map(k => k.replace('gazette:daily:', ''))
+        .filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d))
+        .sort((a, b) => b.localeCompare(a));
+    } catch(e) {}
+  }
+
+  // Always include today even if not yet in Redis
+  if (!dates.includes(today)) dates.unshift(today);
+
+  // Build URL entries
+  const issueUrls = dates.map(date => `
+  <url>
+    <loc>https://great-lakes-gazette.vercel.app/issue/${date}</loc>
+    <lastmod>${date}</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.8</priority>
+  </url>`).join('');
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -20,7 +60,7 @@ export default function handler(req, res) {
       <news:publication_date>${today}</news:publication_date>
       <news:title>Great Lakes Gazette — Daily Maritime News from the Fleet</news:title>
     </news:news>
-  </url>
+  </url>${issueUrls}
 </urlset>`;
 
   res.setHeader('Content-Type', 'application/xml; charset=utf-8');

@@ -725,6 +725,23 @@ body::before {
   margin-top: 8px;
 }
 
+/* ── Archive link ── */
+.archive-link {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule-light);
+}
+.archive-link a {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .56rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  text-decoration: none;
+}
+.archive-link a:hover { color: var(--lake); }
+
 /* ── Water level gauge ── */
 .water-row {
   display: flex;
@@ -1164,6 +1181,20 @@ function truncate(text, words) {
   return arr.length <= words ? text : arr.slice(0, words).join(' ') + '…';
 }
 
+// ── Date helpers ──────────────────────────────────────────────────────────────
+function isRecentItem(dateStr) {
+  if (!dateStr) return true; // no date = show it
+  const itemDate = new Date(dateStr);
+  const now = new Date();
+  const yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
+  return itemDate.toDateString() === now.toDateString() ||
+         itemDate.toDateString() === yesterday.toDateString();
+}
+
+function archiveLink(label) {
+  return `<div class="archive-link"><a href="https://boatnerd.com" target="_blank">View older ${label} on BoatNerd ↗</a></div>`;
+}
+
 // ── Port reports ──────────────────────────────────────────────────────────────
 function renderReports(reports) {
   const good = reports.filter(r => r.text && r.text.length > 60);
@@ -1173,7 +1204,11 @@ function renderReports(reports) {
     return;
   }
 
-  document.getElementById('reportsArea').innerHTML = good.map((r, i) => {
+  const recent = good.filter(r => isRecentItem(r.date));
+  const older  = good.filter(r => !isRecentItem(r.date));
+  const toShow = recent.length ? recent : good.slice(0, 2); // fallback if all are old
+
+  const html = toShow.map((r, i) => {
     const dateStr = r.date ? new Date(r.date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) : '';
     const paras = splitIntoParagraphs(r.text);
     const preview = paras.slice(0, i === 0 ? 4 : 2).map(p => `<p>${p}</p>`).join('');
@@ -1186,6 +1221,8 @@ function renderReports(reports) {
       ${r.url ? `<a class="report-readmore" href="${r.url}" target="_blank">Full report on BoatNerd →</a>` : ''}
     </article>`;
   }).join('');
+
+  document.getElementById('reportsArea').innerHTML = html + (older.length ? archiveLink('port reports') : '');
 }
 
 function splitIntoParagraphs(text) {
@@ -1217,7 +1254,11 @@ function renderNews(news) {
   const good = news.filter(n => n.text && n.text.length > 60);
   if (!good.length) { document.getElementById('newsArea').innerHTML = ''; return; }
 
-  document.getElementById('newsArea').innerHTML = good.map(n => {
+  const recent = good.filter(n => isRecentItem(n.date));
+  const older  = good.filter(n => !isRecentItem(n.date));
+  const toShow = recent.length ? recent : good.slice(0, 3);
+
+  const html = toShow.map(n => {
     const dateStr = n.date ? new Date(n.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
     const snip = truncate(n.text.replace(/https?:\/\/\S+/g,'').trim(), 45);
     return `<div class="news-item">
@@ -1226,6 +1267,11 @@ function renderNews(news) {
       <div class="news-snip">${snip}</div>
     </div>`;
   }).join('');
+
+  document.getElementById('newsArea').innerHTML = html;
+  if (older.length) {
+    document.getElementById('newsArea').insertAdjacentHTML('afterend', `<div style="grid-column:1/-1">${archiveLink('shipping news')}</div>`);
+  }
 }
 
 // ── AIS sidebar ───────────────────────────────────────────────────────────────
@@ -1351,19 +1397,21 @@ function renderWaterLevels(levels) {
 // ── Marine Weather ────────────────────────────────────────────────────────────
 function renderMarineWeather(zones) {
   const el = document.getElementById('weatherWidget');
-  const good = zones.filter(z => z.status === 'ok' && z.shortForecast);
+  const good = zones.filter(z => z.status === 'ok' && z.synopsis);
   if (!good.length) {
     el.innerHTML = `<div class="ais-row"><span class="ais-port" style="font-style:italic;color:var(--ink-4)">Weather data unavailable</span></div>`;
     return;
   }
   el.innerHTML = good.map(z => {
+    const warnBadge = z.warning ? `<div style="font-family:'Josefin Sans',sans-serif;font-size:.5rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--rust);margin-top:3px;">⚠ ${z.warning.slice(0,60)}</div>` : '';
     const waveBadge = z.waveHeight ? `<span class="wx-wave">⛵ ${z.waveHeight}</span>` : '';
-    const wind = z.windDir && z.windSpeed ? `${z.windDir} ${z.windSpeed}` : z.windSpeed || '';
+    const snip = z.synopsis ? z.synopsis.slice(0, 120) + (z.synopsis.length > 120 ? '…' : '') : '';
     return `<div class="wx-row">
       <div class="wx-lake">${z.lake.replace('Lake ','')}</div>
       <div class="wx-detail">
-        <div class="wx-short">${z.shortForecast}${waveBadge}</div>
-        ${wind ? `<div class="wx-wind">Wind: ${wind}</div>` : ''}
+        <div class="wx-short">${snip}${waveBadge}</div>
+        ${z.wind ? `<div class="wx-wind">${z.wind.slice(0,60)}</div>` : ''}
+        ${warnBadge}
       </div>
     </div>`;
   }).join('');

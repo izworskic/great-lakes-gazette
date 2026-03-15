@@ -668,6 +668,159 @@ body::before {
 }
 .error-block strong { display: block; margin-bottom: 5px; font-size: .9rem; }
 
+/* ── GL Now section ── */
+.gln-label {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .56rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 16px;
+}
+.gln-label a { color: var(--lake); text-decoration: none; }
+.gln-label a:hover { text-decoration: underline; }
+
+.gln-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+.gln-card {
+  border: 1px solid var(--rule-mid);
+  background: var(--paper-card);
+  padding: 14px;
+  animation: fadeUp .4s ease both;
+}
+.gln-cat {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .5rem;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--lake);
+  margin-bottom: 6px;
+}
+.gln-title {
+  font-family: 'IM Fell English', serif;
+  font-size: .92rem;
+  line-height: 1.35;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.gln-title a { color: var(--ink); text-decoration: none; }
+.gln-title a:hover { color: var(--lake); }
+.gln-snip {
+  font-family: 'Source Serif 4', serif;
+  font-size: .74rem;
+  color: var(--ink-3);
+  line-height: 1.55;
+}
+.gln-date {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .5rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-top: 8px;
+}
+
+/* ── Water level gauge ── */
+.water-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--rule-light);
+}
+.water-row:last-child { border-bottom: none; }
+.water-lake-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.water-lake {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .58rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.water-val {
+  font-family: 'IM Fell English', serif;
+  font-size: .88rem;
+  color: var(--lake);
+}
+.water-bar-wrap {
+  height: 4px;
+  background: var(--rule-light);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.water-bar {
+  height: 100%;
+  background: var(--lake);
+  border-radius: 2px;
+  transition: width .4s ease;
+}
+.water-city {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .48rem;
+  letter-spacing: .1em;
+  color: var(--ink-4);
+}
+
+/* ── Weather cards ── */
+.wx-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--rule-light);
+}
+.wx-row:last-child { border-bottom: none; }
+.wx-lake {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .56rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  min-width: 80px;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+.wx-detail {
+  flex: 1;
+}
+.wx-short {
+  font-family: 'Source Serif 4', serif;
+  font-size: .76rem;
+  color: var(--ink-2);
+  line-height: 1.4;
+}
+.wx-wind {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .52rem;
+  letter-spacing: .1em;
+  color: var(--ink-4);
+  margin-top: 3px;
+}
+.wx-wave {
+  display: inline-block;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: .48rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--lake);
+  background: rgba(27,58,86,.08);
+  padding: 1px 5px;
+  border-radius: 2px;
+  margin-left: 4px;
+}
+
 /* ── Footer ── */
 .footer {
   border-top: 2px solid var(--rule-heavy);
@@ -778,10 +931,10 @@ body::before {
 
 <!-- ── Nav ── -->
 <nav class="nav">
-  <a href="/" class="active">Port Reports</a>
-  <a href="/">Shipping News</a>
-  <a href="/">AIS Live</a>
-  <a href="/">History</a>
+  <a href="#lakes-now">Lakes Now</a>
+  <a href="#water-levels">Water Levels</a>
+  <a href="https://ais.boatnerd.com" target="_blank">AIS Live Map ↗</a>
+  <a href="https://boatnerd.com" target="_blank">BoatNerd ↗</a>
   <a href="https://freighterviewfarms.com" target="_blank">Freighter View Farms ↗</a>
   <a href="https://chrisizworski.com" target="_blank">About the Author ↗</a>
 </nav>
@@ -816,7 +969,7 @@ body::before {
       </div>
 
       <!-- Port Reports -->
-      <div class="sec-head">
+      <div class="sec-head" id="port-reports" style="scroll-margin-top:64px">
         <span class="sec-lbl">Port Reports</span>
         <div class="sec-rule"></div>
         <span class="sec-num">I</span>
@@ -829,7 +982,7 @@ body::before {
       </div>
 
       <!-- Shipping News -->
-      <div class="sec-head" style="margin-top:44px">
+      <div class="sec-head" id="shipping-news" style="margin-top:44px;scroll-margin-top:64px">
         <span class="sec-lbl">Shipping News</span>
         <div class="sec-rule"></div>
         <span class="sec-num">II</span>
@@ -841,13 +994,27 @@ body::before {
         </div>
       </div>
 
+      <!-- Great Lakes Now -->
+      <div class="sec-head" id="lakes-now" style="margin-top:44px;scroll-margin-top:64px">
+        <span class="sec-lbl">Lakes Now</span>
+        <div class="sec-rule"></div>
+        <span class="sec-num">III</span>
+      </div>
+      <div class="gln-label">Environmental &amp; Conservation News from <a href="https://greatlakesnow.org" target="_blank">Great Lakes Now ↗</a></div>
+      <div id="glnArea">
+        <div class="brief-loading">
+          <div class="spin"></div>
+          <p>Loading…</p>
+        </div>
+      </div>
+
     </div><!-- /main-col -->
 
     <!-- Sidebar -->
     <aside class="sidebar">
 
       <!-- AIS Station Status -->
-      <div class="widget">
+      <div class="widget" id="ais-live" style="scroll-margin-top:64px">
         <div class="widget-head">
           <span class="wh-icon">📡</span> AIS Station Status
         </div>
@@ -856,6 +1023,28 @@ body::before {
             <span class="ais-port" style="color:var(--ink-4);font-style:italic">Loading…</span>
           </div>
         </div>
+      </div>
+
+      <!-- Water Levels -->
+      <div class="widget" id="water-levels" style="scroll-margin-top:64px">
+        <div class="widget-head">
+          <span class="wh-icon">🌊</span> Great Lakes Water Levels
+        </div>
+        <div class="widget-body" id="waterLevelsWidget">
+          <div class="ais-row"><span class="ais-port" style="color:var(--ink-4);font-style:italic">Loading NOAA data…</span></div>
+        </div>
+        <div style="padding:0 0 4px;font-family:'Josefin Sans',sans-serif;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-4)">Source: NOAA CO-OPS · ft above LWD</div>
+      </div>
+
+      <!-- Marine Weather -->
+      <div class="widget">
+        <div class="widget-head">
+          <span class="wh-icon">⛵</span> Marine Forecast
+        </div>
+        <div class="widget-body" id="weatherWidget">
+          <div class="ais-row"><span class="ais-port" style="color:var(--ink-4);font-style:italic">Loading NWS data…</span></div>
+        </div>
+        <div style="padding:0 0 4px;font-family:'Josefin Sans',sans-serif;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-4)">Source: National Weather Service Marine</div>
       </div>
 
       <!-- Today in History -->
@@ -886,7 +1075,8 @@ body::before {
   <footer class="footer">
     <div class="footer-ornament">❧ &nbsp; Great Lakes Gazette &nbsp; ❧</div>
     <p>
-      Published from Bay City, Mich. &nbsp;·&nbsp; Data sourced from <a href="https://boatnerd.com">BoatNerd.com</a> &amp; live AIS feeds<br>
+      Published from Bay City, Mich. &nbsp;·&nbsp; Vessel data: <a href="https://boatnerd.com">BoatNerd.com</a> &amp; live AIS<br>
+      Water levels: <a href="https://tidesandcurrents.noaa.gov">NOAA CO-OPS</a> &nbsp;·&nbsp; Marine forecasts: <a href="https://weather.gov">NWS</a> &nbsp;·&nbsp; Environmental news: <a href="https://greatlakesnow.org">Great Lakes Now</a><br>
       All vessel movements are real — nothing is invented &nbsp;·&nbsp; <a href="https://freighterviewfarms.com">Freighter View Farms</a>
     </p>
   </footer>
@@ -913,20 +1103,23 @@ async function load() {
     const r = await fetch('/api/generate');
     const d = await r.json();
     if (!d.success) throw new Error(d.error || 'Fetch failed');
-    const { portReports, shippingNews, aisPassages, todayInHistory } = d.data;
+    const { portReports, shippingNews, aisPassages, todayInHistory, waterLevels, marineWeather, greatLakesNow } = d.data;
 
     renderBrief(d.brief || null);
     renderReports(portReports || []);
     renderNews(shippingNews || []);
     renderAIS(aisPassages || []);
     renderHistory(todayInHistory || []);
+    renderWaterLevels(waterLevels || []);
+    renderMarineWeather(marineWeather || []);
+    renderGreatLakesNow(greatLakesNow || { items: [] });
     updateTicker(portReports || [], shippingNews || []);
 
     if (d.cache_age_minutes !== undefined) {
       const age = d.cache_age_minutes;
       const ageStr = age < 2 ? 'Just updated' : age < 60 ? `${age}m ago` : `${Math.floor(age/60)}h ago`;
       const metaEl = document.querySelector('.mast-top-label:last-child');
-      if (metaEl) metaEl.textContent = `Refreshed ${ageStr} · BoatNerd AIS`;
+      if (metaEl) metaEl.textContent = `Refreshed ${ageStr} · BoatNerd · NOAA · NWS`;
     }
   } catch(e) {
     document.getElementById('reportsArea').innerHTML =
@@ -1129,7 +1322,72 @@ function extractVesselNames(items) {
   return [...new Set(matches.map(m => m[1].trim()))].filter(n => n.length > 4 && n.length < 32).slice(0, 18);
 }
 
+// ── Water Levels ──────────────────────────────────────────────────────────────
+function renderWaterLevels(levels) {
+  const el = document.getElementById('waterLevelsWidget');
+  const good = levels.filter(l => l.status === 'ok' && l.level_ft !== null);
+  if (!good.length) {
+    el.innerHTML = `<div class="ais-row"><span class="ais-port" style="font-style:italic;color:var(--ink-4)">Water level data unavailable</span></div>`;
+    return;
+  }
+  // Normalize bar widths: min/max across all lakes
+  const vals = good.map(l => l.level_ft);
+  const minV = Math.min(...vals), maxV = Math.max(...vals);
+  const range = maxV - minV || 1;
+
+  el.innerHTML = good.map(l => {
+    const pct = Math.round(((l.level_ft - minV) / range) * 65 + 20); // 20–85%
+    return `<div class="water-row">
+      <div class="water-lake-row">
+        <span class="water-lake">${l.lake.replace('Lake ','')}</span>
+        <span class="water-val">${l.level_ft.toFixed(2)} ft</span>
+      </div>
+      <div class="water-bar-wrap"><div class="water-bar" style="width:${pct}%"></div></div>
+      <div class="water-city">${l.city}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── Marine Weather ────────────────────────────────────────────────────────────
+function renderMarineWeather(zones) {
+  const el = document.getElementById('weatherWidget');
+  const good = zones.filter(z => z.status === 'ok' && z.shortForecast);
+  if (!good.length) {
+    el.innerHTML = `<div class="ais-row"><span class="ais-port" style="font-style:italic;color:var(--ink-4)">Weather data unavailable</span></div>`;
+    return;
+  }
+  el.innerHTML = good.map(z => {
+    const waveBadge = z.waveHeight ? `<span class="wx-wave">⛵ ${z.waveHeight}</span>` : '';
+    const wind = z.windDir && z.windSpeed ? `${z.windDir} ${z.windSpeed}` : z.windSpeed || '';
+    return `<div class="wx-row">
+      <div class="wx-lake">${z.lake.replace('Lake ','')}</div>
+      <div class="wx-detail">
+        <div class="wx-short">${z.shortForecast}${waveBadge}</div>
+        ${wind ? `<div class="wx-wind">Wind: ${wind}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Great Lakes Now ───────────────────────────────────────────────────────────
+function renderGreatLakesNow(gln) {
+  const el = document.getElementById('glnArea');
+  if (!gln?.items?.length) {
+    el.innerHTML = `<p style="font-family:'Josefin Sans',sans-serif;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-4);padding:20px 0">Great Lakes Now coverage unavailable today</p>`;
+    return;
+  }
+  const cards = gln.items.slice(0, 6).map((item, i) => {
+    const dateStr = item.date ? new Date(item.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+    return `<div class="gln-card" style="animation-delay:${.08 + i*.07}s">
+      <div class="gln-cat">${item.category || 'Great Lakes'}</div>
+      <div class="gln-title"><a href="${item.url}" target="_blank">${item.title}</a></div>
+      ${item.summary ? `<div class="gln-snip">${item.summary}</div>` : ''}
+      ${dateStr ? `<div class="gln-date">${dateStr}</div>` : ''}
+    </div>`;
+  }).join('');
+  el.innerHTML = `<div class="gln-grid">${cards}</div>`;
+}
+
 load();
-</script>
 </body>
 </html>

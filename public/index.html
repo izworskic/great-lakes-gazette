@@ -1613,6 +1613,10 @@ function renderGreatLakesNow(gln) {
   el.innerHTML = `<div class="gln-grid">${cards}</div>`;
 }
 
+load();
+loadWeather();
+</script>
+
 <!-- ── Mobile bottom nav ── -->
 <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
   <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
@@ -1666,9 +1670,6 @@ function renderGreatLakesNow(gln) {
     }, { passive: true });
   }
 })();
-
-load();
-loadWeather();
 </script>
 </body>
 </html>

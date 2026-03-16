@@ -1139,10 +1139,6 @@ body::before {
   <div class="ticker-scroll" id="ticker">
     <span class="ticker-item">Great Lakes Gazette <em>loading vessel data…</em></span>
     <span class="ticker-sep">✦</span>
-    <span class="ticker-item">Poe Lock <em>opens March 25</em></span>
-    <span class="ticker-sep">✦</span>
-    <span class="ticker-item">2026 Season <em>beginning</em></span>
-    <span class="ticker-sep">✦</span>
   </div>
 </div>
 
@@ -1187,8 +1183,8 @@ body::before {
       <span class="season-days-lbl" id="daysLbl">days until<br>Soo Locks</span>
     </div>
     <div class="season-body">
-      <h3 id="seasonTitle">2026 Navigation Season</h3>
-      <p id="seasonDesc">Poe Lock opens March 25 at 12:01 a.m. — Coast Guard icebreakers working the St. Marys River. Early-season vessels active in the lower lakes.</p>
+      <h3 id="seasonTitle">Great Lakes Navigation Season</h3>
+      <p id="seasonDesc">Loading season status…</p>
     </div>
   </div>
 
@@ -1338,14 +1334,44 @@ body::before {
 document.getElementById('mastDate').textContent =
   new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
-const seasonOpen = new Date('2026-03-25T00:01:00');
-const diff = Math.ceil((seasonOpen - new Date()) / 86400000);
-document.getElementById('daysNum').textContent = diff > 0 ? diff : '✓';
-if (diff <= 0) {
-  document.getElementById('daysLbl').textContent = 'season open!';
-  document.getElementById('seasonTitle').textContent = '2026 Navigation Season — Open';
-  document.getElementById('seasonDesc').textContent = 'The Poe Lock is open. Vessels are moving. Live AIS tracking active for all seven Great Lakes ports.';
-}
+// ── Season banner — fully dynamic, no hardcoded year or date ─────────────────
+(function initSeasonBanner() {
+  const now = new Date();
+  const year = now.getFullYear();
+
+  // Soo Locks typically open March 25. Calculate for current year,
+  // roll to next year if we're past July (season well underway or ended).
+  function getSeasonOpen(yr) {
+    return new Date(yr, 2, 25, 0, 1, 0); // March 25 00:01 local
+  }
+
+  let seasonOpen = getSeasonOpen(year);
+  // If we're past Oct 1, next year's opening is more relevant
+  if (now > new Date(year, 9, 1)) {
+    seasonOpen = getSeasonOpen(year + 1);
+  }
+
+  const seasonYear = seasonOpen.getFullYear();
+  const diff = Math.ceil((seasonOpen - now) / 86400000);
+  const isOpen = diff <= 0;
+
+  const openDateStr = seasonOpen.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+
+  document.getElementById('daysNum').textContent = isOpen ? '✓' : diff;
+  document.getElementById('daysLbl').textContent = isOpen ? 'season open!' : `days until\nSoo Locks`;
+  document.getElementById('seasonTitle').textContent = `${seasonYear} Navigation Season${isOpen ? ' — Open' : ''}`;
+
+  if (isOpen) {
+    document.getElementById('seasonDesc').textContent =
+      'The Poe Lock is open. Vessels are moving. Live AIS tracking active for all seven Great Lakes ports.';
+  } else {
+    const weeks = Math.round(diff / 7);
+    const timeStr = diff === 1 ? 'tomorrow' : diff <= 14 ? `in ${diff} days` : `in approximately ${weeks} weeks`;
+    document.getElementById('seasonDesc').textContent =
+      `The Soo Locks open ${openDateStr} — the traditional start of the Great Lakes navigation season. ` +
+      `The fleet resumes commercial operations ${timeStr}. Port reports are active year-round.`;
+  }
+})();
 
 // ── Fetch & render ────────────────────────────────────────────────────────────
 function clearAllSpinners(errMsg) {
@@ -1622,10 +1648,14 @@ function renderAIS(ports) {
   const anyLive = ports.some(p => p.status === 'ok' && p.vessels?.length > 0);
 
   if (allOffSeason) {
-    const open = new Date('2026-03-25T00:01:00');
-    const d2 = Math.ceil((open - new Date()) / 86400000);
+    const now = new Date();
+    const year = now.getFullYear();
+    let open = new Date(year, 2, 25, 0, 1, 0);
+    if (now > new Date(year, 9, 1)) open = new Date(year + 1, 2, 25, 0, 1, 0);
+    const d2 = Math.ceil((open - now) / 86400000);
+    const openStr = open.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
     const msg = d2 > 0
-      ? `Poe Lock opens in <strong>${d2} day${d2!==1?'s':''}</strong> — March 25 at 12:01 a.m.`
+      ? `Poe Lock opens in <strong>${d2} day${d2 !== 1 ? 's' : ''}</strong> (${openStr}) — AIS tracking resumes at season opening.`
       : 'Navigation season is <strong>open</strong> — AIS data loading shortly.';
     el.innerHTML = `
       <div style="padding:10px 0;">

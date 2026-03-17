@@ -1135,9 +1135,27 @@ body::before {
 
 <!-- ── Vessel ticker ── -->
 <div class="ticker-wrap">
-  <div class="ticker-badge">⚓ AIS</div>
+  <div class="ticker-badge">⚓ GREAT LAKES</div>
   <div class="ticker-scroll" id="ticker">
-    <span class="ticker-item">Great Lakes Gazette <em>loading vessel data…</em></span>
+    <span class="ticker-item">Soo Locks <em>opens March 25</em></span>
+    <span class="ticker-sep">✦</span>
+    <span class="ticker-item">NOAA Water Levels <em>updated daily</em></span>
+    <span class="ticker-sep">✦</span>
+    <span class="ticker-item">NWS Marine Forecasts <em>all five lakes</em></span>
+    <span class="ticker-sep">✦</span>
+    <span class="ticker-item">AIS Vessel Tracking <em>Soo Locks · Detroit · Port Huron · Duluth</em></span>
+    <span class="ticker-sep">✦</span>
+    <span class="ticker-item">Great Lakes Now <em>environmental news</em></span>
+    <span class="ticker-sep">✦</span>
+    <span class="ticker-item">Soo Locks <em>opens March 25</em></span>
+    <span class="ticker-sep">✦</span>
+    <span class="ticker-item">NOAA Water Levels <em>updated daily</em></span>
+    <span class="ticker-sep">✦</span>
+    <span class="ticker-item">NWS Marine Forecasts <em>all five lakes</em></span>
+    <span class="ticker-sep">✦</span>
+    <span class="ticker-item">AIS Vessel Tracking <em>Soo Locks · Detroit · Port Huron · Duluth</em></span>
+    <span class="ticker-sep">✦</span>
+    <span class="ticker-item">Great Lakes Now <em>environmental news</em></span>
     <span class="ticker-sep">✦</span>
   </div>
 </div>
@@ -1723,12 +1741,35 @@ function renderHistory(items) {
 // ── Ticker ────────────────────────────────────────────────────────────────────
 function updateTicker(reports, news) {
   const names = extractVesselNames([...reports, ...news]);
-  if (!names.length) return;
+
+  // Build season-aware ticker items
+  const now = new Date();
+  const year = now.getFullYear();
+  let seasonOpen = new Date(year, 2, 25, 0, 1, 0);
+  if (now > new Date(year, 9, 1)) seasonOpen = new Date(year + 1, 2, 25, 0, 1, 0);
+  const diff = Math.ceil((seasonOpen - now) / 86400000);
+  const isOpen = diff <= 0;
+  const openStr = seasonOpen.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+
+  const seasonItem = isOpen
+    ? `<span class="ticker-item">Navigation Season <em>open</em></span><span class="ticker-sep">✦</span>`
+    : `<span class="ticker-item">Soo Locks <em>opens ${openStr}</em></span><span class="ticker-sep">✦</span>`;
+
+  if (!names.length) {
+    // Off-season: update just the season item in the static ticker
+    const ticker = document.getElementById('ticker');
+    ticker.innerHTML = ticker.innerHTML.replace(
+      /<span class="ticker-item">Soo Locks[\s\S]*?<\/span><span class="ticker-sep">✦<\/span>/g,
+      seasonItem
+    );
+    return;
+  }
 
   const moves = ['inbound','outbound','upbound','downbound','at anchor','underway','departed'];
   const items = names.map(n =>
     `<span class="ticker-item">${n} <em>${moves[Math.floor(Math.random()*moves.length)]}</em></span><span class="ticker-sep">✦</span>`
   );
+  items.push(seasonItem);
   const doubled = [...items, ...items].join('');
   document.getElementById('ticker').innerHTML = doubled;
 }

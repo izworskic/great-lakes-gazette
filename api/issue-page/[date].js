@@ -20,16 +20,21 @@ function escapeHtml(s) {
     .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-function buildIssuePage(date, issue) {
+function buildIssuePage(date, issue, neighbors) {
   const dateObj   = new Date(date + 'T12:00:00Z');
   const dateLong  = dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
   const dateShort = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
-  // The brief is the main content
-  const briefHtml = (issue.brief || issue.html || '').toString();
-  const headlines = (issue.headlines || []).slice(0, 5);
-  const headline  = issue.headline || `Great Lakes Gazette — ${dateShort}`;
-  const summary   = (issue.summary || issue.lede || `${AUTHOR}'s Great Lakes Gazette daily maritime brief for ${dateLong}.`).slice(0, 200);
+  // The brief object lives at issue.brief and contains the actual rendered text + metadata
+  const briefObj  = issue.brief || {};
+  const briefHtml = (briefObj.brief || briefObj.html || issue.html || '').toString();
+  const headline  = (briefObj.headline || issue.headline || `Daily Maritime Brief for ${dateShort}`).trim();
+  const summary   = (briefObj.brief || briefObj.summary || issue.summary || `${AUTHOR}'s Great Lakes Gazette daily maritime brief for ${dateLong}.`)
+                      .replace(/<[^>]+>/g, '')
+                      .replace(/\s+/g, ' ')
+                      .slice(0, 200)
+                      .trim();
+  const spotlight = briefObj.spotlight && briefObj.spotlight !== 'none' ? briefObj.spotlight : null;
 
   const schema = JSON.stringify({
     '@context': 'https://schema.org',
@@ -140,6 +145,15 @@ h1{font-family:'IM Fell English',Georgia,serif;font-size:clamp(32px,5.5vw,52px);
 .also-by-list li{padding:10px 0;border-bottom:1px solid var(--ink-4)}
 .also-by-list a{font-family:'IM Fell English',Georgia,serif;font-size:17px;color:var(--ink);font-weight:700}
 .also-by-desc{font-size:14px;color:var(--ink-3);font-style:italic;margin-top:3px}
+.spotlight{background:rgba(122,32,0,.06);padding:22px;margin:34px 0;border-left:4px solid var(--rust)}
+.spotlight-label{font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--rust);margin-bottom:10px}
+.spotlight-text{font-style:italic;color:var(--ink-2);font-size:16px;line-height:1.7}
+.related-issues{margin-top:36px;padding-top:24px;border-top:1px solid var(--ink-4)}
+.related-label{font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--lake);margin-bottom:14px}
+.related-list{list-style:none;padding:0;display:grid;gap:14px}
+.related-list li{padding:10px 0;border-bottom:1px solid var(--ink-4)}
+.related-list a{font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:.12em;color:var(--lake);text-transform:uppercase}
+.related-headline{font-family:'IM Fell English',Georgia,serif;font-size:16px;color:var(--ink);margin-top:4px;line-height:1.3}
 .footer{border-top:3px double var(--ink);padding:24px;text-align:center;font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:.08em;color:var(--ink-3);margin-top:60px}
 .footer a{color:var(--lake)}
 </style></head><body>
@@ -154,6 +168,18 @@ h1{font-family:'IM Fell English',Georgia,serif;font-size:clamp(32px,5.5vw,52px);
   <p class="lede">${escapeHtml(summary)}</p>
   <div class="byline">By <a href="${AUTHOR_URL}">${escapeHtml(AUTHOR)}</a> &nbsp;&middot;&nbsp; Founder, Great Lakes Gazette &nbsp;&middot;&nbsp; ${escapeHtml(dateShort)}</div>
   <div class="brief">${briefHtml}</div>
+
+  ${spotlight ? `<div class="spotlight">
+    <div class="spotlight-label">Vessel Spotlight</div>
+    <div class="spotlight-text">${escapeHtml(spotlight)}</div>
+  </div>` : ''}
+
+  ${neighbors && neighbors.length > 0 ? `<div class="related-issues">
+    <div class="related-label">Recent Issues by ${escapeHtml(AUTHOR)}</div>
+    <ul class="related-list">
+      ${neighbors.map(n => `<li><a href="/issue/${n.date}">${n.label}</a><div class="related-headline">${escapeHtml(n.headline || 'Daily Maritime Brief')}</div></li>`).join('')}
+    </ul>
+  </div>` : ''}
 
   <div class="author-bio">
     <div class="author-bio-label">About the Author</div>
@@ -192,7 +218,36 @@ export default async function handler(req, res) {
     }
 
     const issue = typeof cached === 'string' ? JSON.parse(cached) : cached;
-    const html  = buildIssuePage(date, issue);
+
+    // Fetch the last 60 candidate dates and pick 4 nearest neighbors that exist
+    const now = new Date();
+    const candidates = [];
+    for (let i = 0; i < 60; i++) {
+      const d = new Date(now);
+      d.setDate(now.getDate() - i);
+      const ds = d.toISOString().slice(0, 10);
+      if (ds !== date) candidates.push(ds);
+    }
+    let neighbors = [];
+    try {
+      const keys     = candidates.map(d => `gazette:daily:${d}`);
+      const results  = await r.mget(...keys);
+      const existing = candidates.filter((_, i) => results[i] !== null);
+      neighbors      = existing.slice(0, 4).map((nd, idx) => {
+        const raw      = typeof results[candidates.indexOf(nd)] === 'string'
+                         ? JSON.parse(results[candidates.indexOf(nd)])
+                         : results[candidates.indexOf(nd)];
+        const headline = raw?.brief?.headline || null;
+        const dateObj  = new Date(nd + 'T12:00:00Z');
+        return {
+          date: nd,
+          label: dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
+          headline,
+        };
+      });
+    } catch(e) { /* non-fatal */ }
+
+    const html = buildIssuePage(date, issue, neighbors);
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=3600');

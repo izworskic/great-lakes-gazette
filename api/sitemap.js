@@ -13,21 +13,22 @@ function makeRedis() {
 export default async function handler(req, res) {
   const today = new Date().toISOString().slice(0, 10);
 
-  // Get all stored issue dates
+  // Get all stored issue dates — probe last 90 days with mget (fast on cold start)
   let dates = [];
   const r = makeRedis();
   if (r) {
     try {
-      let cursor = 0;
-      const keys = [];
-      do {
-        const result = await r.scan(cursor, { match: 'gazette:daily:*', count: 100 });
-        cursor = result[0];
-        keys.push(...result[1]);
-      } while (cursor !== 0);
-      dates = keys
-        .map(k => k.replace('gazette:daily:', ''))
-        .filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d))
+      const candidates = [];
+      const now = new Date();
+      for (let i = 0; i < 90; i++) {
+        const d = new Date(now);
+        d.setDate(now.getDate() - i);
+        candidates.push(d.toISOString().slice(0, 10));
+      }
+      const keys    = candidates.map(d => `gazette:daily:${d}`);
+      const results = await r.mget(...keys);
+      dates = candidates
+        .filter((_, i) => results[i] !== null)
         .sort((a, b) => b.localeCompare(a));
     } catch(e) {}
   }

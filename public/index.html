@@ -8,17 +8,18 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
 <!-- ── Primary SEO ── -->
-<title>Great Lakes Gazette — Daily Maritime News from the Fleet</title>
-<meta name="description" content="Daily Great Lakes shipping news: live vessel movements, port reports, NOAA water levels, and NWS marine forecasts. Published every morning from real data.">
+<title>Chris Izworski | Great Lakes Gazette — Daily Maritime News from the Fleet</title>
+<meta name="description" content="Chris Izworski's daily Great Lakes shipping news: live vessel movements, port reports, NOAA water levels, and NWS marine forecasts. Published every morning from real data.">
 <meta name="keywords" content="Great Lakes shipping, freighter tracking, vessel movements, Soo Locks, AIS tracking, Great Lakes news, maritime news, Lake Superior, Lake Michigan, Lake Huron, Lake Erie, Lake Ontario">
 <meta name="author" content="Chris Izworski">
+<link rel="author" href="https://chrisizworski.com">
 <link rel="canonical" href="https://great-lakes-gazette.vercel.app">
 <meta name="google-site-verification" content="9sGhMIXAruToaQRmDSE6ASbB-0hoIrcRN1JVj8uKwuQ" />
 
 <!-- ── Open Graph ── -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Great Lakes Gazette">
-<meta property="og:title" content="Great Lakes Gazette — Daily Maritime News from the Fleet">
+<meta property="og:title" content="Chris Izworski | Great Lakes Gazette — Daily Maritime News from the Fleet">
 <meta property="og:description" content="Daily Great Lakes shipping news: live vessel movements, port reports, NOAA water levels, and NWS marine forecasts. Published every morning from real data.">
 <meta property="og:url" content="https://great-lakes-gazette.vercel.app">
 <meta property="og:image" content="https://great-lakes-gazette.vercel.app/og-image.png">
@@ -27,7 +28,7 @@
 <!-- ── Twitter Card ── -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@izworskic">
-<meta name="twitter:title" content="Great Lakes Gazette — Daily Maritime News from the Fleet">
+<meta name="twitter:title" content="Chris Izworski | Great Lakes Gazette — Daily Maritime News from the Fleet">
 <meta name="twitter:description" content="Daily Great Lakes shipping news: live vessel movements, port reports, NOAA water levels, and NWS marine forecasts.">
 <meta name="twitter:image" content="https://great-lakes-gazette.vercel.app/og-image.png">
 
@@ -1495,9 +1496,9 @@ function updateHeadMeta(brief) {
 
   // OG
   const setMeta = (sel, val) => { const el = document.querySelector(sel); if (el) el.setAttribute('content', val); };
-  setMeta('meta[property="og:title"]',       title);
+  setMeta('meta[property="og:title"]',       'Chris Izworski: ' + title);
   setMeta('meta[property="og:description"]', desc);
-  setMeta('meta[name="twitter:title"]',      title);
+  setMeta('meta[name="twitter:title"]',      'Chris Izworski: ' + title);
   setMeta('meta[name="twitter:description"]',desc);
   setMeta('meta[name="description"]',        desc);
 

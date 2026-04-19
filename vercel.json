@@ -12,7 +12,7 @@
     },
     {
       "source": "/issue/:date",
-      "destination": "/issue/index.html"
+      "destination": "/api/issue-page/[date]"
     },
     {
       "source": "/api/(.*)",

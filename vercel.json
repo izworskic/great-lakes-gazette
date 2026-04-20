@@ -7,6 +7,10 @@
   ],
   "rewrites": [
     {
+      "source": "/chris-izworski",
+      "destination": "/api/chris-izworski"
+    },
+    {
       "source": "/sitemap.xml",
       "destination": "/api/sitemap"
     },

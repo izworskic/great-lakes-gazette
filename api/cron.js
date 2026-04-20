@@ -65,15 +65,15 @@ export default async function handler(req, res) {
 
     // Submit new issue URL to IndexNow (Bing, Yandex, Seznam)
     try {
-      const issueUrl = `https://great-lakes-gazette.vercel.app/issue/${today}`;
+      const issueUrl = `https://gazette.chrisizworski.com/issue/${today}`;
       const inResp = await fetch('https://api.indexnow.org/indexnow', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json; charset=utf-8' },
         body: JSON.stringify({
-          host:        'great-lakes-gazette.vercel.app',
+          host:        'gazette.chrisizworski.com',
           key:         '0476a3c706866ff2744d876891a8d782',
-          keyLocation: 'https://great-lakes-gazette.vercel.app/0476a3c706866ff2744d876891a8d782.txt',
-          urlList:     ['https://great-lakes-gazette.vercel.app', issueUrl],
+          keyLocation: 'https://gazette.chrisizworski.com/0476a3c706866ff2744d876891a8d782.txt',
+          urlList:     ['https://gazette.chrisizworski.com', issueUrl],
         })
       });
       log.push(`[${ts()}] IndexNow submitted — HTTP ${inResp.status}`);

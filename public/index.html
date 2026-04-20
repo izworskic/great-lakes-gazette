@@ -13,7 +13,7 @@
 <meta name="keywords" content="Great Lakes shipping, freighter tracking, vessel movements, Soo Locks, AIS tracking, Great Lakes news, maritime news, Lake Superior, Lake Michigan, Lake Huron, Lake Erie, Lake Ontario">
 <meta name="author" content="Chris Izworski">
 <link rel="author" href="https://chrisizworski.com">
-<link rel="canonical" href="https://great-lakes-gazette.vercel.app">
+<link rel="canonical" href="https://gazette.chrisizworski.com">
 <meta name="google-site-verification" content="9sGhMIXAruToaQRmDSE6ASbB-0hoIrcRN1JVj8uKwuQ" />
 
 <!-- ── Open Graph ── -->
@@ -21,8 +21,8 @@
 <meta property="og:site_name" content="Great Lakes Gazette">
 <meta property="og:title" content="Chris Izworski | Great Lakes Gazette — Daily Maritime News from the Fleet">
 <meta property="og:description" content="Daily Great Lakes shipping news: live vessel movements, port reports, NOAA water levels, and NWS marine forecasts. Published every morning from real data.">
-<meta property="og:url" content="https://great-lakes-gazette.vercel.app">
-<meta property="og:image" content="https://great-lakes-gazette.vercel.app/og-image.png">
+<meta property="og:url" content="https://gazette.chrisizworski.com">
+<meta property="og:image" content="https://gazette.chrisizworski.com/og-image.png">
 <meta property="og:locale" content="en_US">
 
 <!-- ── Twitter Card ── -->
@@ -30,7 +30,7 @@
 <meta name="twitter:site" content="@izworskic">
 <meta name="twitter:title" content="Chris Izworski | Great Lakes Gazette — Daily Maritime News from the Fleet">
 <meta name="twitter:description" content="Daily Great Lakes shipping news: live vessel movements, port reports, NOAA water levels, and NWS marine forecasts.">
-<meta name="twitter:image" content="https://great-lakes-gazette.vercel.app/og-image.png">
+<meta name="twitter:image" content="https://gazette.chrisizworski.com/og-image.png">
 
 <!-- ── Favicon (SVG emoji, no file needed) ── -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚓</text></svg>">
@@ -42,10 +42,10 @@
   "@graph": [
     {
       "@type": "Dataset",
-      "@id": "https://great-lakes-gazette.vercel.app/#dataset",
+      "@id": "https://gazette.chrisizworski.com/#dataset",
       "name": "Great Lakes Gazette — Daily Maritime and Conditions Data",
       "description": "Daily aggregated Great Lakes maritime data: AIS vessel movements and Soo Locks passages, NOAA water levels for all five Great Lakes, NWS marine forecasts, port reports, and environmental conditions. Published each morning from Bay City, Michigan.",
-      "url": "https://great-lakes-gazette.vercel.app/",
+      "url": "https://gazette.chrisizworski.com/",
       "creator": {
         "@type": "Person",
         "name": "Chris Izworski",
@@ -72,16 +72,16 @@
       "distribution": {
         "@type": "DataDownload",
         "encodingFormat": "application/json",
-        "contentUrl": "https://great-lakes-gazette.vercel.app/api/generate",
+        "contentUrl": "https://gazette.chrisizworski.com/api/generate",
         "description": "JSON API returning daily Great Lakes maritime brief and conditions data"
       },
       "keywords": ["Great Lakes shipping", "Soo Locks", "Great Lakes water levels", "maritime news", "vessel tracking AIS", "Lake Huron", "Lake Superior", "Saginaw Bay", "Great Lakes maritime", "freighter tracking Michigan"]
     },
     {
       "@type": "NewsMediaOrganization",
-      "@id": "https://great-lakes-gazette.vercel.app/#organization",
+      "@id": "https://gazette.chrisizworski.com/#organization",
       "name": "Great Lakes Gazette",
-      "url": "https://great-lakes-gazette.vercel.app",
+      "url": "https://gazette.chrisizworski.com",
       "description": "Daily maritime newsletter covering Great Lakes vessel movements, port reports, water levels, and lake conditions.",
       "founder": { "@type": "Person", "name": "Chris Izworski", "url": "https://chrisizworski.com" },
       "foundingDate": "2026",
@@ -90,11 +90,11 @@
     },
     {
       "@type": "WebPage",
-      "@id": "https://great-lakes-gazette.vercel.app/#webpage",
-      "url": "https://great-lakes-gazette.vercel.app",
+      "@id": "https://gazette.chrisizworski.com/#webpage",
+      "url": "https://gazette.chrisizworski.com",
       "name": "Great Lakes Gazette — Daily Maritime News from the Fleet",
       "description": "Daily Great Lakes shipping news: live vessel movements, port reports, NOAA water levels, and NWS marine forecasts.",
-      "publisher": { "@id": "https://great-lakes-gazette.vercel.app/#organization" },
+      "publisher": { "@id": "https://gazette.chrisizworski.com/#organization" },
       "inLanguage": "en-US"
     }
   ]
@@ -1442,7 +1442,7 @@ async function load() {
 
   try {
     const today = new Date().toISOString().slice(0, 10);
-    const r = await fetch(`https://great-lakes-gazette.vercel.app/api/generate?bust=${today}`, { signal: ctrl.signal });
+    const r = await fetch(`https://gazette.chrisizworski.com/api/generate?bust=${today}`, { signal: ctrl.signal });
     clearTimeout(timer);
     const d = await r.json();
     if (!d.success) throw new Error(d.error || 'Fetch failed');
@@ -1474,7 +1474,7 @@ async function load() {
 // Weather loads separately — doesn't block the main feed
 async function loadWeather() {
   try {
-    const r = await fetch('https://great-lakes-gazette.vercel.app/api/weather');
+    const r = await fetch('https://gazette.chrisizworski.com/api/weather');
     const d = await r.json();
     if (d.success && d.weather) renderMarineWeather(d.weather);
   } catch(e) {
@@ -1891,7 +1891,7 @@ async function loadArchive() {
   const el = document.getElementById('archiveArea');
   if (!el) return;
   try {
-    const r = await fetch('https://great-lakes-gazette.vercel.app/api/issues');
+    const r = await fetch('https://gazette.chrisizworski.com/api/issues');
     const d = await r.json();
     if (!d.success || !d.dates?.length) { el.innerHTML = ''; return; }
 

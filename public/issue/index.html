@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Chris Izworski | Great Lakes Gazette</title>
 <meta name="description" content="Great Lakes Gazette daily maritime brief.">
-<link rel="canonical" id="canonical" href="https://great-lakes-gazette.vercel.app">
+<link rel="canonical" id="canonical" href="https://gazette.chrisizworski.com">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Great Lakes Gazette">
 <meta property="og:title" id="og-title" content="Great Lakes Gazette">
 <meta property="og:description" id="og-desc" content="Daily Great Lakes maritime news.">
-<meta property="og:image" content="https://great-lakes-gazette.vercel.app/og-image.png">
+<meta property="og:image" content="https://gazette.chrisizworski.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@izworskic">
 <meta name="twitter:title" id="tw-title" content="Great Lakes Gazette">
 <meta name="twitter:description" id="tw-desc" content="Daily Great Lakes maritime news.">
-<meta name="twitter:image" content="https://great-lakes-gazette.vercel.app/og-image.png">
+<meta name="twitter:image" content="https://gazette.chrisizworski.com/og-image.png">
 <meta name="author" content="Chris Izworski">
 <link rel="author" href="https://chrisizworski.com">
 <link rel="me" href="https://chrisizworski.com">
@@ -66,7 +66,7 @@ body { background:var(--paper); color:var(--ink-2); font-family:'Source Serif 4'
 </head>
 <body>
 <div class="wrap">
-  <a class="back" href="https://great-lakes-gazette.vercel.app">← Great Lakes Gazette</a>
+  <a class="back" href="https://gazette.chrisizworski.com">← Great Lakes Gazette</a>
 
   <hr class="mast-rule">
   <hr class="mast-rule-2">
@@ -84,12 +84,12 @@ async function loadIssue() {
 
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     document.getElementById('content').innerHTML =
-      `<div class="error-msg"><strong>Invalid date.</strong><br><a href="https://great-lakes-gazette.vercel.app">Return to Gazette →</a></div>`;
+      `<div class="error-msg"><strong>Invalid date.</strong><br><a href="https://gazette.chrisizworski.com">Return to Gazette →</a></div>`;
     return;
   }
 
   try {
-    const r = await fetch(`https://great-lakes-gazette.vercel.app/api/issue/${date}`);
+    const r = await fetch(`https://gazette.chrisizworski.com/api/issue/${date}`);
     if (!r.ok) throw new Error(`Issue not found for ${date}`);
     const d = await r.json();
     const brief = d.brief;
@@ -103,7 +103,7 @@ async function loadIssue() {
     document.getElementById('og-desc').setAttribute('content', firstPara);
     document.getElementById('tw-title').setAttribute('content', title);
     document.getElementById('tw-desc').setAttribute('content', firstPara);
-    document.getElementById('canonical').setAttribute('href', `https://great-lakes-gazette.vercel.app/issue/${date}`);
+    document.getElementById('canonical').setAttribute('href', `https://gazette.chrisizworski.com/issue/${date}`);
 
     // JSON-LD NewsArticle
     document.getElementById('ld-json').textContent = JSON.stringify({
@@ -117,11 +117,11 @@ async function loadIssue() {
       "publisher": {
         "@type": "NewsMediaOrganization",
         "name": "Great Lakes Gazette",
-        "url": "https://great-lakes-gazette.vercel.app",
-        "logo": { "@type": "ImageObject", "url": "https://great-lakes-gazette.vercel.app/og-image.png" }
+        "url": "https://gazette.chrisizworski.com",
+        "logo": { "@type": "ImageObject", "url": "https://gazette.chrisizworski.com/og-image.png" }
       },
-      "image": "https://great-lakes-gazette.vercel.app/og-image.png",
-      "url": `https://great-lakes-gazette.vercel.app/issue/${date}`,
+      "image": "https://gazette.chrisizworski.com/og-image.png",
+      "url": `https://gazette.chrisizworski.com/issue/${date}`,
       "articleSection": "Maritime News",
       "keywords": "Great Lakes, shipping, vessel movements, maritime news, freighters"
     });
@@ -146,12 +146,12 @@ async function loadIssue() {
       <div class="brief-body">${paras}${spotlight}</div>
       <div class="issue-footer">
         <p>Great Lakes Gazette is published daily from live data — AIS vessel tracking, NOAA water levels, and NWS marine forecasts.<br>
-        Written by <a href="https://chrisizworski.com">Chris Izworski</a> · <a href="https://freighterviewfarms.com">Freighter View Farms</a> · <a href="https://great-lakes-gazette.vercel.app">All Issues →</a></p>
+        Written by <a href="https://chrisizworski.com">Chris Izworski</a> · <a href="https://freighterviewfarms.com">Freighter View Farms</a> · <a href="https://gazette.chrisizworski.com">All Issues →</a></p>
       </div>`;
 
   } catch(e) {
     document.getElementById('content').innerHTML =
-      `<div class="error-msg"><strong>Issue not available.</strong><br>${e.message}<br><br><a href="https://great-lakes-gazette.vercel.app">Return to Gazette →</a></div>`;
+      `<div class="error-msg"><strong>Issue not available.</strong><br>${e.message}<br><br><a href="https://gazette.chrisizworski.com">Return to Gazette →</a></div>`;
   }
 }
 

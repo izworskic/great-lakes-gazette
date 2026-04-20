@@ -39,7 +39,7 @@ export default async function handler(req, res) {
   // Build URL entries
   const issueUrls = dates.map(date => `
   <url>
-    <loc>https://great-lakes-gazette.vercel.app/issue/${date}</loc>
+    <loc>https://gazette.chrisizworski.com/issue/${date}</loc>
     <lastmod>${date}</lastmod>
     <changefreq>never</changefreq>
     <priority>0.8</priority>
@@ -49,7 +49,7 @@ export default async function handler(req, res) {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
-    <loc>https://great-lakes-gazette.vercel.app</loc>
+    <loc>https://gazette.chrisizworski.com</loc>
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>

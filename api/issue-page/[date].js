@@ -3,7 +3,7 @@
 
 import { Redis } from '@upstash/redis';
 
-const SITE       = 'https://great-lakes-gazette.vercel.app';
+const SITE       = 'https://gazette.chrisizworski.com';
 const AUTHOR     = 'Chris Izworski';
 const AUTHOR_URL = 'https://chrisizworski.com';
 

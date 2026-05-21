@@ -45,6 +45,14 @@ export default async function handler(req, res) {
     <priority>0.8</priority>
   </url>`).join('');
 
+  const archivePageUrl = `
+  <url>
+    <loc>https://gazette.chrisizworski.com/archive</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>`;
+
   const archiveUrl = `
   <url>
     <loc>https://gazette.chrisizworski.com/chris-izworski</loc>
@@ -69,7 +77,7 @@ export default async function handler(req, res) {
       <news:publication_date>${today}</news:publication_date>
       <news:title>Great Lakes Gazette — Daily Maritime News from the Fleet</news:title>
     </news:news>
-  </url>${archiveUrl}${issueUrls}
+  </url>${archiveUrl}${archivePageUrl}${issueUrls}
 </urlset>`;
 
   res.setHeader('Content-Type', 'application/xml; charset=utf-8');

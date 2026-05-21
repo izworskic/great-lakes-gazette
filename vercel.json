@@ -23,6 +23,10 @@
       "destination": "/api/issue-page/[date]"
     },
     {
+      "source": "/archive",
+      "destination": "/api/archive"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api/$1"
     }

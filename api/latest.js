@@ -1,4 +1,4 @@
-// GET /api/latest — returns the most recently generated brief from KV store
+// GET /api/latest: returns the most recently generated brief from KV store
 // Falls back to generating fresh if none cached
 // For now: just triggers a fresh generate and returns it
 import { fetchAllData } from '../lib/scraper.js';

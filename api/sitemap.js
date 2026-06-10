@@ -36,10 +36,12 @@ async function renderRss(res, r) {
   const items = issues.map(({ date, data }) => {
     let issue = data;
     if (typeof issue === 'string') { try { issue = JSON.parse(issue); } catch (e) { issue = {}; } }
+    // stored payload is { data, brief: { headline, dateline, brief, ... }, generated_at }
+    const b = (issue && issue.brief && typeof issue.brief === 'object') ? issue.brief : (issue || {});
     const url = `https://gazette.chrisizworski.com/issue/${date}`;
-    const rawHeadline = issue && issue.headline;
+    const rawHeadline = b.headline;
     const headline = escRss(typeof rawHeadline === 'string' && rawHeadline ? rawHeadline : `Great Lakes Gazette: ${date}`);
-    const rawBrief = issue && (issue.brief != null ? issue.brief : issue.dateline);
+    const rawBrief = b.brief != null ? b.brief : b.dateline;
     const briefStr = typeof rawBrief === 'string' ? rawBrief : '';
     const brief = escRss(briefStr.slice(0, 400));
     const pub = new Date(date + 'T12:00:00Z').toUTCString();

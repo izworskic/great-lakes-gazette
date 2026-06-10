@@ -35,19 +35,19 @@ export default async function handler(req, res) {
     log.push(`[${ts()}] Cron starting — Great Lakes Gazette daily run`);
 
     const data = await fetchAllData();
-    log.push(`[${ts()}] Data fetched — ${data.portReports.length} port reports, ${data.shippingNews.length} news items`);
+    log.push(`[${ts()}] Data fetched: ${data.portReports.length} port reports, ${data.shippingNews.length} news items`);
 
     const aisActive = (data.aisPassages || []).filter(p => p.status === 'ok' && p.vessels.length > 0).length;
     log.push(`[${ts()}] AIS: ${aisActive} active ports`);
 
     const brief = await generateBrief(data);
-    log.push(`[${ts()}] Brief generated — "${brief.headline}" (Issue ${brief.issueNumber})`);
+    log.push(`[${ts()}] Brief generated: "${brief.headline}" (Issue ${brief.issueNumber})`);
 
-    // Write to Redis so /api/generate returns this instantly — no duplicate Anthropic call
+    // Write to Redis so /api/generate returns this instantly, no duplicate Anthropic call
     const r = makeRedis();
     if (r) {
       const today    = todayUTC();
-      const ttl      = 30 * 24 * 60 * 60; // 30 days — keeps issues alive for permalinks
+      const ttl      = 30 * 24 * 60 * 60; // 30 days, keeps issues alive for permalinks
       const redisKey = `gazette:daily:${today}`;
       const payload  = { data, brief, generated_at: new Date().toISOString() };
       try {

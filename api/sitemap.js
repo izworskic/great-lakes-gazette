@@ -37,8 +37,11 @@ async function renderRss(res, r) {
     let issue = data;
     if (typeof issue === 'string') { try { issue = JSON.parse(issue); } catch (e) { issue = {}; } }
     const url = `https://gazette.chrisizworski.com/issue/${date}`;
-    const headline = escRss((issue && issue.headline) || `Great Lakes Gazette: ${date}`);
-    const brief = escRss(((issue && (issue.brief || issue.dateline)) || '').slice(0, 400));
+    const rawHeadline = issue && issue.headline;
+    const headline = escRss(typeof rawHeadline === 'string' && rawHeadline ? rawHeadline : `Great Lakes Gazette: ${date}`);
+    const rawBrief = issue && (issue.brief != null ? issue.brief : issue.dateline);
+    const briefStr = typeof rawBrief === 'string' ? rawBrief : '';
+    const brief = escRss(briefStr.slice(0, 400));
     const pub = new Date(date + 'T12:00:00Z').toUTCString();
     return `    <item>\n      <title>${headline}</title>\n      <link>${url}</link>\n      <guid isPermaLink="true">${url}</guid>\n      <pubDate>${pub}</pubDate>\n      <dc:creator>Chris Izworski</dc:creator>\n      <description>${brief}</description>\n    </item>`;
   }).join('\n');

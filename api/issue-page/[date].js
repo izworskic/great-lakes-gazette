@@ -1,4 +1,4 @@
-// GET /issue/:date (rewritten to this) — server-rendered HTML for each daily issue
+// GET /issue/:date (rewritten to this): server-rendered HTML for each daily issue
 // Pulls brief from Redis and returns full SEO-optimized HTML.
 
 import { Redis } from '@upstash/redis';
@@ -84,7 +84,7 @@ function buildIssuePage(date, issue, neighbors) {
 <link rel="me" href="https://troutdaily.chrisizworski.com">
 <link rel="me" href="https://trout.chrisizworski.com">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${escapeHtml(AUTHOR)}: ${escapeHtml(headline)} — Great Lakes Gazette ${escapeHtml(dateShort)}</title>
+<title>${escapeHtml(AUTHOR)}: ${escapeHtml(headline)} | Great Lakes Gazette ${escapeHtml(dateShort)}</title>
 <meta name="description" content="${escapeHtml(summary)}">
 <meta name="author" content="${escapeHtml(AUTHOR)}">
 <meta name="keywords" content="Great Lakes shipping, vessel movements, Soo Locks, AIS tracking, NOAA water levels, ${escapeHtml(dateShort)}, Chris Izworski">

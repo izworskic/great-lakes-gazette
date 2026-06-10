@@ -12,7 +12,7 @@
     },
     {
       "source": "/feed.xml",
-      "destination": "/api/feed"
+      "destination": "/api/sitemap?format=rss"
     },
     {
       "source": "/sitemap.xml",

@@ -10,7 +10,48 @@ function makeRedis() {
   return new Redis({ url, token });
 }
 
+
+const escRss = (x = '') =>
+  String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+async function renderRss(res, r) {
+  let issues = [];
+  if (r) {
+    try {
+      const candidates = [];
+      const now = new Date();
+      for (let i = 0; i < 45; i++) {
+        const d = new Date(now);
+        d.setDate(now.getDate() - i);
+        candidates.push(d.toISOString().slice(0, 10));
+      }
+      const keys = candidates.map(d => `gazette:daily:${d}`);
+      const results = await r.mget(...keys);
+      issues = candidates
+        .map((date, i) => ({ date, data: results[i] }))
+        .filter(x => x.data !== null)
+        .slice(0, 30);
+    } catch (e) {}
+  }
+  const items = issues.map(({ date, data }) => {
+    let issue = data;
+    if (typeof issue === 'string') { try { issue = JSON.parse(issue); } catch (e) { issue = {}; } }
+    const url = `https://gazette.chrisizworski.com/issue/${date}`;
+    const headline = escRss((issue && issue.headline) || `Great Lakes Gazette: ${date}`);
+    const brief = escRss(((issue && (issue.brief || issue.dateline)) || '').slice(0, 400));
+    const pub = new Date(date + 'T12:00:00Z').toUTCString();
+    return `    <item>\n      <title>${headline}</title>\n      <link>${url}</link>\n      <guid isPermaLink="true">${url}</guid>\n      <pubDate>${pub}</pubDate>\n      <dc:creator>Chris Izworski</dc:creator>\n      <description>${brief}</description>\n    </item>`;
+  }).join('\n');
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">\n  <channel>\n    <title>Great Lakes Gazette</title>\n    <link>https://gazette.chrisizworski.com/</link>\n    <atom:link href="https://gazette.chrisizworski.com/feed.xml" rel="self" type="application/rss+xml" />\n    <description>Daily Great Lakes freighter and vessel-movement brief: bulk carriers, tankers, and tug-barge traffic across all five lakes, written from Bay City by Chris Izworski.</description>\n    <language>en-us</language>\n    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>\n${items}\n  </channel>\n</rss>`;
+  res.setHeader('Content-Type', 'application/rss+xml; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=300');
+  return res.status(200).send(xml);
+}
+
 export default async function handler(req, res) {
+  if (req.query && req.query.format === 'rss') {
+    return renderRss(res, makeRedis());
+  }
   const today = new Date().toISOString().slice(0, 10);
 
   // Get all stored issue dates: probe last 90 days with mget (fast on cold start)

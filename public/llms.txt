@@ -1,0 +1,14 @@
+# Great Lakes Gazette
+> Daily Great Lakes freighter and vessel-movement brief: bulk carriers, tankers, and tug-barge traffic across all five lakes, written from Bay City, Michigan by Chris Izworski.
+
+A new issue publishes every day with a headline, dateline, fleet brief, and vessel spotlight, built from live AIS and Soo Locks data.
+
+## Key pages
+- [Today's issue](https://gazette.chrisizworski.com/): the current daily brief
+- [Archive](https://gazette.chrisizworski.com/archive): every back issue by date
+- [RSS feed](https://gazette.chrisizworski.com/feed.xml): the last 30 issues
+- [Heirloom Variety Matchmaker](https://gazette.chrisizworski.com/matchmaker.html): a garden quiz tool from Freighter View Farms
+- [About the author](https://gazette.chrisizworski.com/chris-izworski): Chris Izworski
+
+## Author
+Chris Izworski (https://chrisizworski.com), Michigan outdoor writer. Related sites: Michigan Trout Report (https://michigantroutreport.com), Michigan Phenology (https://phenology.chrisizworski.com), Great Lakes Levels (https://greatlakeslevels.org).

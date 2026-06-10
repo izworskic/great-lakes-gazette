@@ -3,8 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Heirloom Variety Matchmaker — Freighter View Farms</title>
-<meta name="description" content="Answer 5 questions about your garden — get 3 perfectly matched heirloom varieties with seed saving instructions. Powered by real horticultural knowledge.">
+<title>Heirloom Variety Matchmaker: Find Your Perfect Garden Varieties | Freighter View Farms</title>
+<link rel="canonical" href="https://gazette.chrisizworski.com/matchmaker.html">
+<meta property="og:title" content="Heirloom Variety Matchmaker by Chris Izworski">
+<meta property="og:description" content="Answer 5 questions about your garden and get 3 matched heirloom varieties with seed saving instructions.">
+<meta property="og:url" content="https://gazette.chrisizworski.com/matchmaker.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://gazette.chrisizworski.com/matchmaker-og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gazette.chrisizworski.com/matchmaker-og.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://gazette.chrisizworski.com/matchmaker.html#app","name":"Heirloom Variety Matchmaker","url":"https://gazette.chrisizworski.com/matchmaker.html","applicationCategory":"LifestyleApplication","operatingSystem":"Web","description":"A five-question garden quiz that matches you with three heirloom varieties suited to your zone, sun, space, experience, and goals, with seed saving instructions.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@id":"https://chrisizworski.com/#person"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Freighter View Farms","item":"https://freighterviewfarms.com/"},{"@type":"ListItem","position":2,"name":"Heirloom Variety Matchmaker","item":"https://gazette.chrisizworski.com/matchmaker.html"}]},{"@type":"Person","@id":"https://chrisizworski.com/#person","name":"Chris Izworski","url":"https://chrisizworski.com"}]}</script>
+<meta name="description" content="Answer 5 questions about your garden: get 3 perfectly matched heirloom varieties with seed saving instructions. Powered by real horticultural knowledge.">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f7f5f0;color:#2a2a2a;min-height:100vh}
@@ -80,8 +90,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="opts">
       <button class="opt" data-q="0" data-v="Zone 3–4 (northern Minnesota, Upper Michigan peninsula, very short season)">Zone 3–4</button>
       <button class="opt" data-q="0" data-v="Zone 5 (southern Michigan, northern Ohio, 130–150 frost-free days)">Zone 5</button>
-      <button class="opt" data-q="0" data-v="Zone 6a — Bay City, Michigan area (155–165 frost-free days, last frost mid-May, first frost mid-October)">Zone 6a (Bay City area)</button>
-      <button class="opt" data-q="0" data-v="Zone 6b–7 (southern Ohio, Indiana, Kentucky border — long season)">Zone 6b–7</button>
+      <button class="opt" data-q="0" data-v="Zone 6a: Bay City, Michigan area (155–165 frost-free days, last frost mid-May, first frost mid-October)">Zone 6a (Bay City area)</button>
+      <button class="opt" data-q="0" data-v="Zone 6b–7 (southern Ohio, Indiana, Kentucky border: long season)">Zone 6b–7</button>
     </div>
     <div class="nav"><button class="btn-next" id="next-0" disabled onclick="advance(0)">Continue →</button></div>
   </div>
@@ -90,10 +100,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="q-label">Question 2 of 5</div>
     <div class="q-title">How much direct sun does your garden get daily?</div>
     <div class="opts">
-      <button class="opt" data-q="1" data-v="Full sun — 8+ hours of direct sun each day">Full sun (8+ hrs)</button>
-      <button class="opt" data-q="1" data-v="Mostly sunny — 6–8 hours direct sun, some light shade in morning or late afternoon">Mostly sunny (6–8 hrs)</button>
-      <button class="opt" data-q="1" data-v="Partial shade — 4–6 hours direct sun, afternoon shade from trees or buildings">Partial shade (4–6 hrs)</button>
-      <button class="opt" data-q="1" data-v="Mostly shaded — under 4 hours direct sun daily">Mostly shaded</button>
+      <button class="opt" data-q="1" data-v="Full sun: 8+ hours of direct sun each day">Full sun (8+ hrs)</button>
+      <button class="opt" data-q="1" data-v="Mostly sunny: 6–8 hours direct sun, some light shade in morning or late afternoon">Mostly sunny (6–8 hrs)</button>
+      <button class="opt" data-q="1" data-v="Partial shade: 4–6 hours direct sun, afternoon shade from trees or buildings">Partial shade (4–6 hrs)</button>
+      <button class="opt" data-q="1" data-v="Mostly shaded: under 4 hours direct sun daily">Mostly shaded</button>
     </div>
     <div class="nav">
       <button class="btn-back" onclick="back(1)">← Back</button>
@@ -105,10 +115,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="q-label">Question 3 of 5</div>
     <div class="q-title">Describe your growing space.</div>
     <div class="opts">
-      <button class="opt" data-q="2" data-v="Large in-ground garden, 100 square feet or more — room for sprawling plants">Large in-ground (100+ sq ft)</button>
-      <button class="opt" data-q="2" data-v="Medium in-ground garden, 25–100 square feet — moderate space">Medium in-ground (25–100 sq ft)</button>
-      <button class="opt" data-q="2" data-v="Raised beds or a few large containers — limited horizontal space">Raised beds / containers</button>
-      <button class="opt" data-q="2" data-v="Very small space — balcony or patio with only a few pots">Balcony / small patio</button>
+      <button class="opt" data-q="2" data-v="Large in-ground garden, 100 square feet or more: room for sprawling plants">Large in-ground (100+ sq ft)</button>
+      <button class="opt" data-q="2" data-v="Medium in-ground garden, 25–100 square feet: moderate space">Medium in-ground (25–100 sq ft)</button>
+      <button class="opt" data-q="2" data-v="Raised beds or a few large containers: limited horizontal space">Raised beds / containers</button>
+      <button class="opt" data-q="2" data-v="Very small space: balcony or patio with only a few pots">Balcony / small patio</button>
     </div>
     <div class="nav">
       <button class="btn-back" onclick="back(2)">← Back</button>
@@ -120,10 +130,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="q-label">Question 4 of 5</div>
     <div class="q-title">How experienced are you as a gardener?</div>
     <div class="opts">
-      <button class="opt" data-q="3" data-v="Beginner — this is my first or second season growing vegetables">Beginner (1st–2nd season)</button>
-      <button class="opt" data-q="3" data-v="Intermediate — a few years growing vegetables, comfortable with basic seed starting">Intermediate (a few years)</button>
-      <button class="opt" data-q="3" data-v="Experienced — comfortable starting seeds, saving seed, and managing multiple varieties at once">Experienced gardener</button>
-      <button class="opt" data-q="3" data-v="Expert — I breed plants, maintain multiple variety lines, and understand isolation distances and crossing risk">Expert / variety keeper</button>
+      <button class="opt" data-q="3" data-v="Beginner: this is my first or second season growing vegetables">Beginner (1st–2nd season)</button>
+      <button class="opt" data-q="3" data-v="Intermediate: a few years growing vegetables, comfortable with basic seed starting">Intermediate (a few years)</button>
+      <button class="opt" data-q="3" data-v="Experienced: comfortable starting seeds, saving seed, and managing multiple varieties at once">Experienced gardener</button>
+      <button class="opt" data-q="3" data-v="Expert: I breed plants, maintain multiple variety lines, and understand isolation distances and crossing risk">Expert / variety keeper</button>
     </div>
     <div class="nav">
       <button class="btn-back" onclick="back(3)">← Back</button>
@@ -135,10 +145,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="q-label">Question 5 of 5</div>
     <div class="q-title">What's your primary goal for this season?</div>
     <div class="opts">
-      <button class="opt" data-q="4" data-v="Best flavor — I want the most exceptional-tasting tomatoes, beans, peppers, or other vegetables possible">Best possible flavor</button>
-      <button class="opt" data-q="4" data-v="Seed saving — I want to reliably save seed each season and build my own seed library">Seed saving & seed library</button>
-      <button class="opt" data-q="4" data-v="High yield — I want the most productive variety per square foot, good for canning and preserving">Maximum yield</button>
-      <button class="opt" data-q="4" data-v="Rare and unusual — I want obscure, heirloom, conversation-starting varieties I can't find at a hardware store">Rare & unusual varieties</button>
+      <button class="opt" data-q="4" data-v="Best flavor: I want the most exceptional-tasting tomatoes, beans, peppers, or other vegetables possible">Best possible flavor</button>
+      <button class="opt" data-q="4" data-v="Seed saving: I want to reliably save seed each season and build my own seed library">Seed saving & seed library</button>
+      <button class="opt" data-q="4" data-v="High yield: I want the most productive variety per square foot, good for canning and preserving">Maximum yield</button>
+      <button class="opt" data-q="4" data-v="Rare and unusual: I want obscure, heirloom, conversation-starting varieties I can't find at a hardware store">Rare & unusual varieties</button>
     </div>
     <div class="nav">
       <button class="btn-back" onclick="back(4)">← Back</button>
@@ -209,7 +219,7 @@ async function getRecommendations() {
 4. Experience level: ${answers[3]}
 5. Primary goal: ${answers[4]}
 
-Recommend exactly 3 heirloom varieties that are the strongest possible match for this specific combination of conditions. Respond ONLY with a valid JSON array — no text before or after, no markdown fences:
+Recommend exactly 3 heirloom varieties that are the strongest possible match for this specific combination of conditions. Respond ONLY with a valid JSON array: no text before or after, no markdown fences:
 
 [
   {
@@ -222,7 +232,7 @@ Recommend exactly 3 heirloom varieties that are the strongest possible match for
 
 Rules you must follow:
 - Only recommend real, historically documented heirloom varieties that actually exist
-- Match the zone, sun, space, and experience level carefully — do not recommend vining plants for container growers, or difficult varieties for beginners
+- Match the zone, sun, space, and experience level carefully: do not recommend vining plants for container growers, or difficult varieties for beginners
 - For seed saving goals: favor self-pollinating varieties that are easy to isolate (tomatoes, beans, lettuce)
 - For flavor goals: recommend varieties specifically celebrated for exceptional taste
 - Seed saving instructions must be botanically accurate and specific to the variety's pollination type
@@ -253,8 +263,8 @@ Rules you must follow:
 }
 
 function renderResults(varieties) {
-  const zone = (answers[0]||'').split('—')[0].trim();
-  const goal = (answers[4]||'').split('—')[0].toLowerCase().trim();
+  const zone = (answers[0]||'').split(':')[0].trim();
+  const goal = (answers[4]||'').split(':')[0].toLowerCase().trim();
 
   let html = `<div class="result-header">
     <h2>Your 3 heirloom varieties</h2>

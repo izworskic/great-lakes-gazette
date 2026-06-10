@@ -1,5 +1,5 @@
-// GET /sitemap.xml — dynamic sitemap with today's issue + all archived issues
-// lastmod updates daily — signals Google to recrawl every day
+// GET /sitemap.xml: dynamic sitemap with today's issue + all archived issues
+// lastmod updates daily: signals Google to recrawl every day
 
 import { Redis } from '@upstash/redis';
 
@@ -13,7 +13,7 @@ function makeRedis() {
 export default async function handler(req, res) {
   const today = new Date().toISOString().slice(0, 10);
 
-  // Get all stored issue dates — probe last 90 days with mget (fast on cold start)
+  // Get all stored issue dates: probe last 90 days with mget (fast on cold start)
   let dates = [];
   const r = makeRedis();
   if (r) {
@@ -45,6 +45,14 @@ export default async function handler(req, res) {
     <priority>0.8</priority>
   </url>`).join('');
 
+  const matchmakerUrl = `
+  <url>
+    <loc>https://gazette.chrisizworski.com/matchmaker.html</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>`;
+
   const archivePageUrl = `
   <url>
     <loc>https://gazette.chrisizworski.com/archive</loc>
@@ -75,9 +83,9 @@ export default async function handler(req, res) {
         <news:language>en</news:language>
       </news:publication>
       <news:publication_date>${today}</news:publication_date>
-      <news:title>Great Lakes Gazette — Daily Maritime News from the Fleet</news:title>
+      <news:title>Great Lakes Gazette: Daily Maritime News from the Fleet</news:title>
     </news:news>
-  </url>${archiveUrl}${archivePageUrl}${issueUrls}
+  </url>${archiveUrl}${archivePageUrl}${matchmakerUrl}${issueUrls}
 </urlset>`;
 
   res.setHeader('Content-Type', 'application/xml; charset=utf-8');

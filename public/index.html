@@ -13,8 +13,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
 <!-- ── Primary SEO ── -->
-<title>Chris Izworski | Great Lakes Gazette: Daily Maritime News from the Fleet</title>
-<meta name="description" content="Chris Izworski's daily Great Lakes shipping news: live vessel movements, port reports, NOAA water levels, and NWS marine forecasts. Published every morning from real data.">
+<title>Great Lakes Gazette: Daily Maritime News by Chris Izworski</title>
+<meta name="description" content="Daily Great Lakes shipping news: live vessel movements, port reports, NOAA water levels, and NWS marine forecasts. Written and published every morning by Chris Izworski.">
 <meta name="keywords" content="Great Lakes shipping, freighter tracking, vessel movements, Soo Locks, AIS tracking, Great Lakes news, maritime news, Lake Superior, Lake Michigan, Lake Huron, Lake Erie, Lake Ontario">
 <meta name="author" content="Chris Izworski">
 <link rel="author" href="https://chrisizworski.com">
@@ -24,7 +24,7 @@
 <!-- ── Open Graph ── -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Great Lakes Gazette">
-<meta property="og:title" content="Chris Izworski | Great Lakes Gazette: Daily Maritime News from the Fleet">
+<meta property="og:title" content="Great Lakes Gazette: Daily Maritime News by Chris Izworski">
 <meta property="og:description" content="Daily Great Lakes shipping news: live vessel movements, port reports, NOAA water levels, and NWS marine forecasts. Published every morning from real data.">
 <meta property="og:url" content="https://gazette.chrisizworski.com">
 <meta property="og:image" content="https://gazette.chrisizworski.com/og-image.png">
@@ -33,7 +33,7 @@
 <!-- ── Twitter Card ── -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@izworskic">
-<meta name="twitter:title" content="Chris Izworski | Great Lakes Gazette: Daily Maritime News from the Fleet">
+<meta name="twitter:title" content="Great Lakes Gazette: Daily Maritime News by Chris Izworski">
 <meta name="twitter:description" content="Daily Great Lakes shipping news: live vessel movements, port reports, NOAA water levels, and NWS marine forecasts.">
 <meta name="twitter:image" content="https://gazette.chrisizworski.com/og-image.png">
 
@@ -1202,7 +1202,7 @@ body::before {
     <div class="mast-rule-triple">
       <span></span><span></span><span></span>
     </div>
-    <h1 class="flag">Chris Izworski's Great Lakes <em>Gazette</em></h1>
+    <h1 class="flag">Great Lakes <em>Gazette</em></h1>
     <div class="tagline">Vessel Movements &amp; Maritime Intelligence from the Upper Midwest Waterways</div>
     <div class="mast-ornament">
       <hr>
@@ -1503,9 +1503,9 @@ function updateHeadMeta(brief) {
 
   // OG
   const setMeta = (sel, val) => { const el = document.querySelector(sel); if (el) el.setAttribute('content', val); };
-  setMeta('meta[property="og:title"]',       'Chris Izworski: ' + title);
+  setMeta('meta[property="og:title"]',       title + ' | Great Lakes Gazette');
   setMeta('meta[property="og:description"]', desc);
-  setMeta('meta[name="twitter:title"]',      'Chris Izworski: ' + title);
+  setMeta('meta[name="twitter:title"]',      title + ' | Great Lakes Gazette');
   setMeta('meta[name="twitter:description"]',desc);
   setMeta('meta[name="description"]',        desc);
 

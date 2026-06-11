@@ -29,7 +29,7 @@ function buildIssuePage(date, issue, neighbors) {
   const briefObj  = issue.brief || {};
   const briefHtml = (briefObj.brief || briefObj.html || issue.html || '').toString();
   const headline  = (briefObj.headline || issue.headline || `Daily Maritime Brief for ${dateShort}`).trim();
-  const summary   = (briefObj.brief || briefObj.summary || issue.summary || `${AUTHOR}'s Great Lakes Gazette daily maritime brief for ${dateLong}.`)
+  const summary   = (briefObj.brief || briefObj.summary || issue.summary || `The Great Lakes Gazette daily maritime brief by ${AUTHOR} for ${dateLong}.`)
                       .replace(/<[^>]+>/g, '')
                       .replace(/\s+/g, ' ')
                       .slice(0, 200)
@@ -84,14 +84,14 @@ function buildIssuePage(date, issue, neighbors) {
 <link rel="me" href="https://troutdaily.chrisizworski.com">
 <link rel="me" href="https://trout.chrisizworski.com">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${escapeHtml(AUTHOR)}: ${escapeHtml(headline)} | Great Lakes Gazette ${escapeHtml(dateShort)}</title>
+<title>${escapeHtml(headline)} | Great Lakes Gazette, ${escapeHtml(dateShort)}</title>
 <meta name="description" content="${escapeHtml(summary)}">
 <meta name="author" content="${escapeHtml(AUTHOR)}">
 <meta name="keywords" content="Great Lakes shipping, vessel movements, Soo Locks, AIS tracking, NOAA water levels, ${escapeHtml(dateShort)}, Chris Izworski">
 <link rel="canonical" href="${SITE}/issue/${date}">
 <link rel="author" href="${AUTHOR_URL}">
 <meta property="og:type" content="article">
-<meta property="og:title" content="${escapeHtml(AUTHOR)}: ${escapeHtml(headline)}">
+<meta property="og:title" content="${escapeHtml(headline)} | Great Lakes Gazette">
 <meta property="og:description" content="${escapeHtml(summary)}">
 <meta property="og:url" content="${SITE}/issue/${date}">
 <meta property="og:site_name" content="Great Lakes Gazette">
@@ -104,7 +104,7 @@ function buildIssuePage(date, issue, neighbors) {
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@izworskic">
 <meta name="twitter:creator" content="@izworskic">
-<meta name="twitter:title" content="${escapeHtml(AUTHOR)}: ${escapeHtml(headline)}">
+<meta name="twitter:title" content="${escapeHtml(headline)} | Great Lakes Gazette">
 <meta name="twitter:description" content="${escapeHtml(summary)}">
 <meta name="twitter:image" content="${SITE}/og-image.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚓</text></svg>">

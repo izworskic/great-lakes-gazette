@@ -10,10 +10,10 @@ Built and published by [Chris Izworski](https://chrisizworski.com) from Bay City
 
 The Great Lakes Gazette publishes every morning at 8am UTC automatically. It pulls:
 
-- **Live AIS vessel tracking** — ship movements through the Soo Locks and across all five lakes
-- **NOAA water levels** — daily readings from the Great Lakes buoy network
-- **NWS marine forecasts** — lake-by-lake weather and conditions
-- **Great Lakes Now** — environmental and conservation news
+- **Live AIS vessel tracking** - ship movements through the Soo Locks and across all five lakes
+- **NOAA water levels** - daily readings from the Great Lakes buoy network
+- **NWS marine forecasts** - lake-by-lake weather and conditions
+- **Great Lakes Now** - environmental and conservation news
 
 No editor. No manual steps. The pipeline fires, the AI writes the brief, it publishes.
 

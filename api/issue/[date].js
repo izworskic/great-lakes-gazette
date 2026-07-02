@@ -1,4 +1,4 @@
-// GET /api/issue/[date] — fetch a specific issue by date (YYYY-MM-DD)
+// GET /api/issue/[date] - fetch a specific issue by date (YYYY-MM-DD)
 // Reads from Redis. Returns the full brief + data for that day.
 
 import { Redis } from '@upstash/redis';

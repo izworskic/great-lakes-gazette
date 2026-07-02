@@ -1,7 +1,7 @@
-// Daily cron — 8am UTC (schedule set in vercel.json)
+// Daily cron - 8am UTC (schedule set in vercel.json)
 // Scrapes BoatNerd, generates brief with Claude Haiku, publishes to FVF as draft.
 // Also writes result to Redis so /api/generate returns instantly all day (no duplicate API calls).
-// Protected by CRON_SECRET — Vercel injects this header automatically on cron calls.
+// Protected by CRON_SECRET - Vercel injects this header automatically on cron calls.
 
 import { Redis }             from '@upstash/redis';
 import { fetchAllData }      from '../lib/scraper.js';
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
   const ts  = () => new Date().toISOString();
 
   try {
-    log.push(`[${ts()}] Cron starting — Great Lakes Gazette daily run`);
+    log.push(`[${ts()}] Cron starting - Great Lakes Gazette daily run`);
 
     const data = await fetchAllData();
     log.push(`[${ts()}] Data fetched: ${data.portReports.length} port reports, ${data.shippingNews.length} news items`);
@@ -57,11 +57,11 @@ export default async function handler(req, res) {
         log.push(`[${ts()}] Redis write failed (non-fatal): ${e.message}`);
       }
     } else {
-      log.push(`[${ts()}] Redis not configured — skipping cache prime`);
+      log.push(`[${ts()}] Redis not configured - skipping cache prime`);
     }
 
     const post = await publishToWordPress(brief);
-    log.push(`[${ts()}] Published to FVF — ${post.edit_url}`);
+    log.push(`[${ts()}] Published to FVF - ${post.edit_url}`);
 
     // Submit new issue URL to IndexNow (Bing, Yandex, Seznam)
     try {
@@ -76,7 +76,7 @@ export default async function handler(req, res) {
           urlList:     ['https://gazette.chrisizworski.com', issueUrl],
         })
       });
-      log.push(`[${ts()}] IndexNow submitted — HTTP ${inResp.status}`);
+      log.push(`[${ts()}] IndexNow submitted - HTTP ${inResp.status}`);
     } catch(e) {
       log.push(`[${ts()}] IndexNow failed (non-fatal): ${e.message}`);
     }

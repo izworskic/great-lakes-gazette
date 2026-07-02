@@ -1046,7 +1046,7 @@ body::before {
    Touch vs. pointer also detected and applied.
 ═══════════════════════════════════════════════════════ */
 
-/* ── Tablet (641–1024px) ──────────────────────────────── */
+/* ── Tablet (641-1024px) ──────────────────────────────── */
 @media (max-width: 1024px) and (min-width: 641px) {
   .page { padding: 24px 20px 60px; }
   .main-grid { grid-template-columns: 1fr 260px; gap: 0 28px; }
@@ -1725,7 +1725,7 @@ function renderAIS(ports) {
       : (p.status === 'HTTP 500' ? 'Off-season' : (p.status || 'No data'));
     const portName = p.port
       .replace(' / St. Clair River','')
-      .replace('Duluth / Superior','Duluth–Superior');
+      .replace('Duluth / Superior','Duluth-Superior');
     return `<div class="ais-row">
       <span class="ais-port">${portName}</span>
       <span class="ais-status"><div class="dot${live?' live':''}"></div>${label}</span>

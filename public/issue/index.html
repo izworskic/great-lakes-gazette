@@ -96,7 +96,7 @@ async function loadIssue() {
     if (!brief) throw new Error('No brief data');
 
     // Update head meta
-    const title = `${brief.headline} — Great Lakes Gazette`;
+    const title = `${brief.headline} | Great Lakes Gazette`;
     const firstPara = (brief.brief || '').split('\n\n')[0].replace(/\*([^*]+)\*/g, '$1').slice(0, 155);
     document.title = title;
     document.getElementById('og-title').setAttribute('content', title);
@@ -145,7 +145,7 @@ async function loadIssue() {
       <div class="dateline">${brief.dateline || fmtDate}</div>
       <div class="brief-body">${paras}${spotlight}</div>
       <div class="issue-footer">
-        <p>Great Lakes Gazette is published daily from live data — AIS vessel tracking, NOAA water levels, and NWS marine forecasts.<br>
+        <p>Great Lakes Gazette is published daily from live data: AIS vessel tracking, NOAA water levels, and NWS marine forecasts.<br>
         Written by <a href="https://chrisizworski.com">Chris Izworski</a> · <a href="https://freighterviewfarms.com">Freighter View Farms</a> · <a href="https://gazette.chrisizworski.com">All Issues →</a></p>
       </div>`;
 

@@ -7,6 +7,10 @@
   ],
   "rewrites": [
     {
+      "source": "/",
+      "destination": "/api/gateway?route=home"
+    },
+    {
       "source": "/chris-izworski",
       "destination": "/api/gateway?route=chris-izworski"
     },
@@ -67,10 +71,6 @@
       "destination": "/api/gateway?route=weather"
     },
     {
-      "source": "/api/matchmaker",
-      "destination": "/api/gateway?route=matchmaker"
-    },
-    {
       "source": "/api/(.*)",
       "destination": "/api/$1"
     }
@@ -120,6 +120,26 @@
         }
       ],
       "destination": "https://gazette.chrisizworski.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/matchmaker.html",
+      "destination": "https://chrisizworski.com/heirloom-variety-matchmaker/",
+      "permanent": true
+    },
+    {
+      "source": "/matchmaker-og.png",
+      "destination": "https://chrisizworski.com/assets/matchmaker-og.png",
+      "permanent": true
+    },
+    {
+      "source": "/issue",
+      "destination": "/archive",
+      "permanent": true
+    },
+    {
+      "source": "/issue/",
+      "destination": "/archive",
       "permanent": true
     }
   ],

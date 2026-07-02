@@ -13,7 +13,7 @@ import publish       from '../lib/routes/publish.js';
 import scrape        from '../lib/routes/scrape.js';
 import sitemap       from '../lib/routes/sitemap.js';
 import weather       from '../lib/routes/weather.js';
-import matchmaker    from '../lib/routes/matchmaker.js';
+import home          from '../lib/routes/home.js';
 
 const ROUTES = {
   'archive':        archive,
@@ -25,7 +25,7 @@ const ROUTES = {
   'scrape':         scrape,
   'sitemap':        sitemap,
   'weather':        weather,
-  'matchmaker':     matchmaker,
+  'home':           home,
 };
 
 export default async function handler(req, res) {

@@ -1,14 +1,13 @@
 # Great Lakes Gazette
 > Daily Great Lakes freighter and vessel-movement brief: bulk carriers, tankers, and tug-barge traffic across all five lakes, written from Bay City, Michigan by Chris Izworski.
 
-A new issue publishes every day with a headline, dateline, fleet brief, and vessel spotlight, built from live AIS and Soo Locks data.
+A new edition publishes every morning with a headline, dateline, fleet brief, and vessel spotlight, built from live AIS data, port reports, NOAA water levels, and NWS marine forecasts. The archive is permanent; every back edition has a stable URL at /issue/YYYY-MM-DD.
 
 ## Key pages
-- [Today's issue](https://gazette.chrisizworski.com/): the current daily brief
-- [Archive](https://gazette.chrisizworski.com/archive): every back issue by date
-- [RSS feed](https://gazette.chrisizworski.com/feed.xml): the last 30 issues
-- [Heirloom Variety Matchmaker](https://gazette.chrisizworski.com/matchmaker.html): a garden quiz tool from Freighter View Farms
+- [Today's edition](https://gazette.chrisizworski.com/): the current daily brief, fully server-rendered
+- [Archive](https://gazette.chrisizworski.com/archive): every back edition, grouped by month
+- [RSS feed](https://gazette.chrisizworski.com/feed.xml): the 30 most recent editions with full text included
 - [About the author](https://gazette.chrisizworski.com/chris-izworski): Chris Izworski
 
 ## Author
-Chris Izworski (https://chrisizworski.com), Michigan outdoor writer. Related sites: Michigan Trout Report (https://michigantroutreport.com), Michigan Phenology (https://phenology.chrisizworski.com), Great Lakes Levels (https://greatlakeslevels.org).
+Chris Izworski (https://chrisizworski.com), Michigan outdoor writer. Related sites: Michigan Trout Report (https://michigantroutreport.com), Michigan Birding Report (https://michiganbirdingreport.com), Great Lakes Levels (https://greatlakeslevels.org), Freighter View Farms (https://freighterviewfarms.com).

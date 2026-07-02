@@ -7,6 +7,7 @@ import { Redis }             from '@upstash/redis';
 import { fetchAllData }      from '../lib/scraper.js';
 import { generateBrief }     from '../lib/generator.js';
 import { publishToWordPress } from '../lib/publisher.js';
+import { saveIssue }          from '../lib/store.js';
 
 function makeRedis() {
   const url   = process.env.UPSTASH_REDIS_REST_URL;
@@ -47,12 +48,10 @@ export default async function handler(req, res) {
     const r = makeRedis();
     if (r) {
       const today    = todayUTC();
-      const ttl      = 30 * 24 * 60 * 60; // 30 days, keeps issues alive for permalinks
-      const redisKey = `gazette:daily:${today}`;
       const payload  = { data, brief, generated_at: new Date().toISOString() };
       try {
-        await r.set(redisKey, JSON.stringify(payload), { ex: ttl });
-        log.push(`[${ts()}] Redis cache primed for ${today} (TTL 30 days)`);
+        await saveIssue(r, today, payload);
+        log.push(`[${ts()}] Issue stored permanently for ${today}; gazette:index updated`);
       } catch(e) {
         log.push(`[${ts()}] Redis write failed (non-fatal): ${e.message}`);
       }

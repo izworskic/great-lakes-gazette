@@ -13,7 +13,7 @@
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://gazette.chrisizworski.com/matchmaker-og.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://gazette.chrisizworski.com/matchmaker.html#app","name":"Heirloom Variety Matchmaker","url":"https://gazette.chrisizworski.com/matchmaker.html","applicationCategory":"LifestyleApplication","operatingSystem":"Web","description":"A five-question garden quiz that matches you with three heirloom varieties suited to your zone, sun, space, experience, and goals, with seed saving instructions.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@id":"https://chrisizworski.com/#person"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Freighter View Farms","item":"https://freighterviewfarms.com/"},{"@type":"ListItem","position":2,"name":"Heirloom Variety Matchmaker","item":"https://gazette.chrisizworski.com/matchmaker.html"}]},{"@type":"Person","@id":"https://chrisizworski.com/#person","name":"Chris Izworski","url":"https://chrisizworski.com"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://gazette.chrisizworski.com/matchmaker.html#app","name":"Heirloom Variety Matchmaker","url":"https://gazette.chrisizworski.com/matchmaker.html","applicationCategory":"LifestyleApplication","operatingSystem":"Web","isAccessibleForFree":true,"inLanguage":"en-US","featureList":"Five-question quiz matching your zone, sun, space, experience, and goal to three heirloom varieties with seed saving instructions","description":"A five-question garden quiz that matches you with three heirloom varieties suited to your zone, sun, space, experience, and goals, with seed saving instructions.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@id":"https://chrisizworski.com/#person"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Freighter View Farms","item":"https://freighterviewfarms.com/"},{"@type":"ListItem","position":2,"name":"Heirloom Variety Matchmaker","item":"https://gazette.chrisizworski.com/matchmaker.html"}]},{"@type":"Person","@id":"https://chrisizworski.com/#person","name":"Chris Izworski","url":"https://chrisizworski.com"}]}</script>
 <meta name="description" content="Answer 5 questions about your garden: get 3 perfectly matched heirloom varieties with seed saving instructions. Powered by real horticultural knowledge.">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -65,6 +65,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .error-msg{background:#fff3cd;border:1px solid #ffc107;border-radius:6px;padding:14px;font-size:.85rem;color:#664d03;margin-top:1rem}
 .footer{border-top:1px solid #ddd;padding:20px 24px;text-align:center;font-size:.75rem;color:#999;margin-top:48px}
 .footer a{color:#5a8a1e;text-decoration:none}
+
+.content{max-width:640px;margin:0 auto;padding:8px 24px 8px}
+.content h2{font-size:1.15rem;color:#2d5016;font-weight:700;margin:30px 0 10px}
+.content h3{font-size:.98rem;color:#2a2a2a;font-weight:600;margin:18px 0 6px}
+.content p{font-size:.92rem;line-height:1.7;color:#3a3a3a;margin:0 0 12px}
+.content a{color:#5a8a1e;text-decoration:none;font-weight:500}
+.content a:hover{text-decoration:underline}
+.content .lead{font-size:1rem;color:#333}
+.toolbox{background:#fff;border:1px solid #dfe8d0;border-radius:8px;padding:16px 20px;margin:18px 0 8px}
+.toolbox h2{margin-top:0;font-size:1.02rem}
+.toolbox ul{margin:8px 0 0 18px}
+.toolbox li{font-size:.9rem;line-height:1.7;margin:5px 0;color:#3a3a3a}
 </style>
 </head>
 <body>
@@ -88,10 +100,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="q-label">Question 1 of 5</div>
     <div class="q-title">What USDA hardiness zone are you growing in?</div>
     <div class="opts">
-      <button class="opt" data-q="0" data-v="Zone 3–4 (northern Minnesota, Upper Michigan peninsula, very short season)">Zone 3–4</button>
-      <button class="opt" data-q="0" data-v="Zone 5 (southern Michigan, northern Ohio, 130–150 frost-free days)">Zone 5</button>
-      <button class="opt" data-q="0" data-v="Zone 6a: Bay City, Michigan area (155–165 frost-free days, last frost mid-May, first frost mid-October)">Zone 6a (Bay City area)</button>
-      <button class="opt" data-q="0" data-v="Zone 6b–7 (southern Ohio, Indiana, Kentucky border: long season)">Zone 6b–7</button>
+      <button class="opt" data-q="0" data-v="Zone 3-4 (northern Minnesota, Upper Michigan peninsula, very short season)">Zone 3-4</button>
+      <button class="opt" data-q="0" data-v="Zone 5 (southern Michigan, northern Ohio, 130 to 150 frost-free days)">Zone 5</button>
+      <button class="opt" data-q="0" data-v="Zone 6a: Bay City, Michigan area (155 to 165 frost-free days, last frost mid-May, first frost mid-October)">Zone 6a (Bay City area)</button>
+      <button class="opt" data-q="0" data-v="Zone 6b-7 (southern Ohio, Indiana, Kentucky border: long season)">Zone 6b-7</button>
     </div>
     <div class="nav"><button class="btn-next" id="next-0" disabled onclick="advance(0)">Continue →</button></div>
   </div>
@@ -101,8 +113,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="q-title">How much direct sun does your garden get daily?</div>
     <div class="opts">
       <button class="opt" data-q="1" data-v="Full sun: 8+ hours of direct sun each day">Full sun (8+ hrs)</button>
-      <button class="opt" data-q="1" data-v="Mostly sunny: 6–8 hours direct sun, some light shade in morning or late afternoon">Mostly sunny (6–8 hrs)</button>
-      <button class="opt" data-q="1" data-v="Partial shade: 4–6 hours direct sun, afternoon shade from trees or buildings">Partial shade (4–6 hrs)</button>
+      <button class="opt" data-q="1" data-v="Mostly sunny: 6 to 8 hours direct sun, some light shade in morning or late afternoon">Mostly sunny (6 to 8 hrs)</button>
+      <button class="opt" data-q="1" data-v="Partial shade: 4 to 6 hours direct sun, afternoon shade from trees or buildings">Partial shade (4 to 6 hrs)</button>
       <button class="opt" data-q="1" data-v="Mostly shaded: under 4 hours direct sun daily">Mostly shaded</button>
     </div>
     <div class="nav">
@@ -116,7 +128,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="q-title">Describe your growing space.</div>
     <div class="opts">
       <button class="opt" data-q="2" data-v="Large in-ground garden, 100 square feet or more: room for sprawling plants">Large in-ground (100+ sq ft)</button>
-      <button class="opt" data-q="2" data-v="Medium in-ground garden, 25–100 square feet: moderate space">Medium in-ground (25–100 sq ft)</button>
+      <button class="opt" data-q="2" data-v="Medium in-ground garden, 25 to 100 square feet: moderate space">Medium in-ground (25 to 100 sq ft)</button>
       <button class="opt" data-q="2" data-v="Raised beds or a few large containers: limited horizontal space">Raised beds / containers</button>
       <button class="opt" data-q="2" data-v="Very small space: balcony or patio with only a few pots">Balcony / small patio</button>
     </div>
@@ -130,7 +142,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="q-label">Question 4 of 5</div>
     <div class="q-title">How experienced are you as a gardener?</div>
     <div class="opts">
-      <button class="opt" data-q="3" data-v="Beginner: this is my first or second season growing vegetables">Beginner (1st–2nd season)</button>
+      <button class="opt" data-q="3" data-v="Beginner: this is my first or second season growing vegetables">Beginner (1st-2nd season)</button>
       <button class="opt" data-q="3" data-v="Intermediate: a few years growing vegetables, comfortable with basic seed starting">Intermediate (a few years)</button>
       <button class="opt" data-q="3" data-v="Experienced: comfortable starting seeds, saving seed, and managing multiple varieties at once">Experienced gardener</button>
       <button class="opt" data-q="3" data-v="Expert: I breed plants, maintain multiple variety lines, and understand isolation distances and crossing risk">Expert / variety keeper</button>
@@ -166,6 +178,37 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="step" id="step-results">
     <div id="results-body"></div>
     <button class="restart-btn" onclick="restart()">← Start over with different answers</button>
+  </div>
+</div>
+
+
+<div class="content">
+  <h2>How the matchmaker works</h2>
+  <p class="lead">The five questions above are not decoration. Zone, sun, space, experience, and goal are the exact variables that decide whether a variety thrives in your garden or disappoints you, and they are the ones seed catalogs never ask before they sell. The matchmaker takes your five answers, weighs them together, and returns three real, historically documented heirloom varieties chosen for that specific combination, each with seed saving instructions written for its own pollination type. It is a starting point built on horticultural fact, not a horoscope.</p>
+  <p>The recommendations lean toward what actually succeeds in the Great Lakes region: varieties that ripen inside a short season, tolerate the swings between a cold Lake Michigan spring and a humid August, and match the honest size of your plot. A gardener with a balcony and four hours of sun gets different answers than one with a hundred square feet in full sun, because they should.</p>
+
+  <h2>What makes a variety an heirloom</h2>
+  <p>An heirloom is an open-pollinated variety that has been grown and kept, usually for at least fifty years, because it earned its place at the table. Open-pollinated means the plant is pollinated by natural means, wind or insects or its own flowers, and its seed grows back into the same plant. That is the quiet magic of an heirloom and the whole reason to grow one: save the seed from your best Brandywine tomato and next year you get Brandywine again, adapted a little more to your soil each season.</p>
+  <p>The contrast is the F1 hybrid, a deliberate cross of two parent lines. Hybrids can be vigorous and uniform, but their seed does not come true. Save it and you get a scattered mix of the grandparents, most of them worse than what you started with. If you want to save seed and grow the same thing year after year, heirlooms and open-pollinated varieties are the only path, and the matchmaker recommends nothing else.</p>
+
+  <h2>Growing heirlooms in the Great Lakes</h2>
+  <p>Michigan is not one garden. The last spring frost ranges from late April in Detroit to the third week of June in the northern interior, and the frost free season runs from roughly two hundred days along the southern lakeshore down to about a hundred and thirty in the cold pockets around Grayling and Gaylord. A tomato that finishes comfortably in Monroe may never ripen in Vanderbilt. This is why matching a variety to your ground matters more here than almost anywhere, and why every recommendation weighs your zone first.</p>
+  <p>Two forces shape the map. The big lakes hold summer heat and push frost later into fall along the shore, which is why the fruit belt sits where it does on the Lake Michigan side. And cold air drains into the sandy interior highlands of the northern Lower Peninsula, where frost can arrive in any month. If your garden sits in a low hollow, plan a week later in spring and a week earlier in fall than your town's average. If it looks out over open water, you have room to grow a longer-season variety than your neighbors inland.</p>
+  <p>For the exact dates behind all of this, the companion tools do the arithmetic for your town: the <a href="https://chrisizworski.com/michigan-frost-dates/">Michigan frost dates</a> reference lists every State Climatologist station, and the <a href="https://chrisizworski.com/zone-6a-planting-calendar/">Michigan planting calendar</a> turns your nearest station into sowing and transplant dates for dozens of crops.</p>
+
+  <h2>Saving the seed you grow</h2>
+  <p>The reason the matchmaker pairs every variety with seed saving notes is that saving seed is the natural end of growing an heirloom, and it is easier than most gardeners expect if you start with the right crops. Self-pollinating plants like tomatoes, beans, peas, and lettuce come true with almost no effort and almost no isolation, because their flowers pollinate themselves before they even open. Begin there. The insect and wind-pollinated crops, the squashes and carrots and corn, cross readily and need real distance or hand-pollination to stay pure, so they are a second-season skill.</p>
+  <p>Tomatoes are the classic first save: scoop the seeds and gel into a jar, let it ferment on the counter for a few days until a film forms, which dissolves the coating that blocks germination, then rinse, dry, and store cool and dark. Beans and peas are even simpler, dried right in the pod on the plant. For the full method, including isolation distances, fermentation, and how long each kind of seed stays viable, see the <a href="https://chrisizworski.com/heirloom-seed-saving-guide/">heirloom seed saving guide</a>. Once your seed is saved and dried, the <a href="https://chrisizworski.com/seed-starting-guide/">seed starting guide</a> covers getting it going again under lights the following spring.</p>
+
+  <div class="toolbox">
+    <h2>Michigan garden tools by Chris Izworski</h2>
+    <ul>
+      <li><a href="https://chrisizworski.com/zone-6a-planting-calendar/">Michigan planting calendar</a>: computed sowing and transplant dates for 47 crops at your nearest of 78 frost stations</li>
+      <li><a href="https://chrisizworski.com/michigan-frost-dates/">Michigan frost dates</a>: every State Climatologist station, searchable, with fall dates and season lengths</li>
+      <li><a href="https://chrisizworski.com/seed-starting-guide/">Seed starting guide</a>: lights, heat, and timing for starting seed indoors</li>
+      <li><a href="https://chrisizworski.com/heirloom-seed-saving-guide/">Heirloom seed saving guide</a>: isolation, fermentation, viability, and storage</li>
+      <li><a href="https://freighterviewfarms.com" target="_blank" rel="noopener">Freighter View Farms</a>: the Bay City garden these tools grew out of</li>
+    </ul>
   </div>
 </div>
 
@@ -211,47 +254,20 @@ async function getRecommendations() {
   document.getElementById('step-loading').classList.add('active');
   renderProgress(5);
 
-  const prompt = `You are an expert heirloom seed advisor for the Great Lakes region of the United States. A gardener has answered five questions:
-
-1. Growing zone: ${answers[0]}
-2. Sun conditions: ${answers[1]}
-3. Garden space: ${answers[2]}
-4. Experience level: ${answers[3]}
-5. Primary goal: ${answers[4]}
-
-Recommend exactly 3 heirloom varieties that are the strongest possible match for this specific combination of conditions. Respond ONLY with a valid JSON array: no text before or after, no markdown fences:
-
-[
-  {
-    "name": "Full variety name",
-    "type": "Tomato / Bean / Squash / Pepper / Cucumber / etc.",
-    "why": "2-3 sentences explaining why this variety is ideal for this gardener's specific conditions and goals.",
-    "seed_saving": "2-3 sentences of specific, accurate seed saving instructions for this variety: isolation distance, how to harvest seed, fermentation if needed, drying method, storage conditions."
-  }
-]
-
-Rules you must follow:
-- Only recommend real, historically documented heirloom varieties that actually exist
-- Match the zone, sun, space, and experience level carefully: do not recommend vining plants for container growers, or difficult varieties for beginners
-- For seed saving goals: favor self-pollinating varieties that are easy to isolate (tomatoes, beans, lettuce)
-- For flavor goals: recommend varieties specifically celebrated for exceptional taste
-- Seed saving instructions must be botanically accurate and specific to the variety's pollination type
-- Vary the types: don't recommend three tomatoes unless the gardener specifically indicated tomatoes`;
-
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    const resp = await fetch('/api/matchmaker', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1200,
-        messages: [{ role: 'user', content: prompt }]
+        zone: answers[0], sun: answers[1], space: answers[2],
+        experience: answers[3], goal: answers[4]
       })
     });
     const data = await resp.json();
-    const text = data.content[0].text.replace(/```json|```/g,'').trim();
-    const varieties = JSON.parse(text);
-    renderResults(varieties);
+    if (!resp.ok || !Array.isArray(data.varieties)) {
+      throw new Error(data.error || 'Request failed');
+    }
+    renderResults(data.varieties);
   } catch(e) {
     document.getElementById('step-loading').classList.remove('active');
     document.getElementById('step-results').classList.add('active');

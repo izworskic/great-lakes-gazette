@@ -1,4 +1,4 @@
-// GET/POST /api/gateway?route={name} — single serverless function that
+// GET/POST /api/gateway?route={name} - single serverless function that
 // dispatches to the consolidated route handlers in lib/routes/.
 // Exists to stay under the Vercel Hobby 12-function limit: this one
 // function replaces nine. Public URLs are unchanged; vercel.json
@@ -13,6 +13,7 @@ import publish       from '../lib/routes/publish.js';
 import scrape        from '../lib/routes/scrape.js';
 import sitemap       from '../lib/routes/sitemap.js';
 import weather       from '../lib/routes/weather.js';
+import matchmaker    from '../lib/routes/matchmaker.js';
 
 const ROUTES = {
   'archive':        archive,
@@ -24,6 +25,7 @@ const ROUTES = {
   'scrape':         scrape,
   'sitemap':        sitemap,
   'weather':        weather,
+  'matchmaker':     matchmaker,
 };
 
 export default async function handler(req, res) {

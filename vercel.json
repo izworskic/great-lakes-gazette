@@ -67,6 +67,10 @@
       "destination": "/api/gateway?route=weather"
     },
     {
+      "source": "/api/matchmaker",
+      "destination": "/api/gateway?route=matchmaker"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api/$1"
     }

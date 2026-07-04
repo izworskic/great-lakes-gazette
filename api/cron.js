@@ -7,7 +7,7 @@ import { Redis }             from '@upstash/redis';
 import { fetchAllData }      from '../lib/scraper.js';
 import { generateBrief }     from '../lib/generator.js';
 import { publishToWordPress } from '../lib/publisher.js';
-import { saveIssue }          from '../lib/store.js';
+import { saveIssue, INDEX_KEY } from '../lib/store.js';
 
 function makeRedis() {
   const url   = process.env.UPSTASH_REDIS_REST_URL;
@@ -43,10 +43,23 @@ export default async function handler(req, res) {
     log.push(`[${ts()}] AIS: ${aisActive} active ports`);
 
     const brief = await generateBrief(data);
+
+    // True edition number is the issue's position in the permanent archive,
+    // not the legacy weeks-since-launch formula inside the generator.
+    const rNum = makeRedis();
+    if (rNum) {
+      try {
+        const already = await rNum.sismember(INDEX_KEY, today);
+        const count   = await rNum.scard(INDEX_KEY);
+        brief.issueNumber = already ? count : count + 1;
+      } catch (e) {
+        log.push(`[${ts()}] Issue number lookup failed (kept generator value): ${e.message}`);
+      }
+    }
     log.push(`[${ts()}] Brief generated: "${brief.headline}" (Issue ${brief.issueNumber})`);
 
     // Write to Redis so /api/generate returns this instantly, no duplicate Anthropic call
-    const r = makeRedis();
+    const r = rNum;
     if (r) {
       const payload = { data, brief, generated_at: new Date().toISOString() };
       try {

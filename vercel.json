@@ -112,14 +112,25 @@
   ],
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/",
       "has": [
         {
           "type": "host",
           "value": "(?<sub>.*)\\.vercel\\.app"
         }
       ],
-      "destination": "https://gazette.chrisizworski.com/:path*",
+      "destination": "https://gazette.chrisizworski.com/",
+      "permanent": true
+    },
+    {
+      "source": "/:path((?!api/).*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?<sub>.*)\\.vercel\\.app"
+        }
+      ],
+      "destination": "https://gazette.chrisizworski.com/:path",
       "permanent": true
     },
     {
@@ -143,5 +154,10 @@
       "permanent": true
     }
   ],
-  "$schema": "https://openapi.vercel.sh/vercel.json"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/cron.js": {
+      "maxDuration": 300
+    }
+  }
 }

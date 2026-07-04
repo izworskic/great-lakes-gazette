@@ -33,7 +33,8 @@ export default async function handler(req, res) {
   const ts  = () => new Date().toISOString();
 
   try {
-    log.push(`[${ts()}] Cron starting - Great Lakes Gazette daily run`);
+    const today = todayUTC();
+    log.push(`[${ts()}] Cron starting - Great Lakes Gazette daily run (${today})`);
 
     const data = await fetchAllData();
     log.push(`[${ts()}] Data fetched: ${data.portReports.length} port reports, ${data.shippingNews.length} news items`);
@@ -47,8 +48,7 @@ export default async function handler(req, res) {
     // Write to Redis so /api/generate returns this instantly, no duplicate Anthropic call
     const r = makeRedis();
     if (r) {
-      const today    = todayUTC();
-      const payload  = { data, brief, generated_at: new Date().toISOString() };
+      const payload = { data, brief, generated_at: new Date().toISOString() };
       try {
         await saveIssue(r, today, payload);
         log.push(`[${ts()}] Issue stored permanently for ${today}; gazette:index updated`);

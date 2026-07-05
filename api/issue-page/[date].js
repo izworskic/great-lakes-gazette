@@ -8,6 +8,7 @@
 import { makeRedis, getDates, getIssue, getIssues } from '../../lib/store.js';
 import {
   SITE, AUTHOR, AUTHOR_URL, esc, stripDashes, paragraphs, longDate, shortDate,
+  articleBodyHtml, DEPT_CSS,
   headCommon, css, headerInterior, footerHtml,
 } from '../../lib/layout.js';
 
@@ -26,7 +27,9 @@ export function buildIssuePage(date, issue, nav) {
   const dateShort = shortDate(date);
 
   const briefObj  = issue.brief || {};
-  const briefBody = paragraphs(briefObj.brief || briefObj.html || issue.html || '');
+  const briefBody = (Array.isArray(briefObj.sections) && briefObj.sections.length)
+    ? articleBodyHtml(briefObj)
+    : paragraphs(briefObj.brief || briefObj.html || issue.html || '');
   const headline  = stripDashes((briefObj.headline || issue.headline || `Daily Maritime Brief for ${dateShort}`).trim());
   const summary   = stripDashes((briefObj.brief || briefObj.summary || issue.summary || `The Great Lakes Gazette daily maritime brief by ${AUTHOR} for ${dateLong}.`))
                       .replace(/<[^>]+>/g, ' ')
@@ -103,7 +106,7 @@ ${headCommon()}
 <meta name="twitter:description" content="${esc(summary)}">
 <meta name="twitter:image" content="${SITE}/og-image.png">
 <script type="application/ld+json">${schema}</script>
-<style>${css()}${PAGE_CSS}</style>
+<style>${css()}${DEPT_CSS}${PAGE_CSS}</style>
 </head><body>
 ${headerInterior('')}
 <div class="wrap-narrow">
@@ -111,6 +114,7 @@ ${headerInterior('')}
   <div class="kicker">Vol. I &nbsp;&middot;&nbsp; ${esc(dateLong)}</div>
   <h1 class="headline">${esc(headline)}</h1>
   <div class="byline">By <a href="/chris-izworski">${AUTHOR}</a> &nbsp;&middot;&nbsp; Founder, Great Lakes Gazette &nbsp;&middot;&nbsp; ${esc(dateShort)}</div>
+  ${briefObj.deck ? `<div class="deck">${esc(stripDashes(briefObj.deck))}</div>` : ''}
   <div class="brief dropcap">${briefBody}</div>
 
   ${spotlight ? `<div class="spotlight">

@@ -7,7 +7,8 @@ import { Redis }             from '@upstash/redis';
 import { fetchAllData }      from '../lib/scraper.js';
 import { generateBrief }     from '../lib/generator.js';
 import { publishToWordPress } from '../lib/publisher.js';
-import { saveIssue, INDEX_KEY } from '../lib/store.js';
+import { saveIssue, INDEX_KEY, getDates, getIssues } from '../lib/store.js';
+import { produceEdition }    from '../lib/editor.js';
 
 function makeRedis() {
   const url   = process.env.UPSTASH_REDIS_REST_URL;
@@ -42,21 +43,30 @@ export default async function handler(req, res) {
     const aisActive = (data.aisPassages || []).filter(p => p.status === 'ok' && p.vessels.length > 0).length;
     log.push(`[${ts()}] AIS: ${aisActive} active ports`);
 
-    const brief = await generateBrief(data);
-
-    // True edition number is the issue's position in the permanent archive,
-    // not the legacy weeks-since-launch formula inside the generator.
+    // Edition number is the issue's position in the permanent archive, and the
+    // last week of editions feeds the writer so no lead subject repeats.
     const rNum = makeRedis();
+    let issueNumber = 0;
+    let recentEditions = [];
     if (rNum) {
       try {
         const already = await rNum.sismember(INDEX_KEY, today);
         const count   = await rNum.scard(INDEX_KEY);
-        brief.issueNumber = already ? count : count + 1;
+        issueNumber   = already ? count : count + 1;
+        const dates   = (await getDates(rNum)).filter(d => d !== today).slice(0, 7);
+        const map     = await getIssues(rNum, dates);
+        recentEditions = dates.map(d => {
+          const it = map.get(d);
+          const b  = it && it.brief ? it.brief : {};
+          return { date: d, headline: b.headline || '', leadSubject: b.leadSubject || '', spotlight: b.spotlight || '' };
+        }).filter(e => e.headline);
       } catch (e) {
-        log.push(`[${ts()}] Issue number lookup failed (kept generator value): ${e.message}`);
+        log.push(`[${ts()}] Recent-edition lookup failed (writing without novelty context): ${e.message}`);
       }
     }
-    log.push(`[${ts()}] Brief generated: "${brief.headline}" (Issue ${brief.issueNumber})`);
+
+    const { brief, report } = await produceEdition({ data, issueNumber, recentEditions, log });
+    log.push(`[${ts()}] Edition accepted at ${report.total}/100 after ${brief.editorial.attempts} attempt(s): "${brief.headline}" (Issue ${brief.issueNumber})`);
 
     // Write to Redis so /api/generate returns this instantly, no duplicate Anthropic call
     const r = rNum;

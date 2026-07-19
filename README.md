@@ -2,7 +2,7 @@
 
 **Daily automated maritime newsletter from the Great Lakes.**
 
-Live at: [great-lakes-gazette.vercel.app](https://great-lakes-gazette.vercel.app)
+Live at: [gazette.chrisizworski.com](https://gazette.chrisizworski.com)
 
 Built and published by [Chris Izworski](https://chrisizworski.com) from Bay City, Michigan.
 
@@ -27,6 +27,12 @@ The Soo Locks open for the 2026 season on **March 25**. Full vessel reports begi
 - Upstash Redis (state/caching)
 - AI pipeline for daily brief generation
 - ~$0.20/month to operate
+
+## Public API
+
+Public pages that need the newest stored edition should call `GET /api/latest`. It is read-only, cached, and does not require a credential.
+
+`/api/generate` and `/api/cron` are generation paths. They must remain server-only and protected by Vercel's `CRON_SECRET`; never place that value in browser code or a public repository.
 
 ## Built By
 

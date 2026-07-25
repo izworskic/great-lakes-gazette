@@ -1,0 +1,105 @@
+name: Daily Gazette Edition
+
+# Primary trigger for the Great Lakes Gazette daily edition.
+#
+# Why this exists: until Jul 25 2026 the only trigger was the Vercel cron
+# declared in vercel.json. When the Anthropic account ran out of credit on
+# Jul 22 the endpoint began returning 500, nothing published for three days,
+# and nobody was told. A Hobby-plan Vercel cron is also best effort and has no
+# run history you can inspect after the fact.
+#
+# GitHub Actions is now the primary trigger. It keeps a visible run history,
+# it goes red on failure, and the step below opens an issue so the failure
+# actually reaches an inbox. The Vercel cron in vercel.json stays as a backup;
+# the endpoint is idempotent per day, so a double trigger cannot double publish.
+
+on:
+  schedule:
+    # 08:20 UTC daily, twenty minutes after the Vercel cron's 08:00 slot so the
+    # backup gets first attempt and this only does work if that one missed.
+    - cron: '20 8 * * *'
+  workflow_dispatch: {}
+
+# Serialize runs so a manual dispatch cannot race the scheduled one.
+concurrency:
+  group: gazette-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Trigger the daily edition
+        id: publish
+        run: |
+          set -o pipefail
+          code=$(curl -sS -X GET "https://gazette.chrisizworski.com/api/cron" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            --max-time 300 \
+            -o response.json -w "%{http_code}")
+          echo "HTTP $code"
+          echo "http_code=$code" >> "$GITHUB_OUTPUT"
+          # Print the log the endpoint returns so the run history is diagnostic
+          # on its own rather than requiring a separate look at Vercel.
+          python3 -c "
+          import json,sys
+          try:
+              d=json.load(open('response.json'))
+          except Exception:
+              print(open('response.json').read()[:2000]); sys.exit(0)
+          for line in d.get('log',[]): print(line)
+          if not d.get('success'): print('ERROR:', d.get('error'))
+          "
+          if [ "$code" != "200" ]; then
+            echo "::error::Gazette publish failed with HTTP $code"
+            exit 1
+          fi
+
+      - name: Confirm the edition is actually live for today
+        run: |
+          today=$(date -u +%F)
+          latest=$(curl -sS --max-time 60 "https://gazette.chrisizworski.com/api/issues" \
+            | python3 -c "import sys,json;print((json.load(sys.stdin).get('dates') or [''])[0])")
+          echo "today=$today latest=$latest"
+          if [ "$latest" != "$today" ]; then
+            echo "::error::Endpoint returned 200 but the latest edition is $latest, not $today"
+            exit 1
+          fi
+          echo "Edition for $today confirmed live."
+
+      - name: Open an issue on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const today = new Date().toISOString().slice(0, 10);
+            const title = `Gazette publish failure: ${today}`;
+            const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: 'open', labels: 'cron-failure',
+            });
+            if (existing.data.some(i => i.title === title)) return;
+            await github.rest.issues.create({
+              owner: context.repo.owner, repo: context.repo.repo,
+              title,
+              labels: ['cron-failure'],
+              body: [
+                `The Great Lakes Gazette did not publish an edition for ${today}.`,
+                ``,
+                `Run log: ${run}`,
+                ``,
+                `Most common causes, in the order they have actually happened:`,
+                `1. Anthropic API credit exhausted. This took the Gazette, Trout Daily,`,
+                `   and Birding Daily down together on Jul 22 to 24 2026. Check the`,
+                `   billing balance first.`,
+                `2. CRON_SECRET drift between the Vercel env var and the GitHub secret.`,
+                `   Both must hold the same value.`,
+                `3. An upstream data source (BoatNerd AIS, NOAA, NWS) failing or changing shape.`,
+                ``,
+                `The site keeps serving the last good edition while this is broken, so`,
+                `readers see stale content rather than an error.`,
+              ].join('\n'),
+            });

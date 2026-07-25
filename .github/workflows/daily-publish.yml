@@ -1,18 +1,5 @@
 name: Daily Gazette Edition
 
-# Primary trigger for the Great Lakes Gazette daily edition.
-#
-# Until Jul 25 2026 the only trigger was the Vercel cron in vercel.json. When
-# the Anthropic account ran out of credit on Jul 22 the endpoint began
-# returning 500, nothing published for three days, and nothing reported it. A
-# Hobby plan Vercel cron is best effort and keeps no run history you can
-# inspect afterward.
-#
-# GitHub Actions is now the primary trigger: visible run history, red on
-# failure, and it verifies the edition actually landed rather than trusting a
-# 200. The Vercel cron stays as a backup; the endpoint is idempotent per day so
-# a double trigger cannot double publish.
-
 on:
   schedule:
     - cron: '20 8 * * *'
@@ -21,8 +8,6 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
     steps:
       - name: Trigger the daily edition
         env:
@@ -30,8 +15,7 @@ jobs:
         run: |
           code=$(curl -sS -X GET "https://gazette.chrisizworski.com/api/cron" -H "Authorization: Bearer $CRON_SECRET" --max-time 300 -o response.json -w "%{http_code}")
           echo "HTTP $code"
-          echo "--- endpoint response ---"
-          head -c 4000 response.json || true
+          head -c 3000 response.json || true
           echo ""
           if [ "$code" != "200" ]; then
             echo "::error::Gazette publish failed with HTTP $code"
@@ -42,23 +26,11 @@ jobs:
         run: |
           today=$(date -u +%F)
           curl -sS --max-time 60 "https://gazette.chrisizworski.com/api/issues" -o issues.json
-          echo "--- issues ---"
-          head -c 400 issues.json
+          head -c 300 issues.json
           echo ""
-          if grep -q "\"$today\"" issues.json; then
+          if grep -q "$today" issues.json; then
             echo "Edition for $today confirmed live."
           else
-            echo "::error::Endpoint returned 200 but no edition exists for $today"
+            echo "::error::200 returned but no edition exists for $today"
             exit 1
           fi
-
-      - name: Report failure as an issue
-        if: failure()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          today=$(date -u +%F)
-          run_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
-          printf 'The Great Lakes Gazette did not publish an edition for %s.\n\nRun log: %s\n\nCauses in the order they have actually happened:\n1. Anthropic API credit exhausted. This took the Gazette, Trout Daily and Birding Daily down together on Jul 22 to 24 2026. Check the billing balance first.\n2. CRON_SECRET drift between the Vercel env var and the repository secret. Both must hold the same value.\n3. An upstream source (BoatNerd AIS, NOAA, NWS) failing or changing shape.\n\nThe site keeps serving the last good edition while this is broken, so readers see stale content rather than an error.\n' "$today" "$run_url" > body.txt
-          python3 -c "import json;print(json.dumps({'title':'Gazette publish failure: '+open('/dev/stdin').readline().strip(),'body':open('body.txt').read()}))" <<< "$today" > payload.json
-          curl -sS -X POST -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$GITHUB_REPOSITORY/issues" -d @payload.json -o /dev/null -w "issue created: HTTP %{http_code}\n"

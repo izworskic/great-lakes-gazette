@@ -1,5 +1,31 @@
 name: Daily Gazette Edition
 
+# Primary trigger for the Great Lakes Gazette daily edition.
+#
+# Background, so the next person does not repeat the investigation:
+#
+# Until Jul 25 2026 the only trigger was the Vercel cron declared in
+# vercel.json. When the Anthropic account ran out of credit on Jul 22 the
+# endpoint began failing, nothing published for three days, and nothing
+# reported it. A Hobby plan Vercel cron is best effort and keeps no run
+# history you can inspect afterward.
+#
+# IMPORTANT: this calls the .vercel.app host, not gazette.chrisizworski.com.
+# The public hostname is proxied through Cloudflare (it is the only subdomain
+# in the network on an orange cloud), and Cloudflare cuts requests at about
+# 100 seconds. A full edition takes longer than that because it scrapes seven
+# AIS chokepoints, NOAA and NWS, then runs a scoring and retry loop over the
+# draft. Calling the public host always returns 524. The Vercel cron never hit
+# this because Vercel invokes the function internally. vercel.json only
+# redirects non /api paths off the .vercel.app host, so /api/cron is reachable
+# there directly.
+#
+# The Vercel cron stays in place as a backup. The endpoint is idempotent per
+# day, so both firing cannot double publish.
+#
+# Failure notification: GitHub emails the repository owner when a scheduled
+# workflow fails, so a red run here reaches an inbox without extra wiring.
+
 on:
   schedule:
     - cron: '20 8 * * *'
@@ -13,9 +39,10 @@ jobs:
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
-          code=$(curl -sS -X GET "https://gazette.chrisizworski.com/api/cron" -H "Authorization: Bearer $CRON_SECRET" --max-time 300 -o response.json -w "%{http_code}")
+          code=$(curl -sS -X GET "https://great-lakes-gazette.vercel.app/api/cron" -H "Authorization: Bearer $CRON_SECRET" --max-time 600 -o response.json -w "%{http_code}")
           echo "HTTP $code"
-          head -c 3000 response.json || true
+          echo "--- endpoint response ---"
+          head -c 4000 response.json || true
           echo ""
           if [ "$code" != "200" ]; then
             echo "::error::Gazette publish failed with HTTP $code"
@@ -26,11 +53,12 @@ jobs:
         run: |
           today=$(date -u +%F)
           curl -sS --max-time 60 "https://gazette.chrisizworski.com/api/issues" -o issues.json
+          echo "--- latest issues ---"
           head -c 300 issues.json
           echo ""
           if grep -q "$today" issues.json; then
-            echo "Edition for $today confirmed live."
+            echo "Edition for $today confirmed live on the public host."
           else
-            echo "::error::200 returned but no edition exists for $today"
+            echo "::error::Endpoint returned 200 but no edition exists for $today"
             exit 1
           fi

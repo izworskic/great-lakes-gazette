@@ -4,7 +4,8 @@
   "description": "Great Lakes shipping news - auto-generated from real AIS data",
   "type": "module",
   "scripts": {
-    "test": "node scripts/check-news-sitemap.mjs"
+    "test": "node scripts/check-news-sitemap.mjs && node scripts/check-publishing-reliability.mjs",
+    "verify:live": "node scripts/verify-live-edition.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

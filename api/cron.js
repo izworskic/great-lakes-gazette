@@ -1,14 +1,13 @@
-// Daily cron - 8am UTC (schedule set in vercel.json)
-// Scrapes BoatNerd, generates brief with Claude Haiku, publishes to FVF as draft.
-// Also writes result to Redis so /api/generate returns instantly all day (no duplicate API calls).
+// Daily cron - early Michigan morning (schedules set in vercel.json and GitHub Actions).
+// Scrapes current maritime sources, generates the edition, and writes it to Redis.
+// Duplicate-safe retries repair an unhealthy issue in place instead of publishing a second one.
 // Protected by CRON_SECRET - Vercel injects this header automatically on cron calls.
 
 import { Redis }             from '@upstash/redis';
-import { fetchAllData }      from '../lib/scraper.js';
-import { generateBrief }     from '../lib/generator.js';
-import { publishToWordPress } from '../lib/publisher.js';
-import { saveIssue, INDEX_KEY, getDates, getIssues } from '../lib/store.js';
-import { produceEdition }    from '../lib/editor.js';
+import { fetchAllData } from '../lib/scraper.js';
+import { publishToWordPress, updateWordPressPost } from '../lib/publisher.js';
+import { saveIssue, INDEX_KEY, getDates, getIssue, getIssues } from '../lib/store.js';
+import { produceEdition } from '../lib/editor.js';
 
 function makeRedis() {
   const url   = process.env.UPSTASH_REDIS_REST_URL;
@@ -18,10 +17,27 @@ function makeRedis() {
 }
 
 function todayUTC() { return new Date().toISOString().slice(0, 10); }
-function secondsUntilMidnight() {
-  const now = new Date();
-  const midnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
-  return Math.floor((midnight - now) / 1000);
+
+export function assessIssueHealth(payload, date = todayUTC()) {
+  const data = payload?.data || {};
+  const generatedAt = payload?.generated_at || payload?.brief?.generated_at || '';
+  const ais = Array.isArray(data.aisPassages) ? data.aisPassages : [];
+  const water = Array.isArray(data.waterLevels) ? data.waterLevels : [];
+  const weather = Array.isArray(data.marineWeather) ? data.marineWeather : [];
+  const details = {
+    date,
+    generatedAt,
+    hasHeadline: Boolean(payload?.brief?.headline),
+    generatedToday: generatedAt.startsWith(date),
+    aisHealthyPorts: ais.filter(item => item?.status === 'ok').length,
+    waterLevelStations: water.filter(item => item?.status === 'ok' && Number.isFinite(item?.level_ft)).length,
+    marineForecasts: weather.filter(item => item?.status === 'ok' && item?.synopsis).length,
+  };
+  return {
+    healthy: details.hasHeadline && details.generatedToday && details.aisHealthyPorts >= 5 &&
+      details.waterLevelStations >= 3 && details.marineForecasts >= 3,
+    ...details,
+  };
 }
 
 export default async function handler(req, res) {
@@ -32,58 +48,100 @@ export default async function handler(req, res) {
 
   const log = [];
   const ts  = () => new Date().toISOString();
+  const today = todayUTC();
+  const r = makeRedis();
+  const lockKey = `gazette:publish-lock:${today}`;
+  const lockToken = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  let lockAcquired = false;
 
   try {
-    const today = todayUTC();
     log.push(`[${ts()}] Cron starting - Great Lakes Gazette daily run (${today})`);
+    if (!r) throw new Error('Redis is required to publish the Gazette');
+
+    const existing = await getIssue(r, today);
+    const existingHealth = assessIssueHealth(existing, today);
+    if (existing && existingHealth.healthy) {
+      log.push(`[${ts()}] Healthy issue already exists for ${today}; duplicate run skipped`);
+      return res.status(200).json({
+        success: true,
+        alreadyPublished: true,
+        issueUrl: `https://gazette.chrisizworski.com/issue/${today}`,
+        health: existingHealth,
+        log,
+      });
+    }
+
+    lockAcquired = Boolean(await r.set(lockKey, lockToken, { nx: true, ex: 10 * 60 }));
+    if (!lockAcquired) {
+      log.push(`[${ts()}] Another publisher owns today's lock; this trigger is a no-op`);
+      return res.status(200).json({ success: true, inProgress: true, log });
+    }
+    if (existing) {
+      log.push(`[${ts()}] Existing issue is unhealthy; repairing it in place (${JSON.stringify(existingHealth)})`);
+    }
 
     const data = await fetchAllData();
     log.push(`[${ts()}] Data fetched: ${data.portReports.length} port reports, ${data.shippingNews.length} news items`);
 
+    const aisHealthy = (data.aisPassages || []).filter(p => p.status === 'ok').length;
     const aisActive = (data.aisPassages || []).filter(p => p.status === 'ok' && p.vessels.length > 0).length;
-    log.push(`[${ts()}] AIS: ${aisActive} active ports`);
+    log.push(`[${ts()}] AIS: ${aisHealthy}/7 source checks healthy, ${aisActive} ports with named passages`);
 
     // Edition number is the issue's position in the permanent archive, and the
     // last week of editions feeds the writer so no lead subject repeats.
-    const rNum = makeRedis();
     let issueNumber = 0;
     let recentEditions = [];
-    if (rNum) {
-      try {
-        const already = await rNum.sismember(INDEX_KEY, today);
-        const count   = await rNum.scard(INDEX_KEY);
-        issueNumber   = already ? count : count + 1;
-        const dates   = (await getDates(rNum)).filter(d => d !== today).slice(0, 7);
-        const map     = await getIssues(rNum, dates);
-        recentEditions = dates.map(d => {
-          const it = map.get(d);
-          const b  = it && it.brief ? it.brief : {};
-          return { date: d, headline: b.headline || '', leadSubject: b.leadSubject || '', spotlight: b.spotlight || '' };
-        }).filter(e => e.headline);
-      } catch (e) {
-        log.push(`[${ts()}] Recent-edition lookup failed (writing without novelty context): ${e.message}`);
-      }
+    try {
+      const already = await r.sismember(INDEX_KEY, today);
+      const count   = await r.scard(INDEX_KEY);
+      issueNumber   = already ? count : count + 1;
+      const dates   = (await getDates(r)).filter(d => d !== today).slice(0, 7);
+      const map     = await getIssues(r, dates);
+      recentEditions = dates.map(d => {
+        const it = map.get(d);
+        const b  = it && it.brief ? it.brief : {};
+        return { date: d, headline: b.headline || '', leadSubject: b.leadSubject || '', spotlight: b.spotlight || '' };
+      }).filter(e => e.headline);
+    } catch (e) {
+      log.push(`[${ts()}] Recent-edition lookup failed (writing without novelty context): ${e.message}`);
     }
 
     const { brief, report } = await produceEdition({ data, issueNumber, recentEditions, log });
     log.push(`[${ts()}] Edition accepted at ${report.total}/100 after ${brief.editorial.attempts} attempt(s): "${brief.headline}" (Issue ${brief.issueNumber})`);
 
-    // Write to Redis so /api/generate returns this instantly, no duplicate Anthropic call
-    const r = rNum;
-    if (r) {
-      const payload = { data, brief, generated_at: new Date().toISOString() };
+    // Redis is the public Gazette's source of truth. Save before optional
+    // distribution work so an FVF draft failure can never erase the edition.
+    const payload = { data, brief, generated_at: new Date().toISOString() };
+    await saveIssue(r, today, payload);
+    log.push(`[${ts()}] Issue stored permanently for ${today}; gazette:index updated`);
+
+    const health = assessIssueHealth(payload, today);
+    let post = null;
+    if (health.healthy) {
       try {
-        await saveIssue(r, today, payload);
-        log.push(`[${ts()}] Issue stored permanently for ${today}; gazette:index updated`);
-      } catch(e) {
-        log.push(`[${ts()}] Redis write failed (non-fatal): ${e.message}`);
+        const existingPostId = existing?.publication?.wordpress?.post_id;
+        if (existingPostId) {
+          post = await updateWordPressPost(existingPostId, brief);
+          log.push(`[${ts()}] Updated existing FVF draft ${existingPostId}`);
+        } else if (!existing) {
+          post = await publishToWordPress(brief);
+          log.push(`[${ts()}] Published FVF draft - ${post.edit_url}`);
+        } else {
+          log.push(`[${ts()}] Repaired public issue; skipped a new FVF draft to prevent duplication`);
+        }
+      } catch (error) {
+        log.push(`[${ts()}] FVF draft failed (non-fatal): ${error.message}`);
       }
     } else {
-      log.push(`[${ts()}] Redis not configured - skipping cache prime`);
+      log.push(`[${ts()}] Source-health gate failed; public issue saved for continuity but distribution held`);
     }
 
-    const post = await publishToWordPress(brief);
-    log.push(`[${ts()}] Published to FVF - ${post.edit_url}`);
+    if (post?.post_id || existing?.publication) {
+      payload.publication = post?.post_id
+        ? { wordpress: { post_id: post.post_id, edit_url: post.edit_url, status: post.status } }
+        : existing.publication;
+      await saveIssue(r, today, payload);
+    }
 
     // Submit new issue URL to IndexNow (Bing, Yandex, Seznam)
     try {
@@ -103,13 +161,26 @@ export default async function handler(req, res) {
       log.push(`[${ts()}] IndexNow failed (non-fatal): ${e.message}`);
     }
 
-    return res.status(200).json({ success: true, log, post });
+    const status = health.healthy ? 200 : 503;
+    return res.status(status).json({
+      success: health.healthy,
+      issueUrl: `https://gazette.chrisizworski.com/issue/${today}`,
+      health,
+      log,
+      post,
+    });
 
   } catch(e) {
     log.push(`[${ts()}] ERROR: ${e.message}`);
     console.error('[cron] Failed:', e.message);
     return res.status(500).json({ success: false, error: e.message, log });
+  } finally {
+    if (r && lockAcquired) {
+      try {
+        if (await r.get(lockKey) === lockToken) await r.del(lockKey);
+      } catch (error) {
+        console.warn('[cron] Publish lock cleanup failed:', error.message);
+      }
+    }
   }
 }
-
-

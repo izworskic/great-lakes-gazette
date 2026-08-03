@@ -20,21 +20,32 @@ name: Daily Gazette Edition
 # redirects non /api paths off the .vercel.app host, so /api/cron is reachable
 # there directly.
 #
-# The Vercel cron stays in place as a backup. The endpoint is idempotent per
-# day, so both firing cannot double publish.
+# The Vercel cron and these timezone-aware triggers are independent,
+# duplicate-safe attempts. The later GitHub trigger is also a recovery pass if
+# an upstream source was unhealthy during the first run.
 #
 # Failure notification: GitHub emails the repository owner when a scheduled
 # workflow fails, so a red run here reaches an inbox without extra wiring.
 
 on:
   schedule:
-    - cron: '20 8 * * *'
+    - cron: '53 4 * * *'
+      timezone: 'America/Detroit'
+    - cron: '23 6 * * *'
+      timezone: 'America/Detroit'
   workflow_dispatch:
+
+concurrency:
+  group: daily-gazette-edition
+  cancel-in-progress: false
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
+      - uses: actions/checkout@v4
+
       - name: Trigger the daily edition
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
@@ -49,16 +60,5 @@ jobs:
             exit 1
           fi
 
-      - name: Confirm today's edition is live
-        run: |
-          today=$(date -u +%F)
-          curl -sS --max-time 60 "https://gazette.chrisizworski.com/api/issues" -o issues.json
-          echo "--- latest issues ---"
-          head -c 300 issues.json
-          echo ""
-          if grep -q "$today" issues.json; then
-            echo "Edition for $today confirmed live on the public host."
-          else
-            echo "::error::Endpoint returned 200 but no edition exists for $today"
-            exit 1
-          fi
+      - name: Confirm today's edition and source health
+        run: node scripts/verify-live-edition.mjs

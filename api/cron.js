@@ -9,6 +9,19 @@ import { publishToWordPress, updateWordPressPost } from '../lib/publisher.js';
 import { saveIssue, INDEX_KEY, getDates, getIssue, getIssues } from '../lib/store.js';
 import { produceEdition } from '../lib/editor.js';
 import { michiganDateKey, validateEditionDateIntegrity } from '../lib/dates.js';
+import { topicSlugsForIssue } from '../lib/topics.js';
+
+const SITE = 'https://gazette.chrisizworski.com';
+
+export function buildIndexNowUrls(date, payload) {
+  return Array.from(new Set([
+    `${SITE}/`,
+    `${SITE}/issue/${date}`,
+    `${SITE}/archive`,
+    `${SITE}/topics`,
+    ...topicSlugsForIssue(payload).map(slug => `${SITE}/topics/${slug}`),
+  ]));
+}
 
 function makeRedis() {
   const url   = process.env.UPSTASH_REDIS_REST_URL;
@@ -155,9 +168,10 @@ export default async function handler(req, res) {
       await saveIssue(r, today, payload);
     }
 
-    // Submit new issue URL to IndexNow (Bing, Yandex, Seznam)
+    // Submit every public discovery surface changed by this edition. Topic
+    // classification is deterministic and adds no AI call or scheduled job.
     try {
-      const issueUrl = `https://gazette.chrisizworski.com/issue/${today}`;
+      const urlList = buildIndexNowUrls(today, payload);
       const inResp = await fetch('https://api.indexnow.org/indexnow', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json; charset=utf-8' },
@@ -165,10 +179,10 @@ export default async function handler(req, res) {
           host:        'gazette.chrisizworski.com',
           key:         '0476a3c706866ff2744d876891a8d782',
           keyLocation: 'https://gazette.chrisizworski.com/0476a3c706866ff2744d876891a8d782.txt',
-          urlList:     ['https://gazette.chrisizworski.com', issueUrl],
+          urlList,
         })
       });
-      log.push(`[${ts()}] IndexNow submitted - HTTP ${inResp.status}`);
+      log.push(`[${ts()}] IndexNow submitted ${urlList.length} affected URLs - HTTP ${inResp.status}`);
     } catch(e) {
       log.push(`[${ts()}] IndexNow failed (non-fatal): ${e.message}`);
     }

@@ -12,6 +12,7 @@ import latest        from '../lib/routes/latest.js';
 import publish       from '../lib/routes/publish.js';
 import scrape        from '../lib/routes/scrape.js';
 import sitemap       from '../lib/routes/sitemap.js';
+import topic         from '../lib/routes/topic.js';
 import weather       from '../lib/routes/weather.js';
 import home          from '../lib/routes/home.js';
 
@@ -24,6 +25,7 @@ const ROUTES = {
   'publish':        publish,
   'scrape':         scrape,
   'sitemap':        sitemap,
+  'topic':          topic,
   'weather':        weather,
   'home':           home,
 };

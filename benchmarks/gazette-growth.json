@@ -1,0 +1,41 @@
+{
+  "name": "Great Lakes Gazette automated organic growth gate",
+  "version": 1,
+  "baselineDate": "2026-08-09",
+  "purpose": "Increase qualified search impressions and search-result CTR without adding daily manual publishing work or another AI generation call.",
+  "baseline": {
+    "durableTopicHubs": 0,
+    "topicDirectory": false,
+    "topicalRelatedEditions": false,
+    "dedicatedGoogleNewsSitemap": false,
+    "jsonFeed": false,
+    "indexNowUrlsPerEdition": 2,
+    "firstPartyPageviewInstrumentation": false
+  },
+  "launchGate": {
+    "durableTopicHubs": 8,
+    "uniqueTopicTitlesAndDescriptions": true,
+    "topicDirectory": true,
+    "topicalRelatedEditions": true,
+    "standardSitemapIncludesTopicHubs": true,
+    "dedicatedGoogleNewsSitemap": true,
+    "googleNewsWindowDays": 2,
+    "rssFeed": true,
+    "jsonFeed": true,
+    "indexNowIncludesAffectedSurfaces": true,
+    "firstPartyPageviewInstrumentation": true,
+    "additionalDailyAiCalls": 0,
+    "additionalScheduledJobs": 0
+  },
+  "searchConsoleReview": {
+    "cadence": "weekly",
+    "primaryMetrics": [
+      "topic hub impressions",
+      "topic hub clicks",
+      "issue-page impressions",
+      "issue-page CTR",
+      "non-branded query count"
+    ],
+    "decisionRule": "Keep hubs that earn impressions or assist issue discovery; strengthen titles and introductions for high-impression, low-CTR queries; do not create thin one-off pages."
+  }
+}

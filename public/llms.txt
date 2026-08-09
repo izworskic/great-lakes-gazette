@@ -6,8 +6,21 @@ A new edition publishes every morning with a headline, dateline, fleet brief, an
 ## Key pages
 - [Today's edition](https://gazette.chrisizworski.com/): the current daily brief, fully server-rendered
 - [Archive](https://gazette.chrisizworski.com/archive): every back edition, grouped by month
+- [Shipping topics](https://gazette.chrisizworski.com/topics): eight continuously updated archives for freighters, the Soo Locks, all five lakes, water levels, and marine weather
 - [RSS feed](https://gazette.chrisizworski.com/feed.xml): the 30 most recent editions with full text included
+- [JSON Feed](https://gazette.chrisizworski.com/feed.json): the same 30 full editions in JSON Feed 1.1 format
+- [Google News sitemap](https://gazette.chrisizworski.com/news-sitemap.xml): current and previous-day editions for news discovery
 - [About the author](https://gazette.chrisizworski.com/chris-izworski): Chris Izworski
+
+## Topic archives
+- [Great Lakes freighters](https://gazette.chrisizworski.com/topics/great-lakes-freighters)
+- [Soo Locks](https://gazette.chrisizworski.com/topics/soo-locks)
+- [Lake Superior shipping](https://gazette.chrisizworski.com/topics/lake-superior-shipping)
+- [Lake Michigan shipping](https://gazette.chrisizworski.com/topics/lake-michigan-shipping)
+- [Lake Huron shipping](https://gazette.chrisizworski.com/topics/lake-huron-shipping)
+- [Lake Erie shipping](https://gazette.chrisizworski.com/topics/lake-erie-shipping)
+- [Lake Ontario shipping](https://gazette.chrisizworski.com/topics/lake-ontario-shipping)
+- [Water levels and marine weather](https://gazette.chrisizworski.com/topics/water-levels-marine-weather)
 
 ## Author
 Chris Izworski (https://chrisizworski.com), Michigan outdoor writer. Related sites: Michigan Trout Report (https://michigantroutreport.com), Michigan Birding Report (https://michiganbirdingreport.com), Great Lakes Levels (https://greatlakeslevels.org), Freighter View Farms (https://freighterviewfarms.com).

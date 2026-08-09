@@ -19,8 +19,24 @@
       "destination": "/api/gateway?route=sitemap&format=rss"
     },
     {
+      "source": "/feed.json",
+      "destination": "/api/gateway?route=sitemap&format=json"
+    },
+    {
       "source": "/sitemap.xml",
       "destination": "/api/gateway?route=sitemap"
+    },
+    {
+      "source": "/news-sitemap.xml",
+      "destination": "/api/gateway?route=sitemap&format=news"
+    },
+    {
+      "source": "/topics",
+      "destination": "/api/gateway?route=topic"
+    },
+    {
+      "source": "/topics/:slug",
+      "destination": "/api/gateway?route=topic&slug=:slug"
     },
     {
       "source": "/archive",

@@ -20,6 +20,22 @@ The writing pipeline drafts, scores, and revises each edition. A deterministic c
 checks the Bay City publication date and every explicit weekday/date pair before Redis can become
 the public source of truth. Source-health and live-edition checks run before distribution succeeds.
 
+## Automated Organic Growth Engine
+
+Each stored edition also updates a deterministic discovery layer without another AI call or
+scheduled job:
+
+- Eight permanent search-aligned topic archives covering Great Lakes freighters, the Soo Locks,
+  each lake's shipping, water levels, and marine weather
+- Topic-aware links from each issue to relevant hubs and related editions
+- A clean standard sitemap plus a separate two-day Google News sitemap
+- Full-text RSS and JSON Feed 1.1 distribution
+- IndexNow submission for the issue and every affected discovery page
+- Vercel Web Analytics pageview instrumentation on public pages
+
+The executable launch benchmark is stored in `benchmarks/gazette-growth.json` and enforced by
+`npm run benchmark:growth`. This is an internal release gate, not a public roadmap.
+
 ## Navigation Season
 
 The Soo Locks open for the 2026 season on **March 25**. Full vessel reports begin in early April.

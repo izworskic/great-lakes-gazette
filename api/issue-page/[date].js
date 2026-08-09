@@ -207,8 +207,8 @@ export default async function handler(req, res) {
       return res.status(404).send(notFoundPage(date));
     }
 
-    // True neighbors from the permanent index, plus four editions ranked
-    // by shared topic first and calendar distance second.
+    // True neighbors from the permanent index, plus genuinely related nearby
+    // editions. Generic freighter/weather tags cannot make two stories related.
     let nav = { prevDate: null, nextDate: null, related: [] };
     try {
       const dates = await getDates(r); // newest first
@@ -216,10 +216,13 @@ export default async function handler(req, res) {
       if (idx !== -1) {
         nav.nextDate = idx > 0 ? dates[idx - 1] : null;
         nav.prevDate = idx < dates.length - 1 ? dates[idx + 1] : null;
-        const candidates = dates.filter(d => d !== date);
+        const candidates = dates
+          .slice(Math.max(0, idx - 45), Math.min(dates.length, idx + 46))
+          .filter(d => d !== date);
         const m = await getIssues(r, candidates);
-        const currentTopics = new Set(topicSlugsForIssue(issue));
-        nav.related = candidates
+        const nonSpecificTopics = new Set(['great-lakes-freighters', 'water-levels-marine-weather']);
+        const currentTopics = new Set(topicSlugsForIssue(issue).filter(slug => !nonSpecificTopics.has(slug)));
+        nav.related = currentTopics.size ? candidates
           .map(candidateDate => {
             const candidate = m.get(candidateDate);
             const sharedTopics = candidate
@@ -232,10 +235,10 @@ export default async function handler(req, res) {
               distance: Math.abs(Date.parse(`${candidateDate}T12:00:00Z`) - Date.parse(`${date}T12:00:00Z`)),
             };
           })
-          .filter(candidate => candidate.headline)
+          .filter(candidate => candidate.headline && candidate.sharedTopics > 0)
           .sort((a, b) => b.sharedTopics - a.sharedTopics || a.distance - b.distance || b.date.localeCompare(a.date))
           .slice(0, 4)
-          .sort((a, b) => b.date.localeCompare(a.date));
+          .sort((a, b) => b.date.localeCompare(a.date)) : [];
       }
     } catch (e) { console.warn('[issue-page] nav failed:', e.message); }
 

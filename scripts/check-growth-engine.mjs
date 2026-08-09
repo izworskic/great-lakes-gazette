@@ -143,6 +143,15 @@ assert.deepEqual(
   new Set(['great-lakes-freighters', 'lake-superior-shipping', 'lake-erie-shipping']),
 );
 
+const farFromIssue = makeIssue(
+  'Highlander Sea Sinks in Brooklyn, Far From Port Huron',
+  'The schooner sank at a Brooklyn dock after years away from the Great Lakes.',
+);
+assert.deepEqual(
+  new Set(topicSlugsForIssue(farFromIssue)),
+  new Set(['great-lakes-freighters']),
+);
+
 const legacyIssue = {
   brief: {
     headline: 'Baie Comeau Works Two Coal Docks in One Day',

@@ -11,6 +11,7 @@ import {
   articleBodyHtml, DEPT_CSS,
   headCommon, css, headerInterior, footerHtml,
 } from '../../lib/layout.js';
+import { topicsForIssue, topicSlugsForIssue, topicUrl } from '../../lib/topics.js';
 
 const PAGE_CSS = `
 .also-by{margin-top:32px;padding-top:24px;border-top:1px solid var(--ink-4)}
@@ -22,6 +23,21 @@ const PAGE_CSS = `
 .related-issues{margin-top:36px;padding-top:24px;border-top:1px solid var(--ink-4)}
 `;
 
+function searchText(value, maxLength) {
+  const text = stripDashes(String(value || ''))
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength - 3).replace(/\s+\S*$/, '').trim() + '...';
+}
+
+export function issueSearchTitle(headline) {
+  const clean = searchText(headline, 60);
+  const branded = `${clean} | Great Lakes Gazette`;
+  return branded.length <= 60 ? branded : clean;
+}
+
 export function buildIssuePage(date, issue, nav) {
   const dateLong  = longDate(date);
   const dateShort = shortDate(date);
@@ -31,13 +47,15 @@ export function buildIssuePage(date, issue, nav) {
     ? articleBodyHtml(briefObj)
     : paragraphs(briefObj.brief || briefObj.html || issue.html || '');
   const headline  = stripDashes((briefObj.headline || issue.headline || `Daily Maritime Brief for ${dateShort}`).trim());
-  const summary   = stripDashes((briefObj.brief || briefObj.summary || issue.summary || `The Great Lakes Gazette daily maritime brief by ${AUTHOR} for ${dateLong}.`))
-                      .replace(/<[^>]+>/g, ' ')
-                      .replace(/\s+/g, ' ')
-                      .slice(0, 200)
-                      .trim();
+  const summary   = searchText(
+    briefObj.deck || briefObj.summary || briefObj.brief || issue.summary ||
+      `The Great Lakes Gazette daily maritime brief by ${AUTHOR} for ${dateLong}.`,
+    155,
+  );
+  const searchTitle = issueSearchTitle(headline);
   const spotlight = briefObj.spotlight && briefObj.spotlight !== 'none' ? stripDashes(briefObj.spotlight) : null;
   const { prevDate, nextDate, related } = nav || {};
+  const issueTopics = topicsForIssue(issue);
 
   const schema = JSON.stringify({
     '@context': 'https://schema.org',
@@ -49,12 +67,14 @@ export function buildIssuePage(date, issue, nav) {
       dateModified: date + 'T12:00:00Z',
       author: {
         '@type': 'Person',
+        '@id': `${AUTHOR_URL}/#person`,
         name: AUTHOR,
         url: AUTHOR_URL,
         sameAs: [
           AUTHOR_URL,
-          'https://trout.chrisizworski.com',
-          'https://troutdaily.chrisizworski.com',
+          'https://michigantroutreport.com',
+          'https://daily.michigantroutreport.com',
+          'https://michiganbirdingreport.com',
           'https://freighterviewfarms.com',
           'https://www.wikidata.org/wiki/Q138283432',
         ]
@@ -63,13 +83,13 @@ export function buildIssuePage(date, issue, nav) {
         '@type': 'Organization',
         name: 'Great Lakes Gazette',
         url: SITE,
-        founder: { '@type': 'Person', name: AUTHOR, url: AUTHOR_URL },
+        founder: { '@id': `${AUTHOR_URL}/#person` },
         logo: { '@type': 'ImageObject', url: `${SITE}/og-image.png` }
       },
       image: `${SITE}/og-image.png`,
       mainEntityOfPage: `${SITE}/issue/${date}`,
-      articleSection: 'Maritime News',
-      keywords: 'Great Lakes shipping, vessel movements, Soo Locks, AIS tracking, NOAA water levels, Lake Superior, Lake Michigan, Lake Huron, Lake Erie, Lake Ontario, freighters, Chris Izworski',
+      articleSection: ['Maritime News', ...issueTopics.map(topic => topic.name)],
+      keywords: ['Great Lakes shipping', 'vessel movements', 'AIS tracking', 'freighters', 'Chris Izworski', ...issueTopics.map(topic => topic.name)].join(', '),
     }, {
       '@type': 'BreadcrumbList',
       itemListElement: [
@@ -83,7 +103,7 @@ export function buildIssuePage(date, issue, nav) {
   return `<!DOCTYPE html>
 <html lang="en"><head>
 ${headCommon()}
-<title>${esc(headline)} | Great Lakes Gazette, ${esc(dateShort)}</title>
+<title>${esc(searchTitle)}</title>
 <meta name="description" content="${esc(summary)}">
 <meta name="author" content="${AUTHOR}">
 <meta name="keywords" content="Great Lakes shipping, vessel movements, Soo Locks, AIS tracking, NOAA water levels, ${esc(dateShort)}, Chris Izworski">
@@ -114,6 +134,7 @@ ${headerInterior('')}
   <div class="kicker">Vol. I &nbsp;&middot;&nbsp; ${esc(dateLong)}</div>
   <h1 class="headline">${esc(headline)}</h1>
   <div class="byline">By <a href="/chris-izworski">${AUTHOR}</a> &nbsp;&middot;&nbsp; Founder, Great Lakes Gazette &nbsp;&middot;&nbsp; ${esc(dateShort)}</div>
+  ${issueTopics.length ? `<nav class="topic-pills" aria-label="Topics in this edition">${issueTopics.map(topic => `<a class="topic-pill" href="${topicUrl(topic)}">${esc(topic.name)}</a>`).join('')}</nav>` : ''}
   ${briefObj.deck ? `<div class="deck">${esc(stripDashes(briefObj.deck))}</div>` : ''}
   <div class="brief dropcap">${briefBody}</div>
 
@@ -129,20 +150,20 @@ ${headerInterior('')}
   </nav>
 
   ${related && related.length ? `<div class="related-issues">
-    <div class="section-label">Recent Editions by ${AUTHOR}</div>
+    <div class="section-label">Related Great Lakes Shipping Editions</div>
     ${related.map(n => `<div class="r-item"><span class="r-date">${esc(longDate(n.date))}</span><a class="r-head" href="/issue/${n.date}">${esc(n.headline || 'Daily Maritime Brief')}</a></div>`).join('\n    ')}
   </div>` : ''}
 
   <div class="author-bio">
     <div class="author-bio-label">About the Author</div>
-    <div class="author-bio-text"><a href="${AUTHOR_URL}">${AUTHOR}</a> is a Bay City, Michigan writer and the founder of the <a href="${SITE}">Great Lakes Gazette</a>, a daily maritime news publication. He also publishes <a href="https://troutdaily.chrisizworski.com">Michigan Trout Daily</a> and operates the <a href="https://trout.chrisizworski.com">Michigan Trout Report</a>.</div>
+    <div class="author-bio-text"><a href="${AUTHOR_URL}">${AUTHOR}</a> is a Bay City, Michigan writer and the founder of the <a href="${SITE}">Great Lakes Gazette</a>, a daily maritime news publication. He also publishes <a href="https://daily.michigantroutreport.com">Michigan Trout Daily</a> and operates the <a href="https://michigantroutreport.com">Michigan Trout Report</a>.</div>
   </div>
 
   <div class="also-by">
     <div class="also-by-label">Also by ${AUTHOR}</div>
     <ul class="also-by-list">
-      <li><a href="https://troutdaily.chrisizworski.com" target="_blank" rel="noopener">Michigan Trout Daily</a><div class="also-by-desc">One Michigan trout stream conditions report every morning.</div></li>
-      <li><a href="https://trout.chrisizworski.com" target="_blank" rel="noopener">Michigan Trout Report</a><div class="also-by-desc">Live conditions tracker for 110+ Michigan rivers.</div></li>
+      <li><a href="https://daily.michigantroutreport.com" target="_blank" rel="noopener">Michigan Trout Daily</a><div class="also-by-desc">One Michigan trout stream conditions report every morning.</div></li>
+      <li><a href="https://michigantroutreport.com" target="_blank" rel="noopener">Michigan Trout Report</a><div class="also-by-desc">Live conditions tracker for 110+ Michigan rivers.</div></li>
       <li><a href="https://freighterviewfarms.com" target="_blank" rel="noopener">Freighter View Farms</a><div class="also-by-desc">Seed-saving and Great Lakes-themed gardening blog.</div></li>
     </ul>
   </div>
@@ -186,8 +207,8 @@ export default async function handler(req, res) {
       return res.status(404).send(notFoundPage(date));
     }
 
-    // True neighbors from the permanent index, plus the four nearest
-    // other editions for the related list.
+    // True neighbors from the permanent index, plus four editions ranked
+    // by shared topic first and calendar distance second.
     let nav = { prevDate: null, nextDate: null, related: [] };
     try {
       const dates = await getDates(r); // newest first
@@ -195,16 +216,26 @@ export default async function handler(req, res) {
       if (idx !== -1) {
         nav.nextDate = idx > 0 ? dates[idx - 1] : null;
         nav.prevDate = idx < dates.length - 1 ? dates[idx + 1] : null;
-        const nearest = dates
-          .filter(d => d !== date)
-          .sort((a, b) => Math.abs(new Date(a) - new Date(date)) - Math.abs(new Date(b) - new Date(date)))
+        const candidates = dates.filter(d => d !== date);
+        const m = await getIssues(r, candidates);
+        const currentTopics = new Set(topicSlugsForIssue(issue));
+        nav.related = candidates
+          .map(candidateDate => {
+            const candidate = m.get(candidateDate);
+            const sharedTopics = candidate
+              ? topicSlugsForIssue(candidate).filter(slug => currentTopics.has(slug)).length
+              : 0;
+            return {
+              date: candidateDate,
+              headline: candidate?.brief ? stripDashes(candidate.brief.headline || '') : '',
+              sharedTopics,
+              distance: Math.abs(Date.parse(`${candidateDate}T12:00:00Z`) - Date.parse(`${date}T12:00:00Z`)),
+            };
+          })
+          .filter(candidate => candidate.headline)
+          .sort((a, b) => b.sharedTopics - a.sharedTopics || a.distance - b.distance || b.date.localeCompare(a.date))
           .slice(0, 4)
-          .sort((a, b) => b.localeCompare(a));
-        const m = await getIssues(r, nearest);
-        nav.related = nearest.map(d => {
-          const it = m.get(d);
-          return { date: d, headline: it && it.brief ? stripDashes(it.brief.headline || '') : '' };
-        });
+          .sort((a, b) => b.date.localeCompare(a.date));
       }
     } catch (e) { console.warn('[issue-page] nav failed:', e.message); }
 

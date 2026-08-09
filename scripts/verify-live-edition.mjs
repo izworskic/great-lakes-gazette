@@ -1,5 +1,7 @@
+import { michiganDateKey, validateEditionDateIntegrity } from '../lib/dates.js';
+
 const endpoint = process.argv[2] || 'https://gazette.chrisizworski.com/api/latest';
-const today = new Date().toISOString().slice(0, 10);
+const today = michiganDateKey();
 const attempts = 20;
 
 function inspect(payload) {
@@ -7,15 +9,20 @@ function inspect(payload) {
   const ais = Array.isArray(payload?.data?.aisPassages) ? payload.data.aisPassages : [];
   const water = Array.isArray(payload?.data?.waterLevels) ? payload.data.waterLevels : [];
   const weather = Array.isArray(payload?.data?.marineWeather) ? payload.data.marineWeather : [];
+  const dateProblems = validateEditionDateIntegrity(payload?.brief, today);
+  let generatedDate = '';
+  try { generatedDate = generatedAt ? michiganDateKey(generatedAt) : ''; } catch {}
   const result = {
-    date: payload?.date || generatedAt.slice(0, 10),
+    date: payload?.date || generatedDate,
     generatedAt,
     headline: payload?.brief?.headline || '',
+    dateIntegrity: dateProblems.length === 0,
+    dateProblems,
     aisHealthyPorts: ais.filter(item => item?.status === 'ok').length,
     waterLevelStations: water.filter(item => item?.status === 'ok' && Number.isFinite(item?.level_ft)).length,
     marineForecasts: weather.filter(item => item?.status === 'ok' && item?.synopsis).length,
   };
-  result.healthy = result.date === today && result.generatedAt.startsWith(today) && Boolean(result.headline) &&
+  result.healthy = result.date === today && generatedDate === today && Boolean(result.headline) && result.dateIntegrity &&
     result.aisHealthyPorts >= 5 && result.waterLevelStations >= 3 && result.marineForecasts >= 3;
   return result;
 }

@@ -6,6 +6,7 @@
   "baseline": {
     "durableTopicHubs": 0,
     "topicDirectory": false,
+    "newsFirstTopicPages": false,
     "topicalRelatedEditions": false,
     "dedicatedGoogleNewsSitemap": false,
     "jsonFeed": false,
@@ -16,6 +17,7 @@
     "durableTopicHubs": 8,
     "uniqueTopicTitlesAndDescriptions": true,
     "topicDirectory": true,
+    "newsFirstTopicPages": true,
     "topicalRelatedEditions": true,
     "standardSitemapIncludesTopicHubs": true,
     "dedicatedGoogleNewsSitemap": true,

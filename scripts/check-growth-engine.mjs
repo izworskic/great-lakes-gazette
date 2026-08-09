@@ -44,6 +44,7 @@ const issuesMap = new Map([
 ]);
 
 assert.equal(TOPICS.length, benchmark.launchGate.durableTopicHubs);
+assert.equal(benchmark.launchGate.newsFirstTopicPages, true);
 assert.equal(new Set(TOPICS.map(topic => topic.slug)).size, TOPICS.length);
 assert.equal(new Set(TOPICS.map(topic => topic.title)).size, TOPICS.length);
 assert.equal(new Set(TOPICS.map(topic => topic.description)).size, TOPICS.length);
@@ -78,6 +79,9 @@ assert.match(indexHtml, /<link rel="canonical" href="https:\/\/gazette\.chrisizw
 assert.match(indexHtml, /_vercel\/insights\/script\.js/);
 assert.match(indexHtml, /window\.va=window\.va\|\|function/);
 assert.match(indexHtml, /https:\/\/chrisizworski\.com\/#person/);
+assert.match(indexHtml, /<h1 class="headline">Great Lakes Shipping News<\/h1>/);
+assert.ok(indexHtml.indexOf(broadIssue.brief.headline) < indexHtml.indexOf('Browse Shipping Beats'));
+assert.doesNotMatch(indexHtml, /Continuously Updated Maritime Archives|Filed Edition Links|New editions are filed automatically/);
 for (const topic of TOPICS) assert.match(indexHtml, new RegExp(topicUrl(topic).replaceAll('/', '\\/')));
 
 const soo = TOPICS.find(topic => topic.slug === 'soo-locks');
@@ -85,12 +89,15 @@ const topicHtml = renderTopicPage(soo, collections[soo.slug]);
 assert.match(topicHtml, /<h1 class="headline">Soo Locks News/);
 assert.match(topicHtml, /<link rel="canonical" href="https:\/\/gazette\.chrisizworski\.com\/topics\/soo-locks">/);
 assert.match(topicHtml, /Soo Locks Freighters Connect All Five Great Lakes/);
+assert.match(topicHtml, /<h2 class="section-label" id="topic-editions">Latest Reports<\/h2>/);
+assert.doesNotMatch(topicHtml, /useful discovery paths|Updated with each daily Gazette/);
 assert.doesNotMatch(topicHtml, /name="robots" content="noindex/);
 
 const homeHtml = renderHome({ dates, issuesMap });
-assert.match(homeHtml, /Explore Great Lakes Shipping Topics/);
+assert.match(homeHtml, /Browse Shipping Beats/);
 assert.match(homeHtml, /\/topics\/soo-locks/);
 assert.match(homeHtml, /_vercel\/insights\/script\.js/);
+assert.ok(homeHtml.indexOf('<div class="brief dropcap">') < homeHtml.indexOf('Browse Shipping Beats'));
 
 const issueHtml = buildIssuePage(dates[0], broadIssue, {
   prevDate: dates[1],

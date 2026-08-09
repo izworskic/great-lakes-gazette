@@ -1,11 +1,14 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { TOPICS, topicSlugsForIssue, topicUrl } from '../lib/topics.js';
+import {
+  TOPICS, issueLeadStoryText, issuePrimaryGeographyText, topicSlugsForIssue, topicUrl,
+} from '../lib/topics.js';
 import { collectTopicEditions, renderTopicIndex, renderTopicPage } from '../lib/routes/topic.js';
 import {
   renderGoogleNewsSitemap, renderJsonFeed, renderRssFeed, renderStandardSitemap,
 } from '../lib/routes/sitemap.js';
 import { renderHome } from '../lib/routes/home.js';
+import { renderArchive } from '../lib/routes/archive.js';
 import { buildIssuePage, issueSearchTitle } from '../api/issue-page/[date].js';
 import { buildIndexNowUrls } from '../api/cron.js';
 import { buildPage as buildAuthorPage } from '../lib/routes/chris-izworski.js';
@@ -26,7 +29,7 @@ const makeIssue = (headline, body) => ({
 
 const broadIssue = makeIssue(
   'Soo Locks Freighters Connect All Five Great Lakes',
-  'A freighter cleared the Soo Locks and St. Marys River after a Lake Superior call at Duluth. Reports also covered Lake Michigan at Manitowoc, Lake Huron at Port Huron and the Mackinac Bridge, Lake Erie at Toledo, and Lake Ontario through the St. Lawrence Seaway. The Levels Ledger carried Great Lakes water levels and a marine weather forecast from NOAA.',
+  'A freighter cleared the Soo Locks and St. Marys River after a Lake Superior call at Duluth; the same lead covered Lake Michigan at Manitowoc, Lake Huron at Port Huron and the Mackinac Bridge, Lake Erie at Toledo, Lake Ontario through the St. Lawrence Seaway, Great Lakes water levels, and a marine weather forecast from NOAA.',
 );
 const freighterIssue = makeIssue(
   'Manitowoc Freighter Turns for Lake Michigan',
@@ -45,6 +48,8 @@ const issuesMap = new Map([
 
 assert.equal(TOPICS.length, benchmark.launchGate.durableTopicHubs);
 assert.equal(benchmark.launchGate.newsFirstTopicPages, true);
+assert.equal(benchmark.launchGate.leadStoryOnlyTopicClassification, true);
+assert.equal(benchmark.launchGate.homepageBeatCardGrid, false);
 assert.equal(new Set(TOPICS.map(topic => topic.slug)).size, TOPICS.length);
 assert.equal(new Set(TOPICS.map(topic => topic.title)).size, TOPICS.length);
 assert.equal(new Set(TOPICS.map(topic => topic.description)).size, TOPICS.length);
@@ -67,11 +72,98 @@ const routineConditionsIssue = {
 };
 const routineSlugs = topicSlugsForIssue(routineConditionsIssue);
 assert.ok(routineSlugs.includes('lake-erie-shipping'));
-assert.ok(routineSlugs.includes('water-levels-marine-weather'));
+assert.ok(routineSlugs.includes('great-lakes-freighters'));
+assert.ok(!routineSlugs.includes('water-levels-marine-weather'));
 assert.ok(!routineSlugs.includes('lake-superior-shipping'));
 assert.ok(!routineSlugs.includes('lake-michigan-shipping'));
 assert.ok(!routineSlugs.includes('lake-huron-shipping'));
 assert.ok(!routineSlugs.includes('lake-ontario-shipping'));
+
+const secondaryMentionIssue = {
+  brief: {
+    headline: 'Manitowoc and Paul Martin Cross Paths at Port Huron',
+    deck: 'A downbound laker and an upbound freighter share the St. Clair at sunrise.',
+    leadSubject: 'Port Huron crossing',
+    sections: [
+      { kicker: '', body: 'Two freighters passed Port Huron on the St. Clair River before sunrise.' },
+      { kicker: 'Harbor Notes', body: 'A separate vessel loaded at Duluth on Lake Superior.' },
+      { kicker: 'The Levels Ledger', body: 'Lake Superior, Lake Michigan, Lake Huron, Lake Erie, and Lake Ontario reported routine levels.' },
+      { kicker: 'Weather on the Water', body: 'NOAA issued a routine marine forecast for all five lakes.' },
+    ],
+    spotlight: 'A tug waited at Toledo on Lake Erie.',
+    tomorrow: 'Watch the Soo Locks tomorrow morning.',
+  },
+};
+assert.deepEqual(
+  new Set(topicSlugsForIssue(secondaryMentionIssue)),
+  new Set(['great-lakes-freighters', 'lake-huron-shipping']),
+);
+
+const vesselNameCollisionIssue = makeIssue(
+  'CSL Thunder Bay, Indiana Harbor, and Alpena Meet',
+  'Three lakers crossed at Port Huron on the St. Clair River before sunrise.',
+);
+assert.deepEqual(
+  new Set(topicSlugsForIssue(vesselNameCollisionIssue)),
+  new Set(['great-lakes-freighters', 'lake-huron-shipping']),
+);
+
+const explicitPortIssue = makeIssue(
+  'Stewart J. Cort Back at Sturgeon Bay',
+  'The thousand-footer docked at Sturgeon Bay for propulsion work.',
+);
+assert.deepEqual(
+  new Set(topicSlugsForIssue(explicitPortIssue)),
+  new Set(['great-lakes-freighters', 'lake-michigan-shipping']),
+);
+
+const backgroundLocationIssue = {
+  brief: {
+    headline: 'Stewart J. Cort Back at Sturgeon Bay, Tug on Her Stern',
+    deck: 'Propulsion trouble sends the thousand-footer to Bay Shipbuilding after an earlier repair.',
+    leadSubject: 'Cort repair',
+    sections: [{
+      kicker: '',
+      body: 'The Stewart J. Cort docked at Sturgeon Bay for propulsion repairs. Earlier temporary repairs were completed at an idle dock in Superior.',
+    }],
+  },
+};
+assert.ok(!issuePrimaryGeographyText(backgroundLocationIssue).includes('Superior'));
+assert.deepEqual(
+  new Set(topicSlugsForIssue(backgroundLocationIssue)),
+  new Set(['great-lakes-freighters', 'lake-michigan-shipping']),
+);
+
+const directTwoLakeIssue = makeIssue(
+  'Federal Asahi Aims for Thunder Bay from Toledo',
+  'The freighter departed from Toledo for Thunder Bay with a grain cargo.',
+);
+assert.deepEqual(
+  new Set(topicSlugsForIssue(directTwoLakeIssue)),
+  new Set(['great-lakes-freighters', 'lake-superior-shipping', 'lake-erie-shipping']),
+);
+
+const farFromIssue = makeIssue(
+  'Highlander Sea Sinks in Brooklyn, Far From Port Huron',
+  'The schooner sank at a Brooklyn dock after years away from the Great Lakes.',
+);
+assert.deepEqual(
+  new Set(topicSlugsForIssue(farFromIssue)),
+  new Set(['great-lakes-freighters']),
+);
+
+const legacyIssue = {
+  brief: {
+    headline: 'Baie Comeau Works Two Coal Docks in One Day',
+    brief: 'The laker finished at Sandusky, Ohio, then moved to Toledo. Later in the old flat article, routine marine copy named Lake Superior and Duluth.',
+  },
+};
+assert.ok(issueLeadStoryText(legacyIssue).includes('Sandusky'));
+assert.ok(!issueLeadStoryText(legacyIssue).includes('Lake Superior'));
+assert.deepEqual(
+  new Set(topicSlugsForIssue(legacyIssue)),
+  new Set(['great-lakes-freighters', 'lake-erie-shipping']),
+);
 
 const collections = collectTopicEditions(dates, issuesMap);
 const indexHtml = renderTopicIndex(collections);
@@ -80,7 +172,8 @@ assert.match(indexHtml, /_vercel\/insights\/script\.js/);
 assert.match(indexHtml, /window\.va=window\.va\|\|function/);
 assert.match(indexHtml, /https:\/\/chrisizworski\.com\/#person/);
 assert.match(indexHtml, /<h1 class="headline">Great Lakes Shipping News<\/h1>/);
-assert.ok(indexHtml.indexOf(broadIssue.brief.headline) < indexHtml.indexOf('Browse Shipping Beats'));
+assert.ok(indexHtml.indexOf('Browse by Waterway') < indexHtml.indexOf(broadIssue.brief.headline));
+assert.doesNotMatch(indexHtml, /Browse Shipping Beats|topic-grid|topic-card/);
 assert.doesNotMatch(indexHtml, /Continuously Updated Maritime Archives|Filed Edition Links|New editions are filed automatically/);
 for (const topic of TOPICS) assert.match(indexHtml, new RegExp(topicUrl(topic).replaceAll('/', '\\/')));
 
@@ -94,10 +187,17 @@ assert.doesNotMatch(topicHtml, /useful discovery paths|Updated with each daily G
 assert.doesNotMatch(topicHtml, /name="robots" content="noindex/);
 
 const homeHtml = renderHome({ dates, issuesMap });
-assert.match(homeHtml, /Browse Shipping Beats/);
-assert.match(homeHtml, /\/topics\/soo-locks/);
+assert.match(homeHtml, /href="\/topics"[^>]*>Sections<\/a>/);
 assert.match(homeHtml, /_vercel\/insights\/script\.js/);
-assert.ok(homeHtml.indexOf('<div class="brief dropcap">') < homeHtml.indexOf('Browse Shipping Beats'));
+assert.doesNotMatch(homeHtml, /Browse Shipping Beats|Browse by Waterway|topic-grid|topic-card/);
+
+const archiveHtml = renderArchive(dates.map(date => ({
+  date,
+  headline: issuesMap.get(date).brief.headline,
+})));
+assert.match(archiveHtml, /The Gazette Archive/);
+assert.match(archiveHtml, new RegExp(broadIssue.brief.headline));
+assert.doesNotMatch(archiveHtml, /Shipping Beat|Browse by Waterway|topic-grid|topic-card/);
 
 const issueHtml = buildIssuePage(dates[0], broadIssue, {
   prevDate: dates[1],

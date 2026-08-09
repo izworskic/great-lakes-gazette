@@ -8,6 +8,7 @@ import { fetchAllData } from '../lib/scraper.js';
 import { publishToWordPress, updateWordPressPost } from '../lib/publisher.js';
 import { saveIssue, INDEX_KEY, getDates, getIssue, getIssues } from '../lib/store.js';
 import { produceEdition } from '../lib/editor.js';
+import { michiganDateKey, validateEditionDateIntegrity } from '../lib/dates.js';
 
 function makeRedis() {
   const url   = process.env.UPSTASH_REDIS_REST_URL;
@@ -16,25 +17,30 @@ function makeRedis() {
   return new Redis({ url, token });
 }
 
-function todayUTC() { return new Date().toISOString().slice(0, 10); }
-
-export function assessIssueHealth(payload, date = todayUTC()) {
+export function assessIssueHealth(payload, date = michiganDateKey()) {
   const data = payload?.data || {};
   const generatedAt = payload?.generated_at || payload?.brief?.generated_at || '';
   const ais = Array.isArray(data.aisPassages) ? data.aisPassages : [];
   const water = Array.isArray(data.waterLevels) ? data.waterLevels : [];
   const weather = Array.isArray(data.marineWeather) ? data.marineWeather : [];
+  const dateProblems = validateEditionDateIntegrity(payload?.brief, date);
+  let generatedToday = false;
+  try {
+    generatedToday = Boolean(generatedAt) && michiganDateKey(generatedAt) === date;
+  } catch {}
   const details = {
     date,
     generatedAt,
     hasHeadline: Boolean(payload?.brief?.headline),
-    generatedToday: generatedAt.startsWith(date),
+    generatedToday,
+    dateIntegrity: dateProblems.length === 0,
+    dateProblems,
     aisHealthyPorts: ais.filter(item => item?.status === 'ok').length,
     waterLevelStations: water.filter(item => item?.status === 'ok' && Number.isFinite(item?.level_ft)).length,
     marineForecasts: weather.filter(item => item?.status === 'ok' && item?.synopsis).length,
   };
   return {
-    healthy: details.hasHeadline && details.generatedToday && details.aisHealthyPorts >= 5 &&
+    healthy: details.hasHeadline && details.generatedToday && details.dateIntegrity && details.aisHealthyPorts >= 5 &&
       details.waterLevelStations >= 3 && details.marineForecasts >= 3,
     ...details,
   };
@@ -48,7 +54,7 @@ export default async function handler(req, res) {
 
   const log = [];
   const ts  = () => new Date().toISOString();
-  const today = todayUTC();
+  const today = michiganDateKey();
   const r = makeRedis();
   const lockKey = `gazette:publish-lock:${today}`;
   const lockToken = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -106,7 +112,13 @@ export default async function handler(req, res) {
       log.push(`[${ts()}] Recent-edition lookup failed (writing without novelty context): ${e.message}`);
     }
 
-    const { brief, report } = await produceEdition({ data, issueNumber, recentEditions, log });
+    const { brief, report } = await produceEdition({
+      data,
+      issueNumber,
+      recentEditions,
+      log,
+      publicationDate: today,
+    });
     log.push(`[${ts()}] Edition accepted at ${report.total}/100 after ${brief.editorial.attempts} attempt(s): "${brief.headline}" (Issue ${brief.issueNumber})`);
 
     // Redis is the public Gazette's source of truth. Save before optional

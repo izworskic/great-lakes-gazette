@@ -8,14 +8,17 @@ Built and published by [Chris Izworski](https://chrisizworski.com) from Bay City
 
 ## What It Is
 
-The Great Lakes Gazette publishes every morning at 8am UTC automatically. It pulls:
+The Great Lakes Gazette publishes automatically in the early Michigan morning. A Vercel cron and
+two timezone-aware GitHub Actions triggers make independent, duplicate-safe attempts. It pulls:
 
 - **Live AIS vessel tracking** - ship movements through the Soo Locks and across all five lakes
 - **NOAA water levels** - daily readings from the Great Lakes buoy network
 - **NWS marine forecasts** - lake-by-lake weather and conditions
 - **Great Lakes Now** - environmental and conservation news
 
-No editor. No manual steps. The pipeline fires, the AI writes the brief, it publishes.
+The writing pipeline drafts, scores, and revises each edition. A deterministic calendar gate then
+checks the Bay City publication date and every explicit weekday/date pair before Redis can become
+the public source of truth. Source-health and live-edition checks run before distribution succeeds.
 
 ## Navigation Season
 

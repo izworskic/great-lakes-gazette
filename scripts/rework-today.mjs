@@ -7,9 +7,10 @@ import { produceEdition } from '../lib/editor.js';
 import { makeRedis, getDates, getIssues, getIssue, saveIssue, INDEX_KEY } from '../lib/store.js';
 import { scoreEdition } from '../lib/editor.js';
 import { updateWordPressPost } from '../lib/publisher.js';
+import { michiganDateKey } from '../lib/dates.js';
 import { writeFileSync } from 'node:fs';
 
-const today = new Date().toISOString().slice(0, 10);
+const today = michiganDateKey();
 const log = [];
 
 const r = makeRedis();
@@ -48,12 +49,18 @@ console.log(`Issue ${issueNumber}. Recent editions in context: ${recentEditions.
 
 if (oldBrief) {
   try {
-    const base = await scoreEdition(oldBrief, { dataContext: '(baseline scoring: data context unavailable for the retracted draft; judge grounding on internal consistency only)', recentEditions: recentEditions.slice(1), bannedSubjects: [] });
+    const base = await scoreEdition(oldBrief, { dataContext: '(baseline scoring: data context unavailable for the retracted draft; judge grounding on internal consistency only)', recentEditions: recentEditions.slice(1), bannedSubjects: [], publicationDate: today });
     console.log(`BASELINE: retracted draft scores ${base.total}/100 (${Object.entries(base.scores).map(([k, v]) => `${k} ${v}`).join(', ')})`);
   } catch (e) { console.log(`Baseline scoring skipped: ${e.message}`); }
 }
 
-const { brief, report, bannedSubjects } = await produceEdition({ data, issueNumber, recentEditions, log });
+const { brief, report, bannedSubjects } = await produceEdition({
+  data,
+  issueNumber,
+  recentEditions,
+  log,
+  publicationDate: today,
+});
 
 for (const l of log) console.log(l);
 console.log(`\nBanned lead subjects were: ${bannedSubjects.join(', ') || 'none'}`);

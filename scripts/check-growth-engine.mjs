@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { TOPICS, issueLeadStoryText, topicSlugsForIssue, topicUrl } from '../lib/topics.js';
+import {
+  TOPICS, issueLeadStoryText, issuePrimaryGeographyText, topicSlugsForIssue, topicUrl,
+} from '../lib/topics.js';
 import { collectTopicEditions, renderTopicIndex, renderTopicPage } from '../lib/routes/topic.js';
 import {
   renderGoogleNewsSitemap, renderJsonFeed, renderRssFeed, renderStandardSitemap,
@@ -27,7 +29,7 @@ const makeIssue = (headline, body) => ({
 
 const broadIssue = makeIssue(
   'Soo Locks Freighters Connect All Five Great Lakes',
-  'A freighter cleared the Soo Locks and St. Marys River after a Lake Superior call at Duluth. Reports also covered Lake Michigan at Manitowoc, Lake Huron at Port Huron and the Mackinac Bridge, Lake Erie at Toledo, and Lake Ontario through the St. Lawrence Seaway. The Levels Ledger carried Great Lakes water levels and a marine weather forecast from NOAA.',
+  'A freighter cleared the Soo Locks and St. Marys River after a Lake Superior call at Duluth; the same lead covered Lake Michigan at Manitowoc, Lake Huron at Port Huron and the Mackinac Bridge, Lake Erie at Toledo, Lake Ontario through the St. Lawrence Seaway, Great Lakes water levels, and a marine weather forecast from NOAA.',
 );
 const freighterIssue = makeIssue(
   'Manitowoc Freighter Turns for Lake Michigan',
@@ -113,6 +115,32 @@ const explicitPortIssue = makeIssue(
 assert.deepEqual(
   new Set(topicSlugsForIssue(explicitPortIssue)),
   new Set(['great-lakes-freighters', 'lake-michigan-shipping']),
+);
+
+const backgroundLocationIssue = {
+  brief: {
+    headline: 'Stewart J. Cort Back at Sturgeon Bay, Tug on Her Stern',
+    deck: 'Propulsion trouble sends the thousand-footer to Bay Shipbuilding after an earlier repair.',
+    leadSubject: 'Cort repair',
+    sections: [{
+      kicker: '',
+      body: 'The Stewart J. Cort docked at Sturgeon Bay for propulsion repairs. Earlier temporary repairs were completed at an idle dock in Superior.',
+    }],
+  },
+};
+assert.ok(!issuePrimaryGeographyText(backgroundLocationIssue).includes('Superior'));
+assert.deepEqual(
+  new Set(topicSlugsForIssue(backgroundLocationIssue)),
+  new Set(['great-lakes-freighters', 'lake-michigan-shipping']),
+);
+
+const directTwoLakeIssue = makeIssue(
+  'Federal Asahi Aims for Thunder Bay from Toledo',
+  'The freighter departed from Toledo for Thunder Bay with a grain cargo.',
+);
+assert.deepEqual(
+  new Set(topicSlugsForIssue(directTwoLakeIssue)),
+  new Set(['great-lakes-freighters', 'lake-superior-shipping', 'lake-erie-shipping']),
 );
 
 const legacyIssue = {

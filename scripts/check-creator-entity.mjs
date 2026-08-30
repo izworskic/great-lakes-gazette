@@ -9,6 +9,8 @@ const person = 'https://chrisizworski.com/#person';
 assert.ok(layout.includes(`export const AUTHOR_URL = '${profile}';`), 'Gazette AUTHOR_URL must resolve to canonical profile');
 assert.ok(layout.includes('<link rel="author" href="${AUTHOR_URL}">'), 'Gazette shared head must emit rel=author');
 assert.ok(authorRoute.includes(person), 'Gazette author archive must use canonical Person ID');
+const topicRoute = readFileSync('lib/routes/topic.js', 'utf8');
+assert.ok(topicRoute.includes(`const PERSON_ID = '${person}';`), 'topic routes must use canonical Person ID independently of profile URL');
 assert.ok(!authorRoute.includes('https://gazette.chrisizworski.com/#person'), 'Gazette must not mint a local Person ID');
 
 console.log('Gazette creator entity checks passed.');

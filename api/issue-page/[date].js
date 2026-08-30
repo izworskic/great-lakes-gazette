@@ -67,7 +67,7 @@ export function buildIssuePage(date, issue, nav) {
       dateModified: date + 'T12:00:00Z',
       author: {
         '@type': 'Person',
-        '@id': `${AUTHOR_URL}/#person`,
+        '@id': 'https://chrisizworski.com/#person',
         name: AUTHOR,
         url: AUTHOR_URL,
         sameAs: [
@@ -83,7 +83,7 @@ export function buildIssuePage(date, issue, nav) {
         '@type': 'Organization',
         name: 'Great Lakes Gazette',
         url: SITE,
-        founder: { '@id': `${AUTHOR_URL}/#person` },
+        founder: { '@id': 'https://chrisizworski.com/#person' },
         logo: { '@type': 'ImageObject', url: `${SITE}/og-image.png` }
       },
       image: `${SITE}/og-image.png`,

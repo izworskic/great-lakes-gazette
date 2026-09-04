@@ -8,11 +8,11 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/api/gateway?route=home"
+      "destination": "/api/gateway-ga4?route=home"
     },
     {
       "source": "/chris-izworski",
-      "destination": "/api/gateway?route=chris-izworski"
+      "destination": "/api/gateway-ga4?route=chris-izworski"
     },
     {
       "source": "/feed.xml",
@@ -32,15 +32,15 @@
     },
     {
       "source": "/topics",
-      "destination": "/api/gateway?route=topic"
+      "destination": "/api/gateway-ga4?route=topic"
     },
     {
       "source": "/topics/:slug",
-      "destination": "/api/gateway?route=topic&slug=:slug"
+      "destination": "/api/gateway-ga4?route=topic&slug=:slug"
     },
     {
       "source": "/archive",
-      "destination": "/api/gateway?route=archive"
+      "destination": "/api/gateway-ga4?route=archive"
     },
     {
       "source": "/api/issue/:date",
@@ -48,7 +48,7 @@
     },
     {
       "source": "/issue/:date",
-      "destination": "/api/issue-page/[date]"
+      "destination": "/api/issue-page-ga4?date=:date"
     },
     {
       "source": "/api/archive",

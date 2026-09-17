@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mechanicalChecks } from '../lib/editor.js';
+import { assertEditorialReady, mechanicalChecks } from '../lib/editor.js';
 import { articleBodyHtml, aboutStrip, publishingNote, footerHtml } from '../lib/layout.js';
 
 assert.match(aboutStrip(), /uses AI/);
@@ -39,3 +39,10 @@ const groundedProblems = mechanicalChecks(groundedDraft);
 assert.ok(!groundedProblems.some(problem => problem.includes('placeholder wording')), 'specific sourced language must pass the placeholder gate');
 
 console.log('Editorial rendering integrity: PASS');
+
+const acceptable = { total: 93, scores: { grounding: 14 }, mustFix: [] };
+assert.doesNotThrow(() => assertEditorialReady(acceptable));
+assert.throws(() => assertEditorialReady({ ...acceptable, total: 76 }));
+assert.throws(() => assertEditorialReady({ ...acceptable, mustFix: ['Invented distance'] }));
+assert.throws(() => assertEditorialReady({ ...acceptable, scores: { grounding: 8 } }));
+assert.throws(() => assertEditorialReady({ total: 100, scores: { grounding: 15 } }));

@@ -64,7 +64,7 @@ export function buildIssuePage(date, issue, nav) {
       headline,
       description: summary,
       datePublished: date + 'T12:00:00Z',
-      dateModified: date + 'T12:00:00Z',
+      dateModified: issue.corrected_at || date + 'T12:00:00Z',
       author: {
         '@type': 'Person',
         '@id': 'https://chrisizworski.com/#person',
@@ -134,7 +134,7 @@ ${headerInterior('')}
   <div class="kicker">Vol. I &nbsp;&middot;&nbsp; ${esc(dateLong)}</div>
   <h1 class="headline">${esc(headline)}</h1>
   <div class="byline">Published by <a href="/chris-izworski">${AUTHOR}</a> &nbsp;&middot;&nbsp; Founder, Great Lakes Gazette &nbsp;&middot;&nbsp; ${esc(dateShort)}</div>
-  ${publishingNote()}
+  ${publishingNote(briefObj)}
   ${issueTopics.length ? `<nav class="topic-pills" aria-label="Topics in this edition">${issueTopics.map(topic => `<a class="topic-pill" href="${topicUrl(topic)}">${esc(topic.name)}</a>`).join('')}</nav>` : ''}
   ${briefObj.deck ? `<div class="deck">${esc(stripDashes(briefObj.deck))}</div>` : ''}
   <div class="brief dropcap">${briefBody}</div>

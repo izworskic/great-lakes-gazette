@@ -1,3 +1,4 @@
+import { parseIssue } from '../../lib/store.js';
 // GET /api/issue/[date] - fetch a specific issue by date (YYYY-MM-DD)
 // Reads from Redis. Returns the full brief + data for that day.
 
@@ -31,7 +32,7 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: `No issue found for ${date}` });
     }
 
-    const parsed = typeof cached === 'string' ? JSON.parse(cached) : cached;
+    const parsed = parseIssue(cached, date);
 
     res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=3600');
     return res.status(200).json({ success: true, date, ...parsed });

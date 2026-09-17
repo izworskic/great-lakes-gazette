@@ -8,7 +8,8 @@ import { fetchAllData } from '../lib/scraper.js';
 import { publishToWordPress, updateWordPressPost } from '../lib/publisher.js';
 import { saveIssue, INDEX_KEY, getDates, getIssue, getIssues } from '../lib/store.js';
 import { produceEdition } from '../lib/editor.js';
-import { michiganDateKey, validateEditionDateIntegrity } from '../lib/dates.js';
+import { michiganDateKey } from '../lib/dates.js';
+import { assessIssueHealth, assertPublishableIssue } from '../lib/source-health.js';
 import { topicSlugsForIssue } from '../lib/topics.js';
 
 const SITE = 'https://gazette.chrisizworski.com';
@@ -30,34 +31,7 @@ function makeRedis() {
   return new Redis({ url, token });
 }
 
-export function assessIssueHealth(payload, date = michiganDateKey()) {
-  const data = payload?.data || {};
-  const generatedAt = payload?.generated_at || payload?.brief?.generated_at || '';
-  const ais = Array.isArray(data.aisPassages) ? data.aisPassages : [];
-  const water = Array.isArray(data.waterLevels) ? data.waterLevels : [];
-  const weather = Array.isArray(data.marineWeather) ? data.marineWeather : [];
-  const dateProblems = validateEditionDateIntegrity(payload?.brief, date);
-  let generatedToday = false;
-  try {
-    generatedToday = Boolean(generatedAt) && michiganDateKey(generatedAt) === date;
-  } catch {}
-  const details = {
-    date,
-    generatedAt,
-    hasHeadline: Boolean(payload?.brief?.headline),
-    generatedToday,
-    dateIntegrity: dateProblems.length === 0,
-    dateProblems,
-    aisHealthyPorts: ais.filter(item => item?.status === 'ok').length,
-    waterLevelStations: water.filter(item => item?.status === 'ok' && Number.isFinite(item?.level_ft)).length,
-    marineForecasts: weather.filter(item => item?.status === 'ok' && item?.synopsis).length,
-  };
-  return {
-    healthy: details.hasHeadline && details.generatedToday && details.dateIntegrity && details.aisHealthyPorts >= 5 &&
-      details.waterLevelStations >= 3 && details.marineForecasts >= 3,
-    ...details,
-  };
-}
+export { assessIssueHealth } from '../lib/source-health.js';
 
 export default async function handler(req, res) {
   const auth = req.headers['authorization'];
@@ -137,10 +111,10 @@ export default async function handler(req, res) {
     // Redis is the public Gazette's source of truth. Save before optional
     // distribution work so an FVF draft failure can never erase the edition.
     const payload = { data, brief, generated_at: new Date().toISOString() };
+    const health = assertPublishableIssue(payload, today);
     await saveIssue(r, today, payload);
     log.push(`[${ts()}] Issue stored permanently for ${today}; gazette:index updated`);
 
-    const health = assessIssueHealth(payload, today);
     let post = null;
     if (health.healthy) {
       try {
@@ -157,8 +131,6 @@ export default async function handler(req, res) {
       } catch (error) {
         log.push(`[${ts()}] FVF draft failed (non-fatal): ${error.message}`);
       }
-    } else {
-      log.push(`[${ts()}] Source-health gate failed; public issue saved for continuity but distribution held`);
     }
 
     if (post?.post_id || existing?.publication) {

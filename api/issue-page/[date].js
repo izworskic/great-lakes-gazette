@@ -9,7 +9,7 @@ import { makeRedis, getDates, getIssue, getIssues } from '../../lib/store.js';
 import {
   SITE, AUTHOR, AUTHOR_URL, esc, stripDashes, paragraphs, longDate, shortDate,
   articleBodyHtml, DEPT_CSS,
-  headCommon, css, headerInterior, footerHtml,
+  headCommon, css, headerInterior, footerHtml, publishingNote,
 } from '../../lib/layout.js';
 import { topicsForIssue, topicSlugsForIssue, topicUrl } from '../../lib/topics.js';
 
@@ -133,7 +133,8 @@ ${headerInterior('')}
   <div class="breadcrumb"><a href="${AUTHOR_URL}">${AUTHOR}</a> &rsaquo; <a href="/">Great Lakes Gazette</a> &rsaquo; ${esc(dateLong)}</div>
   <div class="kicker">Vol. I &nbsp;&middot;&nbsp; ${esc(dateLong)}</div>
   <h1 class="headline">${esc(headline)}</h1>
-  <div class="byline">By <a href="/chris-izworski">${AUTHOR}</a> &nbsp;&middot;&nbsp; Founder, Great Lakes Gazette &nbsp;&middot;&nbsp; ${esc(dateShort)}</div>
+  <div class="byline">Published by <a href="/chris-izworski">${AUTHOR}</a> &nbsp;&middot;&nbsp; Founder, Great Lakes Gazette &nbsp;&middot;&nbsp; ${esc(dateShort)}</div>
+  ${publishingNote()}
   ${issueTopics.length ? `<nav class="topic-pills" aria-label="Topics in this edition">${issueTopics.map(topic => `<a class="topic-pill" href="${topicUrl(topic)}">${esc(topic.name)}</a>`).join('')}</nav>` : ''}
   ${briefObj.deck ? `<div class="deck">${esc(stripDashes(briefObj.deck))}</div>` : ''}
   <div class="brief dropcap">${briefBody}</div>

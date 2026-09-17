@@ -1,6 +1,15 @@
 import assert from 'node:assert/strict';
 import { mechanicalChecks } from '../lib/editor.js';
-import { articleBodyHtml } from '../lib/layout.js';
+import { articleBodyHtml, aboutStrip, publishingNote, footerHtml } from '../lib/layout.js';
+
+assert.match(aboutStrip(), /uses AI/);
+assert.match(aboutStrip(), /Published by/);
+assert.doesNotMatch(aboutStrip(), /nothing is invented|Written and edited by/);
+assert.match(publishingNote(), /AI-generated briefing/);
+assert.match(publishingNote(), /Report a correction/);
+for (const path of ['privacy', 'terms', 'connect']) {
+  assert.ok(footerHtml().includes('https://chrisizworski.com/' + path + '/'));
+}
 
 const rendered = articleBodyHtml({
   sections: [{ kicker: '', body: 'A sourced lead sentence.' }],

@@ -252,7 +252,11 @@ const vercel = JSON.parse(readFileSync(new URL('../vercel.json', import.meta.url
 const rewrites = new Map(vercel.rewrites.map(rewrite => [rewrite.source, rewrite.destination]));
 assert.equal(rewrites.get('/feed.json'), '/api/gateway?route=sitemap&format=json');
 assert.equal(rewrites.get('/news-sitemap.xml'), '/api/gateway?route=sitemap&format=news');
-assert.equal(rewrites.get('/topics/:slug'), '/api/gateway?route=topic&slug=:slug');
+// HTML routes use the deployed analytics wrapper, which delegates to the same gateway.
+assert.equal(rewrites.get('/topics/:slug'), '/api/gateway-ga4?route=topic&slug=:slug');
+const gatewayWrapper = readFileSync(new URL('../api/gateway-ga4.js', import.meta.url), 'utf8');
+assert.match(gatewayWrapper, /import gateway from '\.\/gateway\.js'/);
+assert.match(gatewayWrapper, /return gateway\(req, res\)/);
 assert.equal(vercel.crons.length, 1);
 assert.equal(benchmark.launchGate.additionalDailyAiCalls, 0);
 assert.equal(benchmark.launchGate.additionalScheduledJobs, 0);

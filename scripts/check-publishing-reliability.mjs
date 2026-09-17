@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { assessIssueHealth } from '../api/cron.js';
+import { saveIssue } from '../lib/store.js';
 import { buildContext, isFreshSourceDate } from '../lib/generator.js';
 import {
   assertEditionDateIntegrity,
@@ -71,7 +72,7 @@ assert.equal(config.apiBaseUrl, 'https://ais.boatnerd.com/api/v1');
 assert.equal(config.assetUrl, 'https://ais.boatnerd.com/assets/index.abc123.js');
 assert.equal(config.apiKey, 'public-client-value');
 
-const healthy = assessIssueHealth({
+const healthyPayload = {
   generated_at: '2026-08-03T10:00:00Z',
   brief: dateValidBrief,
   data: {
@@ -79,8 +80,29 @@ const healthy = assessIssueHealth({
     waterLevels: Array.from({ length: 3 }, () => ({ status: 'ok', level_ft: 2.5 })),
     marineWeather: Array.from({ length: 3 }, () => ({ status: 'ok', synopsis: 'Current forecast' })),
   },
-}, '2026-08-03');
+};
+const healthy = assessIssueHealth(healthyPayload, '2026-08-03');
 assert.equal(healthy.healthy, true);
+const writes = [];
+const fakeRedis = {
+  async set(...args) { writes.push(['set', ...args]); },
+  async sadd(...args) { writes.push(['sadd', ...args]); },
+};
+for (const payload of [
+  { ...healthyPayload, data: {} },
+  { ...healthyPayload, generated_at: '2026-08-02T10:00:00Z' },
+  { ...healthyPayload, brief: dateInvalidBrief },
+  { ...healthyPayload, brief: {} },
+]) {
+  await assert.rejects(saveIssue(fakeRedis, '2026-08-03', payload), /Source-health gate failed/);
+  assert.equal(writes.length, 0, 'Rejected editions must never overwrite a published issue or index');
+}
+await assert.rejects(saveIssue(null, '2026-08-03', { ...healthyPayload, data: {} }), /Source-health gate failed/);
+assert.equal(await saveIssue(fakeRedis, '2026-08-03', healthyPayload), true);
+assert.deepEqual(writes, [
+  ['set', 'gazette:daily:2026-08-03', JSON.stringify(healthyPayload)],
+  ['sadd', 'gazette:index', '2026-08-03'],
+]);
 assert.equal(assessIssueHealth({ ...healthy, brief: {} }, '2026-08-03').healthy, false);
 assert.equal(assessIssueHealth({
   generated_at: '2026-08-03T10:00:00Z',

@@ -16,10 +16,11 @@ assert.match(publishingNote(corrected.brief), /Correction:/);
 assert.deepEqual(parseIssue(corrected, '2026-09-17'), corrected, 'correction must be idempotent');
 assert.deepEqual(parseIssue(copy, '2026-09-18'), original, 'do not rewrite future editions');
 const manifest = JSON.parse(readFileSync(new URL('../lib/archive-corrections.json', import.meta.url)));
-assert.equal(Object.keys(manifest).length, 71);
+assert.equal(Object.keys(manifest).length, 133);
 for (const entry of Object.values(manifest)) for (const body of Object.values(entry.paragraphs || {})) {
+ if (entry.legacy) { assert.match(body, /without the underlying gauge snapshot/); continue; }
  assert.match(body, /NOAA station/);
  assert.match(body, /local standard time/);
  assert.match(body, /not lake-wide averages or channel depths/);
 }
-console.log('Archive corrections: PASS (71 dated editions; exact paragraph matching, preserved source, idempotence)');
+console.log('Archive corrections: PASS (133 dated editions; exact paragraph matching, preserved source, idempotence)');

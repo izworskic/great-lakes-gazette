@@ -364,5 +364,378 @@
     "paragraphs": {
       "17967cc73c4cdd3d1e13309d9ea38e4c1450a126e60156f8138bde48e20c6776": "Archived NOAA station observations: Lake Superior, Sault Ste. Marie (NOAA station 9076027): 1.89 feet relative to local Low Water Datum, observed 2026-07-03 23:54 local standard time. Lake Michigan, Chicago (NOAA station 9087031): 2.287 feet relative to local Low Water Datum, observed 2026-07-03 23:54 local standard time. Lake Huron, Harbor Beach, MI (NOAA station 9075002): 2.316 feet relative to local Low Water Datum, observed 2026-07-03 23:54 local standard time. Lake Erie, Cleveland (NOAA station 9063053): 3.058 feet relative to local Low Water Datum, observed 2026-07-03 23:54 local standard time. Lake Ontario, Rochester, NY (NOAA station 9052030): 3.921 feet relative to local Low Water Datum, observed 2026-07-03 23:54 local standard time. These are individual gauge readings, not lake-wide averages or channel depths. They do not establish vessel clearance, cargo limits or comparative navigability."
     }
+  },
+  "2026-05-19": {
+    "paragraphs": {
+      "e67427a5505dbe48fc386ae8fb1875f11524a82e26dcece56f0abafd16ad8b30": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-18": {
+    "paragraphs": {
+      "a53f3a26895f89fca685c8282fc4fb867461637d8a250a9ce768d1721ad9f454": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-17": {
+    "paragraphs": {
+      "22508f2fa234c1ffd8efc6d8190801d6f7cb0b4771faa096c191a5947b44d3e6": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-16": {
+    "paragraphs": {
+      "79332c79323f05dcf9a53d9e3219a3a4be459d0833a1c7f25cb5ead969b733ff": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-15": {
+    "paragraphs": {
+      "55d8264d2e0bb4edad4d8cf39ff1e44c8f1f4c0436dc49004dc472c693030597": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-14": {
+    "paragraphs": {
+      "4ca69d542f6f1292509ad1d4092e0df46378ebe6f250610601de8f3a56122f80": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-13": {
+    "paragraphs": {
+      "108c6c4727463bc6d520224777087a6d61db4cf8a74c6de8e5eaebe490f2a68d": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-12": {
+    "paragraphs": {
+      "19cd32da470f6f68775105bfe272a16996eb665756cbd64eb9a53bf5cfbcca07": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-11": {
+    "paragraphs": {
+      "a08f56fa8a0cd109aa479493dcd581a0327d4c490071ba7cb6801cbacbd9432a": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-10": {
+    "paragraphs": {
+      "ce139a634e1dbbe8032b2200ec8d1483ec43d613112061a79fcc25b6ed52639f": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-09": {
+    "paragraphs": {
+      "e08470412b9a68a1760e7af83982fe8865c88230bc6d61e1b825b2daa5e34b01": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-08": {
+    "paragraphs": {
+      "b474202070c804285bd6e1d4d7c8109397669f79b47dd540b3a39e2d1e0049d0": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-07": {
+    "paragraphs": {
+      "6bfebfbc452c9a12bcc8a69090ae8eff58bae95c7227918bf90d82636265f6b7": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-06": {
+    "paragraphs": {
+      "7417e332064b8ac93331ac96fd39a7a56dd0f26e03e55c1ba0dfad94176c6b9c": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-05": {
+    "paragraphs": {
+      "6270e4c17455f250f385cec6cc2ad510ce36e6c5c2d1a34f0a66d7eb197c8bae": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-04": {
+    "paragraphs": {
+      "06daa2f8e53a6170b1430c53580745248d1f8b9e37052fd500e5935ddcd87775": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-03": {
+    "paragraphs": {
+      "1f068749693abb97dd421ed2dfcd4baeb6ac72ec5e26da7830c424223cdd44f9": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-02": {
+    "paragraphs": {
+      "ae7c1c0ea1d39d35b7602f68732ee2f5916712f652b6552c8c8f682938a5f5fa": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-05-01": {
+    "paragraphs": {
+      "f2537ce29f21a474d20418c472b73b2f8f5b2020b2e6302d32715549359244e4": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-30": {
+    "paragraphs": {
+      "e5982f034ceb6fc903dc8c0d99eb04a60573e3992cedd883e3c7844452a189a6": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-29": {
+    "paragraphs": {
+      "04546e92def51515798d4a31b2290359457295aa6f322d459588003101d9125b": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-28": {
+    "paragraphs": {
+      "2db21b532740880da450afa93743cafb8254c5fb4b140b3175a93d2e9246fd2b": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-27": {
+    "paragraphs": {
+      "6a5c09f86541b32c7c88e425f92cdca47fafb4d7b70a26760f54876a72117555": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-26": {
+    "paragraphs": {
+      "535c160eb353d1853d4bf593dcfbe6d402a2e94615375c10180ddb90f22fd063": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-25": {
+    "paragraphs": {
+      "0e519ffa7571699bee61c3d8de75a2cbda90616de36a9bfd3c7ad20864706a86": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-24": {
+    "paragraphs": {
+      "67dfd79746be759981d04988dc938764e50efc4fd03fb8978c6c36ae69c1b347": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-23": {
+    "paragraphs": {
+      "fdac9921bf79c9f46e4268b243f5afd7592cd6b62294caea410b346742b93470": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-22": {
+    "paragraphs": {
+      "401baecb3a03609f0f1dad5af832d6776b9e2b157e447a1acdf228fd317652ce": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-21": {
+    "paragraphs": {
+      "e02183c548a7b12299fd3b821d8d8cf7c18e8b0de879254978d68a3e6e0f747e": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data.",
+      "de05828c7810929c4fa06516d9788947dedb6ea4537ce9d64d62a67df9ca42b6": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-20": {
+    "paragraphs": {
+      "d62afcf6e8b1d3d6335f7417d93b5cd021724c557e49b77fd4863095142c163e": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-19": {
+    "paragraphs": {
+      "31f403eb2addeda388317c00ad8fedf78cc3888054c8ae2ea4fe42f35c24f47a": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-18": {
+    "paragraphs": {
+      "e9d1fb6a0dd41ce48f7bb4129d39688c06184e1385f84cd5a5d51000d56aecbc": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-17": {
+    "paragraphs": {
+      "89c211362715ee75e9e6a7e2de40d00786491f6798f6f5f09f188c6de79009f9": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-16": {
+    "paragraphs": {
+      "ab1fda7352f0b0c0d0840bb42fedefd72c360722eb575dee9a6fecce474c808c": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-15": {
+    "paragraphs": {
+      "188cbcc7041fe81c52702372656d8bc9d20d39358540a4d880ebe6dcd21ae2bd": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-14": {
+    "paragraphs": {
+      "c6d4825fd4d49c7d452571e6d8df220b5cfc2db56ae38ac1fb5f6ae094b6881a": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-13": {
+    "paragraphs": {
+      "b702775254884015523a21f8167f9b4914bca21c818edf1daa12168538c37094": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-12": {
+    "paragraphs": {
+      "80cfe282cb9761ef120eb23d30d66ecbd5469d52ad661a549f3e617f97a74a9a": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-11": {
+    "paragraphs": {
+      "d9924ae3253e51ea03879f8d52cd40a4d66c45034b114ea3a8fd5985dc8a654c": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-09": {
+    "paragraphs": {
+      "a1bf0096aa5d0c6d12c34de0860931a6f04813c99245f2010d09ae7fe226763b": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-08": {
+    "paragraphs": {
+      "3eccbb5b3d6110a04e569fff47b01eee15a49ff0e89ee459bcedd3056677cbc6": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-07": {
+    "paragraphs": {
+      "53285cdf8bb8f5742265785042877e3233cd9be70105c2a54ad8643cee8f9183": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-05": {
+    "paragraphs": {
+      "4fd7a3db9acb5385bf6ddb800329795edbeb21a9edf47443965c1c7f1e6d3742": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-04": {
+    "paragraphs": {
+      "118aba9504c4453e917d9a3c9b786d6d4e7ff9de89324aaea9e463050830787a": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-03": {
+    "paragraphs": {
+      "78c8710cc987c13d5d7f9b27c66e258c0f0fb0c3632f885a00015473ea6bb248": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-02": {
+    "paragraphs": {
+      "75ae6591ccf50c4252780e7a3e2e985edd2a3a31024c9f211bd21a3dbcd63c42": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-04-01": {
+    "paragraphs": {
+      "1a896fe10db4a0c5102054afeeca56bf4651316c4c9174e171e2ec648d7a769e": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-03-31": {
+    "paragraphs": {
+      "8d31e25b8a397d181faa663e3d1a9ce395c96b2014719186bedef82772617871": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-03-30": {
+    "paragraphs": {
+      "40140891ec808bd8234d9bde5c94a1d972180358a2145ece375779944a80ee84": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-03-29": {
+    "paragraphs": {
+      "b8f8781bb72e701a6e1b4af8a7ec4f478efd3abe6fa93ba53708190d3bb50ef8": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-03-28": {
+    "paragraphs": {
+      "628879ae62bcf3b1d5b5dab3045e7a55404d9777937102fb3e584f626007e1c6": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-03-27": {
+    "paragraphs": {
+      "8b0949964afd5294be5f932597be0cc8b8aac60e3e935a910ed4cdb63432a1fd": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-03-26": {
+    "paragraphs": {
+      "ced7797d3b97b76cc1726c7b495573a24b84b46ef480c8319bb928edfc318155": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-03-25": {
+    "paragraphs": {
+      "1d6b533358e7007e3e6677e4cd95926651c9e25d7c9948bccf34de3a1e98644b": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-03-24": {
+    "paragraphs": {
+      "faa5e6ddf77d26c7e8dbb466bb7aaeb84ee40da2f2e27bfe2b0104ffda656a06": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-03-23": {
+    "paragraphs": {
+      "571acfd97771b33669e4d376be4f5f86163944b80c6073e50f768d84042e0890": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-03-22": {
+    "paragraphs": {
+      "3da60700813a33d70e7c4d0bee0cac0bf7bbe696e1eef6135eaa2dddf6fd4d47": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-03-21": {
+    "paragraphs": {
+      "8d66a99417f420f12d3af99b1e9597e146c6c75a94bc941ec9e5a905f624961c": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-03-20": {
+    "paragraphs": {
+      "c5946cbb96d99e9c005a67a7d14ee70fb46094723be6a3fe13b8b0592055baf0": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-03-19": {
+    "paragraphs": {
+      "4feb676b341c56a22b953b31c52d71c88bbfc8e1cffff26d588c1a72b20f3c9e": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-03-18": {
+    "paragraphs": {
+      "fae1a9892a74abc8543c9b00a6beabb9af350018525119ff3095a6ece7c23bcd": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
+  },
+  "2026-03-17": {
+    "paragraphs": {
+      "85f673344d819b4232fcd8b03a21b19e52535155f00ea647a34d9fd31b1539ff": "The original water-level paragraph has been withdrawn. This legacy edition was imported from a WordPress draft without the underlying gauge snapshot, so its numerical readings and navigation implications cannot be verified from the archived source data."
+    },
+    "legacy": true
   }
 }

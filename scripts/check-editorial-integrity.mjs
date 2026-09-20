@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { assertEditorialReady, mechanicalChecks } from '../lib/editor.js';
+import { assertEditorialReady, mechanicalChecks, scoreEdition } from '../lib/editor.js';
 import { articleBodyHtml, aboutStrip, publishingNote, footerHtml } from '../lib/layout.js';
 
 assert.match(aboutStrip(), /uses AI/);
@@ -46,3 +46,31 @@ assert.throws(() => assertEditorialReady({ ...acceptable, total: 76 }));
 assert.throws(() => assertEditorialReady({ ...acceptable, mustFix: ['Invented distance'] }));
 assert.throws(() => assertEditorialReady({ ...acceptable, scores: { grounding: 8 } }));
 assert.throws(() => assertEditorialReady({ total: 100, scores: { grounding: 15 } }));
+
+// Reproduce the publishing outage: supporting evidence occurs after the old
+// 9,000-character cutoff. Inspect the actual request sent to the critic.
+const context = 'AIS observations\n'.repeat(700) + '\nELBEBORG at Cleveland; NOAA station reading 2.50 ft; NWS forecast.';
+let criticRequest;
+const client = { messages: { async create(request) {
+  criticRequest = request;
+  return { content: [{ text: JSON.stringify({
+    scores: { novelty: 19, hook: 14, voice: 14, grounding: 15, returnMechanics: 14, structure: 9, style: 9 },
+    mustFix: [], notes: [],
+  }) }] };
+} } };
+await scoreEdition(groundedDraft, { dataContext: context, client });
+assert.ok(context.indexOf('ELBEBORG') > 9000);
+assert.ok(criticRequest.messages[0].content.includes(context), 'Critic must receive the complete, unchanged writer evidence');
+await assert.rejects(scoreEdition(groundedDraft, { dataContext: '', client }), /without its source context/);
+console.log('Complete writer/critic evidence parity: PASS');
+
+const { renderHome } = await import('../lib/routes/home.js');
+const staleHome = renderHome({ dates: ['2026-01-01'], issuesMap: new Map([['2026-01-01', {
+  brief: { headline: 'An archived headline', brief: 'Archived body.', sections: [{ kicker: '', body: 'Archived body.' }] },
+  data: { marineWeather: [{ lake: 'Huron', synopsis: 'An archived forecast.' }] },
+}]]) });
+assert.match(staleHome, /Today's edition is delayed/);
+assert.match(staleHome, /NWS marine synopses from the Thursday, January 1, 2026 edition/);
+assert.doesNotMatch(staleHome, /NWS marine synopses, this morning/);
+assert.match(staleHome, /href="https:\/\/chrisizworski.com\/soo-locks\/"/);
+console.log('Stale homepage disclosure: PASS');

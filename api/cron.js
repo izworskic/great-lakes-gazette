@@ -34,6 +34,7 @@ function makeRedis() {
 export { assessIssueHealth } from '../lib/source-health.js';
 
 export default async function handler(req, res) {
+  res.setHeader('Cache-Control', 'no-store');
   const auth = req.headers['authorization'];
   if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -47,6 +48,7 @@ export default async function handler(req, res) {
   const lockToken = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
   let lockAcquired = false;
 
+  async function publish() {
   try {
     log.push(`[${ts()}] Cron starting - Great Lakes Gazette daily run (${today})`);
     if (!r) throw new Error('Redis is required to publish the Gazette');
@@ -55,19 +57,19 @@ export default async function handler(req, res) {
     const existingHealth = assessIssueHealth(existing, today);
     if (existing && existingHealth.healthy) {
       log.push(`[${ts()}] Healthy issue already exists for ${today}; duplicate run skipped`);
-      return res.status(200).json({
+      return { status: 200, body: {
         success: true,
         alreadyPublished: true,
         issueUrl: `https://gazette.chrisizworski.com/issue/${today}`,
         health: existingHealth,
         log,
-      });
+      } };
     }
 
-    lockAcquired = Boolean(await r.set(lockKey, lockToken, { nx: true, ex: 10 * 60 }));
+    lockAcquired = Boolean(await r.set(lockKey, lockToken, { nx: true, ex: 330 }));
     if (!lockAcquired) {
       log.push(`[${ts()}] Another publisher owns today's lock; this trigger is a no-op`);
-      return res.status(200).json({ success: true, inProgress: true, log });
+      return { status: 200, body: { success: true, inProgress: true, log } };
     }
     if (existing) {
       log.push(`[${ts()}] Existing issue is unhealthy; repairing it in place (${JSON.stringify(existingHealth)})`);
@@ -162,25 +164,30 @@ export default async function handler(req, res) {
     }
 
     const status = health.healthy ? 200 : 503;
-    return res.status(status).json({
+    return { status, body: {
       success: health.healthy,
       issueUrl: `https://gazette.chrisizworski.com/issue/${today}`,
       health,
       log,
       post,
-    });
+    } };
 
   } catch(e) {
     log.push(`[${ts()}] ERROR: ${e.message}`);
     console.error('[cron] Failed:', e.message);
-    return res.status(500).json({ success: false, error: e.message, log });
+    return { status: 500, body: { success: false, error: e.message, log } };
   } finally {
     if (r && lockAcquired) {
       try {
-        if (await r.get(lockKey) === lockToken) await r.del(lockKey);
+        await r.eval("if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end", [lockKey], [lockToken]);
       } catch (error) {
         console.warn('[cron] Publish lock cleanup failed:', error.message);
       }
     }
   }
+  }
+  // Vercel can freeze background work after a response is sent. Complete the
+  // owned-lock cleanup before sending success or failure to the scheduler.
+  const outcome = await publish();
+  return res.status(outcome.status).json(outcome.body);
 }

@@ -131,3 +131,34 @@ assert.match(editor, /deterministic date gate failed/);
 assert.match(editor, /assertEditionDateIntegrity/);
 
 console.log('Publishing reliability checks passed.');
+
+// Exercise the real handler control flow with isolated dependencies: a failed
+// scrape must release its owned lease BEFORE the HTTP response is sent.
+const { default: cronHandler } = await import('../api/cron.js');
+let released = false;
+const lockCalls = [];
+const lockRedis = {
+  async set(key, token, options) { lockCalls.push({ key, token, options }); return 'OK'; },
+  async eval(script, keys, args) {
+    assert.match(script, /redis.call\('get'/);
+    assert.match(script, /redis.call\('del'/);
+    assert.equal(keys[0], lockCalls[0].key);
+    assert.equal(args[0], lockCalls[0].token);
+    await Promise.resolve();
+    released = true;
+  },
+};
+const isolatedCron = new Function('makeRedis', 'getIssue', 'assessIssueHealth', 'michiganDateKey', 'fetchAllData', 'process', 'console', `return (${cronHandler.toString()});`)(
+  () => lockRedis, async () => null, assessIssueHealth, () => '2026-09-20',
+  async () => { throw new Error('Simulated upstream outage'); },
+  { env: { CRON_SECRET: 'test-only-secret' } }, { error() {}, warn() {} },
+);
+const fakeResponse = {
+  setHeader() {}, status(code) { this.code = code; return this; },
+  json(body) { assert.equal(released, true, 'Never leave lock cleanup until after response'); this.body = body; },
+};
+await isolatedCron({ headers: { authorization: 'Bearer test-only-secret' } }, fakeResponse);
+assert.equal(fakeResponse.code, 500);
+assert.equal(fakeResponse.body.success, false);
+assert.equal(lockCalls[0].options.ex, 330);
+console.log('Publication lease released before failure response: PASS');

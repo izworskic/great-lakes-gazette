@@ -74,3 +74,31 @@ assert.match(staleHome, /NWS marine synopses from the Thursday, January 1, 2026 
 assert.doesNotMatch(staleHome, /NWS marine synopses, this morning/);
 assert.match(staleHome, /href="https:\/\/chrisizworski.com\/soo-locks\/"/);
 console.log('Stale homepage disclosure: PASS');
+
+const { buildSourceBulletin } = await import('../lib/source-bulletin.js');
+const bulletinTime = new Date('2026-09-20T12:00:00Z');
+const bulletinData = {
+  aisPassages: Array.from({ length: 5 }, (_, i) => ({ status: 'ok', port: `Port ${i}`, fetched_at: bulletinTime.toISOString(), vessels: [
+    { name: `Vessel ${i}`, timestamp: '9-20-2026 07:00', location: 'Reported dock', eta: '9-20-2026 10:00' },
+    { name: 'Stale vessel', timestamp: '9-17-2026 07:00' },
+  ] })),
+  waterLevels: Array.from({ length: 3 }, (_, i) => ({ status: 'ok', stationId: `90000${i}`, city: `Station ${i}`, lake: 'Lake Huron', level_ft: 1.496, date: '2026-09-20 07:00' })),
+  marineWeather: Array.from({ length: 3 }, (_, i) => ({ status: 'ok', lake: `Lake ${i}`, issuanceTime: '2026-09-20T11:00:00Z', synopsis: 'North wind at 10 knots.' })),
+};
+const bulletin = buildSourceBulletin(bulletinData, { now: bulletinTime, publicationDate: '2026-09-20' });
+assert.equal(bulletin.editorial.mode, 'source-bulletin');
+assert.equal(bulletin.editorial.score, undefined, 'Never invent an AI quality score for a source bulletin');
+assert.match(bulletin.brief, /1\.496 ft above local Low Water Datum/);
+assert.match(bulletin.brief, /Estimated arrival: 9-20-2026 10:00 \(source time; unconfirmed\)/);
+assert.match(bulletin.brief, /North wind at 10 knots/);
+assert.doesNotMatch(bulletin.brief, /Stale vessel/);
+assert.match(publishingNote(bulletin), /Source bulletin/);
+assert.doesNotMatch(publishingNote(bulletin), /AI-generated briefing/);
+for (const bad of [
+  { ...bulletinData, aisPassages: [] },
+  { ...bulletinData, aisPassages: bulletinData.aisPassages.map(p => ({ ...p, fetched_at: '2026-09-17T12:00:00Z' })) },
+  { ...bulletinData, waterLevels: bulletinData.waterLevels.map(w => ({ ...w, date: '2026-09-17 07:00' })) },
+  { ...bulletinData, marineWeather: bulletinData.marineWeather.map(w => ({ ...w, issuanceTime: '' })) },
+]) assert.throws(() => buildSourceBulletin(bad, { now: bulletinTime, publicationDate: '2026-09-20' }), /Fresh-source gate failed/);
+assert.throws(() => buildSourceBulletin(bulletinData, { now: bulletinTime, publicationDate: '2026-09-19' }), /current Michigan date/);
+console.log('Deterministic source bulletin, dated evidence and failure gates: PASS');

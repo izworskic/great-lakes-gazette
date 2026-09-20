@@ -106,7 +106,9 @@ export default async function handler(req, res) {
       log,
       publicationDate: today,
     });
-    log.push(`[${ts()}] Edition accepted at ${report.total}/100 after ${brief.editorial.attempts} attempt(s): "${brief.headline}" (Issue ${brief.issueNumber})`);
+    log.push(report.mode === 'source-bulletin'
+      ? `[${ts()}] Dated source bulletin verified: "${brief.headline}" (Issue ${brief.issueNumber})`
+      : `[${ts()}] Edition accepted at ${report.total}/100 after ${brief.editorial.attempts} attempt(s): "${brief.headline}" (Issue ${brief.issueNumber})`);
 
     // Redis is the public Gazette's source of truth. Save before optional
     // distribution work so an FVF draft failure can never erase the edition.

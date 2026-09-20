@@ -40,3 +40,25 @@ delayed issue. Feed and home CDN freshness are reduced to 60 seconds with at mos
 
 Do not bypass editorial or source-health gates, replace missing sources with
 invented facts, or relabel an old edition as today's edition to turn checks green.
+
+## Verified second failure and recovery format
+
+After the evidence-parity repair deployed, recovery job 106069626839 still failed
+on September 20. This time the critic correctly identified confused report dates
+and positions rather than missing evidence. Narrative revisions alone cannot be
+the sole publication path.
+
+`lib/source-bulletin.js` provides a distinct fallback publication format. It copies
+only typed, dated source fields, explicitly labels report times and unconfirmed
+ETAs, keeps station datums and timestamps, and discloses why the narrative is
+unavailable. It never reuses rejected prose or assigns a fabricated quality score.
+It requires five AIS source fetches within an hour, three NOAA observations from
+today/yesterday, and three NWS forecasts issued within 36 hours, in addition to the
+normal publication/date gates. Missing or stale sources still block publication.
+Narrative requests and retries are bounded so fallback storage fits the function
+budget. A successful source bulletin counts as that day's edition; retries do not
+silently replace it or create duplicate drafts.
+
+The live browser also retained the old main-site script under its four-hour asset
+cache. The companion cache-version change updates all seven script references so
+returning visitors receive the repaired refresh behavior immediately.

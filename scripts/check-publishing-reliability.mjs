@@ -126,9 +126,13 @@ const verifier = readFileSync(new URL('./verify-live-edition.mjs', import.meta.u
 assert.match(verifier, /validateEditionDateIntegrity/);
 assert.match(verifier, /michiganDateKey/);
 
+// The publication path moved to the fact ledger on 2026-09-26. It must still
+// enforce calendar integrity, and now also mechanical fact verification.
 const editor = readFileSync(new URL('../lib/editor.js', import.meta.url), 'utf8');
-assert.match(editor, /deterministic date gate failed/);
-assert.match(editor, /assertEditionDateIntegrity/);
+assert.match(editor, /buildLedgerEdition/);
+const ledgerEdition = readFileSync(new URL('../lib/ledger-edition.js', import.meta.url), 'utf8');
+assert.match(ledgerEdition, /assertEditionDateIntegrity\(brief, publicationDate\)/);
+assert.match(ledgerEdition, /verifyLedgerEdition\(brief\);/);
 
 console.log('Publishing reliability checks passed.');
 

@@ -108,13 +108,13 @@ export default async function handler(req, res) {
       log,
       publicationDate: today,
     });
-    log.push(report.mode === 'source-bulletin'
-      ? `[${ts()}] Dated source bulletin verified: "${brief.headline}" (Issue ${brief.issueNumber})`
-      : `[${ts()}] Edition accepted at ${report.total}/100 after ${brief.editorial.attempts} attempt(s): "${brief.headline}" (Issue ${brief.issueNumber})`);
+    log.push(`[${ts()}] Fact-ledger edition verified: "${brief.headline}" (Issue ${brief.issueNumber}; lead chosen by ${brief.editorial.lead.chosenBy})`);
 
     // Redis is the public Gazette's source of truth. Save before optional
     // distribution work so an FVF draft failure can never erase the edition.
-    const payload = { data, brief, generated_at: new Date().toISOString() };
+    // The run log is stored with the issue so the next failure or fallback is
+    // visible after the fact instead of vanishing with the HTTP response.
+    const payload = { data, brief, generated_at: new Date().toISOString(), runLog: log };
     const health = assertPublishableIssue(payload, today);
     await saveIssue(r, today, payload);
     log.push(`[${ts()}] Issue stored permanently for ${today}; gazette:index updated`);

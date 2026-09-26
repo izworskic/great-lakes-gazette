@@ -166,3 +166,25 @@ assert.equal(fakeResponse.code, 500);
 assert.equal(fakeResponse.body.success, false);
 assert.equal(lockCalls[0].options.ex, 330);
 console.log('Publication lease released before failure response: PASS');
+
+// Same-day legacy upgrade: a healthy issue that is not a fact-ledger edition is
+// rebuilt; a healthy fact-ledger edition is still skipped (duplicate-safe).
+async function runWith(existingIssue) {
+  const calls = { lock: 0, fetch: 0 };
+  const redis = { async set() { calls.lock += 1; return 'OK'; }, async eval() {} };
+  const handler = new Function('makeRedis', 'getIssue', 'assessIssueHealth', 'michiganDateKey', 'fetchAllData', 'process', 'console', `return (${cronHandler.toString()});`)(
+    () => redis, async () => existingIssue, () => ({ healthy: true }), () => '2026-09-26',
+    async () => { calls.fetch += 1; throw new Error('stop after proving the rebuild started'); },
+    { env: { CRON_SECRET: 'test-only-secret' } }, { error() {}, warn() {} },
+  );
+  const res = { setHeader() {}, status(c) { this.code = c; return this; }, json(b) { this.body = b; } };
+  await handler({ headers: { authorization: 'Bearer test-only-secret' } }, res);
+  return { res, calls };
+}
+const legacy = await runWith({ brief: { headline: 'Bulletin', editorial: { mode: 'source-bulletin' } } });
+assert.equal(legacy.calls.fetch, 1, 'A same-day legacy-format issue must be rebuilt, not skipped');
+assert.ok(legacy.res.body.log.some(line => /legacy format \(source-bulletin\)/.test(line)));
+const current = await runWith({ brief: { headline: 'Ledger', editorial: { mode: 'fact-ledger' } } });
+assert.equal(current.calls.fetch, 0, 'A healthy fact-ledger edition must not be rebuilt');
+assert.equal(current.res.body.alreadyPublished, true);
+console.log('Same-day legacy rebuild, fact-ledger duplicate skip: PASS');

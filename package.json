@@ -4,13 +4,14 @@
   "description": "Great Lakes shipping news - auto-generated from real AIS data",
   "type": "module",
   "scripts": {
-    "test": "node scripts/check-creator-entity.mjs && npm run benchmark:growth && node scripts/check-news-sitemap.mjs && node scripts/check-publishing-reliability.mjs && node scripts/check-editorial-integrity.mjs && node scripts/check-archive-corrections.mjs",
+    "test": "node scripts/check-creator-entity.mjs && npm run benchmark:growth && node scripts/check-news-sitemap.mjs && node scripts/check-publishing-reliability.mjs && node scripts/check-editorial-integrity.mjs && node scripts/check-fact-ledger.mjs && node scripts/check-archive-corrections.mjs",
     "benchmark:growth": "node scripts/check-growth-engine.mjs",
     "verify:live": "node scripts/verify-live-edition.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
     "@upstash/redis": "^1.37.0",
+    "@vercel/oidc": "^3.8.9",
     "node-fetch": "^3.3.2"
   }
 }

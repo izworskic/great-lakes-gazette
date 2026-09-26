@@ -63,10 +63,7 @@ const { brief, report, bannedSubjects } = await produceEdition({
 });
 
 for (const l of log) console.log(l);
-console.log(`\nBanned lead subjects were: ${bannedSubjects.join(', ') || 'none'}`);
-console.log(`\nFINAL: ${report.total}/100 after ${brief.editorial.attempts} attempt(s)`);
-for (const [k, v] of Object.entries(report.scores)) console.log(`  ${k}: ${v}`);
-if (report.notes.length) console.log(`  notes: ${report.notes.join(' | ')}`);
+console.log(`\nMODE: ${report.mode}; lead ${brief.editorial.lead.subject} chosen by ${brief.editorial.lead.chosenBy}`);
 console.log(`\nHEADLINE: ${brief.headline}`);
 console.log(`DECK: ${brief.deck}`);
 console.log(`LEAD SUBJECT: ${brief.leadSubject}`);

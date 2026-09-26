@@ -55,7 +55,11 @@ export default async function handler(req, res) {
 
     const existing = await getIssue(r, today);
     const existingHealth = assessIssueHealth(existing, today);
-    if (existing && existingHealth.healthy) {
+    // Only a verified fact-ledger edition counts as done. A same-day issue in an
+    // older format (narrative or source bulletin) is rebuilt in place, which keeps
+    // its issue number and updates its existing FVF draft. Past days are never touched.
+    const legacyFormat = Boolean(existing) && existing?.brief?.editorial?.mode !== 'fact-ledger';
+    if (existing && existingHealth.healthy && !legacyFormat) {
       log.push(`[${ts()}] Healthy issue already exists for ${today}; duplicate run skipped`);
       return { status: 200, body: {
         success: true,
@@ -72,7 +76,9 @@ export default async function handler(req, res) {
       return { status: 200, body: { success: true, inProgress: true, log } };
     }
     if (existing) {
-      log.push(`[${ts()}] Existing issue is unhealthy; repairing it in place (${JSON.stringify(existingHealth)})`);
+      log.push(legacyFormat && existingHealth.healthy
+        ? `[${ts()}] Existing issue is in an unverified legacy format (${existing?.brief?.editorial?.mode || 'narrative'}); rebuilding it as a fact-ledger edition in place`
+        : `[${ts()}] Existing issue is unhealthy; repairing it in place (${JSON.stringify(existingHealth)})`);
     }
 
     const data = await fetchAllData();

@@ -29,6 +29,9 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   // Only the repository-owned Actions runner may persist the returned issue.
   // Vercel has no GitHub write token and must not report a staged write as published.
+  if (req.query?.preflight === 'github') {
+    return res.status(200).json({ ok: true, backend: 'github', publishedAt: new Date().toISOString() });
+  }
   if (req.query?.capture !== 'github') {
     return res.status(409).json({ error: 'Gazette publishing now requires the GitHub Actions archive writer' });
   }
@@ -110,6 +113,9 @@ export default async function handler(req, res) {
       recentEditions,
       log,
       publicationDate: today,
+      // Free-mode Gazette never contacts JEV or Anthropic. The highest-ranked
+      // already-verified ledger item leads deterministically.
+      decide: async ({ fallbackId }) => ({ mode: 'deterministic', choiceId: fallbackId, confidence: 1, reason: 'cost-free scheduled edition' }),
     });
     log.push(`[${ts()}] Fact-ledger edition verified: "${brief.headline}" (Issue ${brief.issueNumber}; lead chosen by ${brief.editorial.lead.chosenBy})`);
 

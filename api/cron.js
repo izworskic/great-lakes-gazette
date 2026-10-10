@@ -3,10 +3,9 @@
 // Duplicate-safe retries repair an unhealthy issue in place instead of publishing a second one.
 // Protected by CRON_SECRET - Vercel injects this header automatically on cron calls.
 
-import { Redis }             from '@upstash/redis';
 import { fetchAllData } from '../lib/scraper.js';
 import { publishToWordPress, updateWordPressPost } from '../lib/publisher.js';
-import { saveIssue, INDEX_KEY, getDates, getIssue, getIssues } from '../lib/store.js';
+import { makeRedis, saveIssue, INDEX_KEY, getDates, getIssue, getIssues } from '../lib/store.js';
 import { produceEdition } from '../lib/editor.js';
 import { michiganDateKey } from '../lib/dates.js';
 import { assessIssueHealth, assertPublishableIssue } from '../lib/source-health.js';
@@ -24,17 +23,15 @@ export function buildIndexNowUrls(date, payload) {
   ]));
 }
 
-function makeRedis() {
-  const url   = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (!url || !token) return null;
-  return new Redis({ url, token });
-}
-
 export { assessIssueHealth } from '../lib/source-health.js';
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
+  // Only the repository-owned Actions runner may persist the returned issue.
+  // Vercel has no GitHub write token and must not report a staged write as published.
+  if (req.query?.capture !== 'github') {
+    return res.status(409).json({ error: 'Gazette publishing now requires the GitHub Actions archive writer' });
+  }
   const auth = req.headers['authorization'];
   if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -123,7 +120,7 @@ export default async function handler(req, res) {
     const payload = { data, brief, generated_at: new Date().toISOString(), runLog: log };
     const health = assertPublishableIssue(payload, today);
     await saveIssue(r, today, payload);
-    log.push(`[${ts()}] Issue stored permanently for ${today}; gazette:index updated`);
+    log.push(`[${ts()}] Edition staged for authenticated GitHub Actions archival on ${today}`);
 
     let post = null;
     if (health.healthy) {
@@ -176,6 +173,7 @@ export default async function handler(req, res) {
       health,
       log,
       post,
+      capture: health.healthy ? { date: today, issue: payload } : null,
     } };
 
   } catch(e) {

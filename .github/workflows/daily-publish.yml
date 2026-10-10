@@ -9,6 +9,10 @@ on:
     - cron: '23 6 * * *'
       timezone: 'America/Detroit'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/daily-publish.yml"
 
 permissions:
   contents: write
@@ -35,6 +39,23 @@ jobs:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
           set -euo pipefail
+          # Do not call the old Redis writer during a Git-driven deployment.
+          # The new public preflight is read-only and has no model side effects.
+          for attempt in $(seq 1 72); do
+            code="$(curl --silent --show-error --max-time 15 \
+              -o "$RUNNER_TEMP/gazette-preflight.json" -w '%{http_code}' \
+              'https://great-lakes-gazette.vercel.app/api/cron?preflight=github')"
+            if [[ "$code" == "200" ]] && jq -e '.ok == true and .backend == "github"' "$RUNNER_TEMP/gazette-preflight.json" >/dev/null; then
+              echo "GitHub archive writer deployed"
+              break
+            fi
+            if [[ "$attempt" == "72" ]]; then
+              echo "::error::Production did not activate the GitHub archive writer."
+              exit 1
+            fi
+            sleep 10
+          done
+
           today="$(TZ=America/Detroit date +%F)"
           output="archive/data/issues/${today}.json"
           if [[ -f "$output" ]]; then

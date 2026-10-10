@@ -1,15 +1,6 @@
-import { parseIssue } from '../../lib/store.js';
+import { makeRedis, getIssue } from '../../lib/store.js';
 // GET /api/issue/[date] - fetch a specific issue by date (YYYY-MM-DD)
 // Reads from Redis. Returns the full brief + data for that day.
-
-import { Redis } from '@upstash/redis';
-
-function makeRedis() {
-  const url   = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (!url || !token) return null;
-  return new Redis({ url, token });
-}
 
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
@@ -25,14 +16,13 @@ export default async function handler(req, res) {
   if (!r) return res.status(503).json({ error: 'Redis not configured' });
 
   try {
-    const key    = `gazette:daily:${date}`;
-    const cached = await r.get(key);
+    const cached = await getIssue(r,date);
 
     if (!cached) {
       return res.status(404).json({ error: `No issue found for ${date}` });
     }
 
-    const parsed = parseIssue(cached, date);
+    const parsed = cached;
 
     res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=3600');
     return res.status(200).json({ success: true, date, ...parsed });

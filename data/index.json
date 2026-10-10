@@ -1,5 +1,7 @@
 {
-  "dates": [],
+  "dates": [
+    "2026-10-10"
+  ],
   "backend": "github",
   "note": "Historical issues remain in the suspended Redis database until recovered."
 }

@@ -1,32 +1,7 @@
-name: Daily Gazette Edition
+name: Daily Gazette Edition (GitHub Archive)
 
-# Primary trigger for the Great Lakes Gazette daily edition.
-#
-# Background, so the next person does not repeat the investigation:
-#
-# Until Jul 25 2026 the only trigger was the Vercel cron declared in
-# vercel.json. When the Anthropic account ran out of credit on Jul 22 the
-# endpoint began failing, nothing published for three days, and nothing
-# reported it. A Hobby plan Vercel cron is best effort and keeps no run
-# history you can inspect afterward.
-#
-# IMPORTANT: this calls the .vercel.app host, not gazette.chrisizworski.com.
-# The public hostname is proxied through Cloudflare (it is the only subdomain
-# in the network on an orange cloud), and Cloudflare cuts requests at about
-# 100 seconds. A full edition takes longer than that because it scrapes seven
-# AIS chokepoints, NOAA and NWS, then runs a scoring and retry loop over the
-# draft. Calling the public host always returns 524. The Vercel cron never hit
-# this because Vercel invokes the function internally. vercel.json only
-# redirects non /api paths off the .vercel.app host, so /api/cron is reachable
-# there directly.
-#
-# The Vercel cron and these timezone-aware triggers are independent,
-# duplicate-safe attempts. The later GitHub trigger is also a recovery pass if
-# an upstream source was unhealthy during the first run.
-#
-# Failure notification: GitHub emails the repository owner when a scheduled
-# workflow fails, so a red run here reaches an inbox without extra wiring.
-
+# A free GitHub data branch is the durable source of truth. No Redis calls and
+# no extra Vercel deployment are required to publish a new issue.
 on:
   schedule:
     - cron: '53 4 * * *'
@@ -34,6 +9,9 @@ on:
     - cron: '23 6 * * *'
       timezone: 'America/Detroit'
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 concurrency:
   group: daily-gazette-edition
@@ -44,21 +22,74 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - name: Read the archive branch
+        uses: actions/checkout@v4
+        with:
+          ref: gazette-data
+          path: archive
+          persist-credentials: true
 
-      - name: Trigger the daily edition
+      - name: Publish only when today's date is absent
+        shell: bash
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
-          code=$(curl -sS -X GET "https://great-lakes-gazette.vercel.app/api/cron" -H "Authorization: Bearer $CRON_SECRET" --max-time 600 -o response.json -w "%{http_code}")
-          echo "HTTP $code"
-          echo "--- endpoint response ---"
-          head -c 4000 response.json || true
-          echo ""
-          if [ "$code" != "200" ]; then
-            echo "::error::Gazette publish failed with HTTP $code"
+          set -euo pipefail
+          today="$(TZ=America/Detroit date +%F)"
+          output="archive/data/issues/${today}.json"
+          if [[ -f "$output" ]]; then
+            echo "Edition for $today already archived. No API call and no new spend."
+            exit 0
+          fi
+          if [[ -z "${CRON_SECRET:-}" ]]; then
+            echo "::error::GitHub CRON_SECRET repository secret is missing"
             exit 1
           fi
 
-      - name: Confirm today's edition and source health
-        run: node scripts/verify-live-edition.mjs
+          # Only the protected server does source collection / fact ledger checks.
+          # The GitHub runner is the only writer to this public JSON branch.
+          response="$RUNNER_TEMP/gazette-edition.json"
+          status="$(curl --silent --show-error --max-time 310 \
+            -o "$response" -w '%{http_code}' \
+            -H "Authorization: Bearer ${CRON_SECRET}" \
+            "https://great-lakes-gazette.vercel.app/api/cron?capture=github")"
+          if [[ "$status" != "200" ]]; then
+            echo "::error::Gazette capture returned HTTP $status"
+            jq '{error,success,log}' "$response" 2>/dev/null || true
+            exit 1
+          fi
+
+          jq --exit-status -e --arg date "$today" \
+            '.success == true and .capture.date == $date and (.capture.issue.brief.headline | type == "string") and (.capture.issue.brief.editorial.mode == "fact-ledger")' \
+            "$response" > /dev/null
+          mkdir -p archive/data/issues
+          jq --exit-status '.capture.issue' "$response" > "$output"
+
+          jq --arg date "$today" \
+            '.dates = ((.dates // []) + [$date] | unique | sort | reverse) | .backend = "github"' \
+            archive/data/index.json > "$RUNNER_TEMP/gazette-index.json"
+          mv "$RUNNER_TEMP/gazette-index.json" archive/data/index.json
+          cd archive
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "data/issues/${today}.json" data/index.json
+          git commit -m "Gazette issue ${today} (verified fact ledger)"
+          git push origin HEAD:gazette-data
+          echo "Archived and published $today at a stable GitHub JSON URL."
+
+      - name: Confirm GitHub archive can read the edition
+        shell: bash
+        run: |
+          set -euo pipefail
+          today="$(TZ=America/Detroit date +%F)"
+          for attempt in {1..6}; do
+            if curl --fail --silent --show-error --max-time 15 \
+              "https://raw.githubusercontent.com/izworskic/great-lakes-gazette/gazette-data/data/issues/${today}.json" \
+              | jq -e --arg date "$today" '.brief.editorial.mode == "fact-ledger" and (.brief.headline | type == "string")' >/dev/null; then
+              echo "GitHub archive read-back verified for $today"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::Edition commit not readable from GitHub"
+          exit 1

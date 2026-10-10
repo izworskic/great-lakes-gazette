@@ -115,11 +115,11 @@ assert.equal(assessIssueHealth({
 }, '2026-08-03').dateIntegrity, false);
 
 const vercel = JSON.parse(readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
-assert.equal(vercel.crons.find(item => item.path === '/api/cron')?.schedule, '0 9 * * *');
+assert.equal((vercel.crons || []).some(item => item.path === '/api/cron'), false, 'GitHub is now the only publication scheduler');
 
 const workflow = readFileSync(new URL('../.github/workflows/daily-publish.yml', import.meta.url), 'utf8');
 assert.match(workflow, /timezone:\s*['"]?America\/Detroit/);
-assert.match(workflow, /verify-live-edition\.mjs/);
+assert.match(workflow, /data\/issues/);
 assert.match(workflow, /concurrency:/);
 
 const verifier = readFileSync(new URL('./verify-live-edition.mjs', import.meta.url), 'utf8');
@@ -161,7 +161,7 @@ const fakeResponse = {
   setHeader() {}, status(code) { this.code = code; return this; },
   json(body) { assert.equal(released, true, 'Never leave lock cleanup until after response'); this.body = body; },
 };
-await isolatedCron({ headers: { authorization: 'Bearer test-only-secret' } }, fakeResponse);
+await isolatedCron({ headers: { authorization: 'Bearer test-only-secret' }, query:{capture:'github'} }, fakeResponse);
 assert.equal(fakeResponse.code, 500);
 assert.equal(fakeResponse.body.success, false);
 assert.equal(lockCalls[0].options.ex, 330);
@@ -178,7 +178,7 @@ async function runWith(existingIssue) {
     { env: { CRON_SECRET: 'test-only-secret' } }, { error() {}, warn() {} },
   );
   const res = { setHeader() {}, status(c) { this.code = c; return this; }, json(b) { this.body = b; } };
-  await handler({ headers: { authorization: 'Bearer test-only-secret' } }, res);
+  await handler({ headers: { authorization: 'Bearer test-only-secret' }, query:{capture:'github'} }, res);
   return { res, calls };
 }
 const legacy = await runWith({ brief: { headline: 'Bulletin', editorial: { mode: 'source-bulletin' } } });

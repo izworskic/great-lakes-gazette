@@ -257,7 +257,12 @@ assert.equal(rewrites.get('/topics/:slug'), '/api/gateway-ga4?route=topic&slug=:
 const gatewayWrapper = readFileSync(new URL('../api/gateway-ga4.js', import.meta.url), 'utf8');
 assert.match(gatewayWrapper, /import gateway from '\.\/gateway\.js'/);
 assert.match(gatewayWrapper, /return gateway\(req, res\)/);
-assert.equal(vercel.crons.length, 1);
+// Publishing moved to the existing GitHub Actions schedule. It is still
+// only one daily edition; no Vercel cron executes a second copy.
+assert.equal((vercel.crons || []).length, 0);
+const ghWorkflow = readFileSync(new URL('../.github/workflows/daily-publish.yml', import.meta.url), 'utf8');
+assert.match(ghWorkflow, /gazette-data/);
+assert.match(ghWorkflow, /cron:/);
 assert.equal(benchmark.launchGate.additionalDailyAiCalls, 0);
 assert.equal(benchmark.launchGate.additionalScheduledJobs, 0);
 

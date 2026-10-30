@@ -1,0 +1,2545 @@
+{
+  "data": {
+    "portReports": [],
+    "shippingNews": [
+      {
+        "postTitle": "R/V Neil Armstrong Heads for Great Lakes",
+        "date": "2026-10-30T02:05:26",
+        "url": "https://www.boatnerd.com/news/r-v-neil-armstrong-heads-for-great-lakes/",
+        "stories": [
+          {
+            "headline": "",
+            "body": "The R/V Neil Armstrong departed its home port of Woods Hole, Massachusetts, on Wednesday, October 28. It will travel from Cape Cod down the St. Lawrence Seaway, through the locks, and across the Great Lakes. The 238-foot vessel is expected to arrive in Duluth on November 9. R/V Neil Armstrong is Great Lakes-bound. As of Thursday morning, the Neil Armstrong was traveling up the Atlantic Coast around Nova Scotia. The University of Minnesota Duluth is working with the research vessel to detect and observe neutrino interactions in Lake Superior. Neutrinos are the most abundant particles that have "
+          }
+        ]
+      },
+      {
+        "postTitle": "Lake Erie Ports – October 29",
+        "date": "2026-10-30T01:55:46",
+        "url": "https://www.boatnerd.com/noteworthy-passages/lake-erie-ports-october-29/",
+        "stories": [
+          {
+            "headline": "",
+            "body": "Monroe, MI: Joyce L. VanEnkevort/Great Lakes Trader departed for Toledo. Manitowoc unloaded limestone for DTE then left for Port Dolomite. Defiance/Ashtabula unloaded coal at DTE then left with no updated destination. Toledo, OH: Arrivals were Robert S. Pierson to Kuhlmans, Joyce L. VanEnkevort/Great Lakes Trader to CSX and American Spirit with ore for Torco, Departures were Samuel deChamplain/Innovation for Alpena and Robert S. Pierson for Goderich. Marblehead, OH: Northern Venture arrived to load at Amrize. Sam Laud is anchored in the lake. Cleveland, OH: Arrivals were Sam Laud to Kokosing, "
+          }
+        ]
+      },
+      {
+        "postTitle": "Lake Erie Ports – October 28",
+        "date": "2026-10-29T00:36:14",
+        "url": "https://www.boatnerd.com/noteworthy-passages/lake-erie-ports-october-28/",
+        "stories": [
+          {
+            "headline": "",
+            "body": "Monroe, MI: Joyce L. VanEnkevort/Great Lakes Trader arrived with coal for DTE. Manitowoc and Defiance/Ashtabula are anchored in the lake and New York/Double Skin 509A departed for Detroit. Toledo, OH: Samuel deChamplain/Innovation arrived with cement for Amrize while Defiance/Ashtabula departed for Monroe. Caroline McKee/Commander is at Ironhead Marine. Marblehead, OH: Ontario Venture departed with limestone for Windsor. Sandusky, OH: Joyce L. VanEnkevort/Great Lakes Trader departed for Monroe. Cleveland, OH: Arrivals were Wilfred Sykes to Cliffs and Petite Forte/St. Marys Cement. Once empty t"
+          }
+        ]
+      }
+    ],
+    "aisPassages": [
+      {
+        "port": "Soo Locks",
+        "portId": "12",
+        "vessels": [
+          {
+            "name": "AMERICAN INTEGRITY",
+            "direction": "Downbound",
+            "location": "Downbound Keweenaw",
+            "watchPoint": "Soo Locks",
+            "destination": "CONNEAUT",
+            "eta": "10-31-2026 00:53",
+            "cargo": "",
+            "timestamp": "10-30-2026 11:10",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "SHIRLEY ANN",
+            "direction": "Downbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "SAULT STE MARIE",
+            "eta": "10-30-2026 10:37",
+            "cargo": "",
+            "timestamp": "10-30-2026 10:27",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "VALERIE B",
+            "direction": "Upbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "",
+            "eta": "10-30-2026 09:49",
+            "cargo": "",
+            "timestamp": "10-30-2026 09:39",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "INDIANA HARBOR",
+            "direction": "Downbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "GARY,IN",
+            "eta": "10-30-2026 02:39",
+            "cargo": "",
+            "timestamp": "10-30-2026 02:29",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "JOSEPH L BLOCK",
+            "direction": "Downbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "TOLEDO",
+            "eta": "10-29-2026 19:58",
+            "cargo": "",
+            "timestamp": "10-29-2026 19:48",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "VALERIE B",
+            "direction": "Upbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "SOO LOCKS",
+            "eta": "10-29-2026 15:49",
+            "cargo": "",
+            "timestamp": "10-29-2026 15:39",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "JOHN J. BOLAND",
+            "direction": "Downbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "DULUTH",
+            "eta": "10-29-2026 15:32",
+            "cargo": "",
+            "timestamp": "10-29-2026 15:22",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "SHIRLEY ANN",
+            "direction": "Downbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "",
+            "eta": "10-29-2026 12:23",
+            "cargo": "",
+            "timestamp": "10-29-2026 12:13",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "KAYE E BARKER",
+            "direction": "Downbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "CLEVELAND",
+            "eta": "10-29-2026 12:22",
+            "cargo": "",
+            "timestamp": "10-29-2026 12:12",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "WHITEFISH BAY",
+            "direction": "Downbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "MONTREAL",
+            "eta": "10-29-2026 11:43",
+            "cargo": "",
+            "timestamp": "10-29-2026 11:33",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "W I SCOTT PURVIS",
+            "direction": "Downbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "CA SSM",
+            "eta": "10-29-2026 10:55",
+            "cargo": "",
+            "timestamp": "10-29-2026 10:45",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "WILFRED M. COHEN",
+            "direction": "Downbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "SAULT STE MARIE",
+            "eta": "10-29-2026 10:54",
+            "cargo": "",
+            "timestamp": "10-29-2026 10:44",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "TAMMY",
+            "direction": "Upbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "MCM MARINE  SOO MI",
+            "eta": "10-29-2026 09:44",
+            "cargo": "",
+            "timestamp": "10-29-2026 09:34",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "EDWIN H. GOTT",
+            "direction": "Upbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "TWO HARBORS",
+            "eta": "10-29-2026 08:34",
+            "cargo": "",
+            "timestamp": "10-29-2026 08:24",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "PRESQUE ISLE",
+            "direction": "Downbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "GARY",
+            "eta": "10-29-2026 07:49",
+            "cargo": "",
+            "timestamp": "10-29-2026 07:39",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "VALERIE B",
+            "direction": "Upbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "SOO LOCKS",
+            "eta": "10-29-2026 07:22",
+            "cargo": "",
+            "timestamp": "10-29-2026 07:12",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "POLSTEAM LEBSKO",
+            "direction": "Downbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "CA MTR",
+            "eta": "10-29-2026 04:26",
+            "cargo": "",
+            "timestamp": "10-29-2026 04:16",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "HON JAMES L OBERSTAR",
+            "direction": "Upbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "MARQUETTE",
+            "eta": "10-29-2026 01:46",
+            "cargo": "",
+            "timestamp": "10-29-2026 01:36",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "LEE A. TREGURTHA",
+            "direction": "Upbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "MARQUETTE",
+            "eta": "10-29-2026 01:10",
+            "cargo": "",
+            "timestamp": "10-29-2026 01:00",
+            "port": "Soo Locks"
+          },
+          {
+            "name": "EIDER",
+            "direction": "Upbound",
+            "location": "Soo Locks",
+            "watchPoint": "Soo Locks",
+            "destination": "CA THU",
+            "eta": "10-29-2026 00:52",
+            "cargo": "",
+            "timestamp": "10-29-2026 00:42",
+            "port": "Soo Locks"
+          }
+        ],
+        "total": 20,
+        "status": "ok",
+        "fetched_at": "2026-10-30T15:21:49.576Z"
+      },
+      {
+        "port": "Port Huron / St. Clair River",
+        "portId": "3",
+        "vessels": [
+          {
+            "name": "CG29419",
+            "direction": "Upbound",
+            "location": "Dossin Museum / Detroit",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "",
+            "eta": "10-31-2026 17:22",
+            "cargo": "",
+            "timestamp": "10-30-2026 06:10",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "HURON",
+            "direction": "Upbound",
+            "location": "Grassy Island",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "unknown",
+            "eta": "10-30-2026 19:07",
+            "cargo": "",
+            "timestamp": "10-30-2026 10:12",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "NORTHERN VENTURE",
+            "direction": "Upbound",
+            "location": "Grassy Island",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "DETROIT",
+            "eta": "10-30-2026 16:36",
+            "cargo": "",
+            "timestamp": "10-30-2026 10:46",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "ALGOCANADA",
+            "direction": "Upbound",
+            "location": "Dossin Museum / Detroit",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "SARNIA-IOL",
+            "eta": "10-30-2026 15:30",
+            "cargo": "",
+            "timestamp": "10-30-2026 10:46",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "WICKY SPIRIT",
+            "direction": "Upbound",
+            "location": "Crib Light",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "CASNI",
+            "eta": "10-30-2026 14:14",
+            "cargo": "",
+            "timestamp": "10-30-2026 11:15",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "WICKY SPIRIT",
+            "direction": "Upbound",
+            "location": "Crib Light",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "CASNI",
+            "eta": "10-30-2026 14:04",
+            "cargo": "",
+            "timestamp": "10-30-2026 11:02",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "AMERICAN MARINER",
+            "direction": "Upbound",
+            "location": "Crib Light",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "STONEPORT",
+            "eta": "10-30-2026 12:58",
+            "cargo": "",
+            "timestamp": "10-30-2026 09:48",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "KAYE E BARKER",
+            "direction": "Downbound",
+            "location": "Vantage Point / Port Huron",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "CLEVELAND",
+            "eta": "10-30-2026 11:13",
+            "cargo": "",
+            "timestamp": "10-30-2026 11:13",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "WHITEFISH BAY",
+            "direction": "Downbound",
+            "location": "Downbound 11 and 12",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "MONTREAL",
+            "eta": "10-30-2026 10:13",
+            "cargo": "",
+            "timestamp": "10-30-2026 09:18",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "BAIE COMEAU",
+            "direction": "Upbound",
+            "location": "Stag Island Upper",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "MARYSVILLE",
+            "eta": "10-30-2026 09:03",
+            "cargo": "",
+            "timestamp": "10-30-2026 08:13",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "ROBERT S. PIERSON",
+            "direction": "Upbound",
+            "location": "Vantage Point / Port Huron",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "",
+            "eta": "10-30-2026 08:01",
+            "cargo": "",
+            "timestamp": "10-30-2026 08:01",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "LEO A. MCARTHUR",
+            "direction": "Upbound",
+            "location": "Stag Island Upper",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "SARNIA",
+            "eta": "10-30-2026 07:48",
+            "cargo": "",
+            "timestamp": "10-30-2026 06:49",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "DEFIANCE",
+            "direction": "Upbound",
+            "location": "Vantage Point / Port Huron",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "CALCITE",
+            "eta": "10-30-2026 06:37",
+            "cargo": "",
+            "timestamp": "10-30-2026 06:37",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "MARK W. BARKER",
+            "direction": "Downbound",
+            "location": "Vantage Point / Port Huron",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "S.CHICAGO-OZINGA",
+            "eta": "10-30-2026 03:12",
+            "cargo": "",
+            "timestamp": "10-30-2026 03:12",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "VICTORY",
+            "direction": "Upbound",
+            "location": "Vantage Point / Port Huron",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "DETROIT CH66",
+            "eta": "10-29-2026 23:17",
+            "cargo": "",
+            "timestamp": "10-29-2026 23:17",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "BRUCE",
+            "direction": "Upbound",
+            "location": "Vantage Point / Port Huron",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "BURNS HARBOR",
+            "eta": "10-29-2026 18:15",
+            "cargo": "",
+            "timestamp": "10-29-2026 18:15",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "MANITOWOC",
+            "direction": "Upbound",
+            "location": "Vantage Point / Port Huron",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "PORT DOLOMITE",
+            "eta": "10-29-2026 16:54",
+            "cargo": "",
+            "timestamp": "10-29-2026 16:54",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "WILFRED SYKES",
+            "direction": "Upbound",
+            "location": "Vantage Point / Port Huron",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "PORT DOLOMITE, MI",
+            "eta": "10-29-2026 12:37",
+            "cargo": "",
+            "timestamp": "10-29-2026 12:37",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "DIRK S. VANENKEVORT",
+            "direction": "Downbound",
+            "location": "Vantage Point / Port Huron",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "TOLEDO",
+            "eta": "10-29-2026 11:46",
+            "cargo": "",
+            "timestamp": "10-29-2026 11:46",
+            "port": "Port Huron / St. Clair River"
+          },
+          {
+            "name": "THUNDER BAY",
+            "direction": "Upbound",
+            "location": "Vantage Point / Port Huron",
+            "watchPoint": "Vantage Point / Port Huron",
+            "destination": "WORLD SERIES CITY!",
+            "eta": "10-29-2026 09:40",
+            "cargo": "",
+            "timestamp": "10-29-2026 09:40",
+            "port": "Port Huron / St. Clair River"
+          }
+        ],
+        "total": 20,
+        "status": "ok",
+        "fetched_at": "2026-10-30T15:21:49.682Z"
+      },
+      {
+        "port": "Detroit River",
+        "portId": "8",
+        "vessels": [
+          {
+            "name": "KAYE E BARKER",
+            "direction": "Downbound",
+            "location": "Vantage Point / Port Huron",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "CLEVELAND",
+            "eta": "10-30-2026 16:18",
+            "cargo": "",
+            "timestamp": "10-30-2026 11:13",
+            "port": "Detroit River"
+          },
+          {
+            "name": "SEA EAGLE II",
+            "direction": "Upbound",
+            "location": "South East Shoal",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "DETROIT SMC ROUGE",
+            "eta": "10-30-2026 14:51",
+            "cargo": "",
+            "timestamp": "10-30-2026 08:42",
+            "port": "Detroit River"
+          },
+          {
+            "name": "WHITEFISH BAY",
+            "direction": "Downbound",
+            "location": "Downbound 11 and 12",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "MONTREAL",
+            "eta": "10-30-2026 14:50",
+            "cargo": "",
+            "timestamp": "10-30-2026 09:18",
+            "port": "Detroit River"
+          },
+          {
+            "name": "ALGOMA INTREPID",
+            "direction": "Upbound",
+            "location": "South East Shoal",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "GODERICH",
+            "eta": "10-30-2026 14:46",
+            "cargo": "",
+            "timestamp": "10-30-2026 09:59",
+            "port": "Detroit River"
+          },
+          {
+            "name": "PAUL R TREGURTHA",
+            "direction": "Upbound",
+            "location": "South East Shoal",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "DULUTH",
+            "eta": "10-30-2026 14:03",
+            "cargo": "",
+            "timestamp": "10-30-2026 09:36",
+            "port": "Detroit River"
+          },
+          {
+            "name": "NORTHERN VENTURE",
+            "direction": "Upbound",
+            "location": "Grassy Island",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "DETROIT",
+            "eta": "10-30-2026 11:48",
+            "cargo": "",
+            "timestamp": "10-30-2026 10:46",
+            "port": "Detroit River"
+          },
+          {
+            "name": "368435930 US",
+            "direction": "Upbound",
+            "location": "Grassy Island",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "unknown",
+            "eta": "10-30-2026 11:48",
+            "cargo": "",
+            "timestamp": "10-30-2026 10:12",
+            "port": "Detroit River"
+          },
+          {
+            "name": "BAIE COMEAU",
+            "direction": "Downbound",
+            "location": "Vantage Point / Port Huron",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "MARYSVILLE",
+            "eta": "10-30-2026 11:28",
+            "cargo": "",
+            "timestamp": "10-30-2026 06:27",
+            "port": "Detroit River"
+          },
+          {
+            "name": "ALGOCANADA",
+            "direction": "Upbound",
+            "location": "Dossin Museum / Detroit",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "SARNIA-IOL",
+            "eta": "10-30-2026 10:46",
+            "cargo": "",
+            "timestamp": "10-30-2026 10:46",
+            "port": "Detroit River"
+          },
+          {
+            "name": "WICKY SPIRIT",
+            "direction": "Upbound",
+            "location": "Dossin Museum / Detroit",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "CASNI",
+            "eta": "10-30-2026 10:08",
+            "cargo": "",
+            "timestamp": "10-30-2026 10:08",
+            "port": "Detroit River"
+          },
+          {
+            "name": "AMERICAN MARINER",
+            "direction": "Upbound",
+            "location": "Dossin Museum / Detroit",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "STONEPORT",
+            "eta": "10-30-2026 08:37",
+            "cargo": "",
+            "timestamp": "10-30-2026 08:37",
+            "port": "Detroit River"
+          },
+          {
+            "name": "MARK W. BARKER",
+            "direction": "Downbound",
+            "location": "Dossin Museum / Detroit",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "DET-SMC",
+            "eta": "10-30-2026 07:54",
+            "cargo": "",
+            "timestamp": "10-30-2026 07:54",
+            "port": "Detroit River"
+          },
+          {
+            "name": "CG29419",
+            "direction": "Upbound",
+            "location": "Dossin Museum / Detroit",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "",
+            "eta": "10-30-2026 06:10",
+            "cargo": "",
+            "timestamp": "10-30-2026 06:10",
+            "port": "Detroit River"
+          },
+          {
+            "name": "POLSTEAM LEBSKO",
+            "direction": "Downbound",
+            "location": "Dossin Museum / Detroit",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "CA MTR",
+            "eta": "10-30-2026 05:00",
+            "cargo": "",
+            "timestamp": "10-30-2026 05:00",
+            "port": "Detroit River"
+          },
+          {
+            "name": "CG29419",
+            "direction": "Downbound",
+            "location": "Dossin Museum / Detroit",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "",
+            "eta": "10-30-2026 02:38",
+            "cargo": "",
+            "timestamp": "10-30-2026 02:38",
+            "port": "Detroit River"
+          },
+          {
+            "name": "DEFIANCE",
+            "direction": "Upbound",
+            "location": "Dossin Museum / Detroit",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "CALCITE",
+            "eta": "10-30-2026 00:36",
+            "cargo": "",
+            "timestamp": "10-30-2026 00:36",
+            "port": "Detroit River"
+          },
+          {
+            "name": "LEO A. MCARTHUR",
+            "direction": "Upbound",
+            "location": "Dossin Museum / Detroit",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "SARNIA",
+            "eta": "10-30-2026 00:31",
+            "cargo": "",
+            "timestamp": "10-30-2026 00:31",
+            "port": "Detroit River"
+          },
+          {
+            "name": "ROBERT S. PIERSON",
+            "direction": "Upbound",
+            "location": "Dossin Museum / Detroit",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "TOLEDO",
+            "eta": "10-30-2026 00:20",
+            "cargo": "",
+            "timestamp": "10-30-2026 00:20",
+            "port": "Detroit River"
+          },
+          {
+            "name": "VICTORY",
+            "direction": "Upbound",
+            "location": "Dossin Museum / Detroit",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "DETROIT CH66",
+            "eta": "10-29-2026 17:29",
+            "cargo": "",
+            "timestamp": "10-29-2026 17:29",
+            "port": "Detroit River"
+          },
+          {
+            "name": "TURNING POINT",
+            "direction": "Upbound",
+            "location": "Dossin Museum / Detroit",
+            "watchPoint": "Dossin Museum / Detroit",
+            "destination": "",
+            "eta": "10-29-2026 17:26",
+            "cargo": "",
+            "timestamp": "10-29-2026 17:26",
+            "port": "Detroit River"
+          }
+        ],
+        "total": 20,
+        "status": "ok",
+        "fetched_at": "2026-10-30T15:21:49.671Z"
+      },
+      {
+        "port": "Welland Canal",
+        "portId": "44",
+        "vessels": [
+          {
+            "name": "ALGOSOLIS",
+            "direction": "Inbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "SARNIA",
+            "eta": "10-30-2026 11:10",
+            "cargo": "",
+            "timestamp": "10-30-2026 11:10",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "ALGOTITAN",
+            "direction": "Outbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "CASEI",
+            "eta": "10-30-2026 10:34",
+            "cargo": "",
+            "timestamp": "10-30-2026 10:34",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "ZEA LILIAN",
+            "direction": "Inbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "US PVD > CA NAN",
+            "eta": "10-30-2026 10:12",
+            "cargo": "",
+            "timestamp": "10-30-2026 10:12",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "RT HON PAUL J MARTIN",
+            "direction": "Inbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "THUNDER BAY",
+            "eta": "10-30-2026 07:25",
+            "cargo": "",
+            "timestamp": "10-30-2026 07:25",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "MURGASH",
+            "direction": "Inbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "CA CLB",
+            "eta": "10-30-2026 05:59",
+            "cargo": "",
+            "timestamp": "10-30-2026 05:59",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "CSL ASSINIBOINE",
+            "direction": "Outbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "BECANCOUR",
+            "eta": "10-30-2026 04:40",
+            "cargo": "",
+            "timestamp": "10-30-2026 04:40",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "POLSTEAM WADAG",
+            "direction": "Inbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "BURNS HARBOUR",
+            "eta": "10-30-2026 04:15",
+            "cargo": "",
+            "timestamp": "10-30-2026 04:15",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "G3 MARQUIS",
+            "direction": "Outbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "QUEBEC CITY",
+            "eta": "10-29-2026 01:37",
+            "cargo": "",
+            "timestamp": "10-29-2026 01:37",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "MRS C",
+            "direction": "Inbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "",
+            "eta": "10-28-2026 16:45",
+            "cargo": "",
+            "timestamp": "10-28-2026 16:45",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "CAPE_EDENSAW",
+            "direction": "Inbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "",
+            "eta": "10-28-2026 10:17",
+            "cargo": "",
+            "timestamp": "10-28-2026 10:17",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "VENTURE II",
+            "direction": "Inbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "COBURG",
+            "eta": "9-20-2026 18:00",
+            "cargo": "",
+            "timestamp": "9-20-2026 18:00",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "316095536 CA",
+            "direction": "Inbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "unknown",
+            "eta": "9-13-2026 17:11",
+            "cargo": "",
+            "timestamp": "9-13-2026 17:11",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "CREEATION",
+            "direction": "Outbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "",
+            "eta": "9-3-2026 16:51",
+            "cargo": "",
+            "timestamp": "9-3-2026 16:51",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "ARIES",
+            "direction": "Outbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "",
+            "eta": "9-1-2026 18:43",
+            "cargo": "",
+            "timestamp": "9-1-2026 18:43",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "MVCHIPPEWA III",
+            "direction": "Outbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "",
+            "eta": "8-22-2026 19:23",
+            "cargo": "",
+            "timestamp": "8-22-2026 19:23",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "SALTED RIM 1",
+            "direction": "Inbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "",
+            "eta": "8-21-2026 14:07",
+            "cargo": "",
+            "timestamp": "8-21-2026 14:07",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "NIMBUS MARIE",
+            "direction": "Outbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "",
+            "eta": "8-15-2026 09:07",
+            "cargo": "",
+            "timestamp": "8-15-2026 09:07",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "ALBATROSS VII",
+            "direction": "Inbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "unknown",
+            "eta": "8-9-2026 14:00",
+            "cargo": "",
+            "timestamp": "8-9-2026 14:00",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "MOJO",
+            "direction": "Inbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "",
+            "eta": "8-1-2026 07:51",
+            "cargo": "",
+            "timestamp": "8-1-2026 07:51",
+            "port": "Welland Canal"
+          },
+          {
+            "name": "STALWART",
+            "direction": "Outbound",
+            "location": "Port Weller",
+            "watchPoint": "Welland Canal",
+            "destination": "PICTON",
+            "eta": "7-23-2026 14:43",
+            "cargo": "",
+            "timestamp": "7-23-2026 14:43",
+            "port": "Welland Canal"
+          }
+        ],
+        "total": 20,
+        "status": "ok",
+        "fetched_at": "2026-10-30T15:21:49.677Z"
+      },
+      {
+        "port": "Straits of Mackinac",
+        "portId": "23",
+        "vessels": [
+          {
+            "name": "MISS MARGY",
+            "direction": "Eastbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "",
+            "eta": "10-30-2026 10:38",
+            "cargo": "",
+            "timestamp": "10-30-2026 10:38",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "DONALD J SARTER",
+            "direction": "Westbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "STURGEON BAY",
+            "eta": "10-30-2026 10:18",
+            "cargo": "",
+            "timestamp": "10-30-2026 10:18",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "MARQUETTE II",
+            "direction": "Eastbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "",
+            "eta": "10-30-2026 08:37",
+            "cargo": "",
+            "timestamp": "10-30-2026 08:37",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "MEREDITH ASHTON",
+            "direction": "Eastbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "MUSKEGON",
+            "eta": "10-30-2026 08:00",
+            "cargo": "",
+            "timestamp": "10-30-2026 08:00",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "SAGINAW",
+            "direction": "Eastbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "SPRAGGE",
+            "eta": "10-30-2026 06:20",
+            "cargo": "",
+            "timestamp": "10-30-2026 06:20",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "THUNDER BAY",
+            "direction": "Westbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "WORLD SERIES CITY!",
+            "eta": "10-30-2026 04:02",
+            "cargo": "",
+            "timestamp": "10-30-2026 04:02",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "JOHN J. BOLAND",
+            "direction": "Westbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "GARY",
+            "eta": "10-30-2026 00:14",
+            "cargo": "",
+            "timestamp": "10-30-2026 00:14",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "JOHN G MUNSON",
+            "direction": "Westbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "BURNS HBR",
+            "eta": "10-29-2026 23:40",
+            "cargo": "",
+            "timestamp": "10-29-2026 23:40",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "ALGOMA COMPASS",
+            "direction": "Westbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "GREEN BAY",
+            "eta": "10-29-2026 17:53",
+            "cargo": "",
+            "timestamp": "10-29-2026 17:53",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "PRESQUE ISLE",
+            "direction": "Westbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "GARY",
+            "eta": "10-29-2026 17:40",
+            "cargo": "",
+            "timestamp": "10-29-2026 17:40",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "ALPENA",
+            "direction": "Westbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "GREEN BAY",
+            "eta": "10-29-2026 15:04",
+            "cargo": "",
+            "timestamp": "10-29-2026 15:04",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "SAGINAW",
+            "direction": "Westbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "PORT INLAND",
+            "eta": "10-29-2026 11:55",
+            "cargo": "",
+            "timestamp": "10-29-2026 11:55",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "BBC TORNIO",
+            "direction": "Westbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "US BNB",
+            "eta": "10-29-2026 11:18",
+            "cargo": "",
+            "timestamp": "10-29-2026 11:18",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "MARK W. BARKER",
+            "direction": "Eastbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "DET-SMC",
+            "eta": "10-29-2026 10:10",
+            "cargo": "",
+            "timestamp": "10-29-2026 10:10",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "JOHN G MUNSON",
+            "direction": "Eastbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "CALCITE",
+            "eta": "10-29-2026 02:17",
+            "cargo": "",
+            "timestamp": "10-29-2026 02:17",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "HERBERT C JACKSON",
+            "direction": "Westbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "USDRE>USMKG",
+            "eta": "10-28-2026 19:18",
+            "cargo": "",
+            "timestamp": "10-28-2026 19:18",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "HON JAMES L OBERSTAR",
+            "direction": "Eastbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "MARQUETTE",
+            "eta": "10-28-2026 17:47",
+            "cargo": "",
+            "timestamp": "10-28-2026 17:47",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "EGBERT WAGENBORG",
+            "direction": "Westbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "USCHI",
+            "eta": "10-28-2026 16:47",
+            "cargo": "",
+            "timestamp": "10-28-2026 16:47",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "FRONTENAC",
+            "direction": "Westbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "MUSKEGON",
+            "eta": "10-28-2026 16:30",
+            "cargo": "",
+            "timestamp": "10-28-2026 16:30",
+            "port": "Straits of Mackinac"
+          },
+          {
+            "name": "UNDAUNTED",
+            "direction": "Eastbound",
+            "location": "Straits of Mackinac",
+            "watchPoint": "Straits of Mackinac",
+            "destination": "GREEN BAY",
+            "eta": "10-28-2026 14:22",
+            "cargo": "",
+            "timestamp": "10-28-2026 14:22",
+            "port": "Straits of Mackinac"
+          }
+        ],
+        "total": 20,
+        "status": "ok",
+        "fetched_at": "2026-10-30T15:21:49.693Z"
+      },
+      {
+        "port": "Duluth / Superior",
+        "portId": "17",
+        "vessels": [
+          {
+            "name": "BURNS HARBOR",
+            "direction": "Outbound",
+            "location": "Duluth Piers",
+            "watchPoint": "Duluth / Superior",
+            "destination": "DULUTH",
+            "eta": "10-30-2026 02:15",
+            "cargo": "",
+            "timestamp": "10-30-2026 02:15",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "MESABI MINER",
+            "direction": "Inbound",
+            "location": "Superior Entry",
+            "watchPoint": "Duluth / Superior",
+            "destination": "SUPERIOR",
+            "eta": "10-29-2026 20:52",
+            "cargo": "",
+            "timestamp": "10-29-2026 20:52",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "H LEE WHITE",
+            "direction": "Outbound",
+            "location": "Duluth Piers",
+            "watchPoint": "Duluth / Superior",
+            "destination": "MARQUETTE",
+            "eta": "10-29-2026 20:48",
+            "cargo": "",
+            "timestamp": "10-29-2026 20:48",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "HELIOS",
+            "direction": "Inbound",
+            "location": "Superior Entry",
+            "watchPoint": "Duluth / Superior",
+            "destination": "",
+            "eta": "10-29-2026 20:00",
+            "cargo": "",
+            "timestamp": "10-29-2026 20:00",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "CSL NIAGARA",
+            "direction": "Outbound",
+            "location": "Superior Entry",
+            "watchPoint": "Duluth / Superior",
+            "destination": "QUEBEC",
+            "eta": "10-29-2026 19:46",
+            "cargo": "",
+            "timestamp": "10-29-2026 19:46",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "CANDACE ELISE",
+            "direction": "Outbound",
+            "location": "Duluth Piers",
+            "watchPoint": "Duluth / Superior",
+            "destination": "DULUTH",
+            "eta": "10-28-2026 10:46",
+            "cargo": "",
+            "timestamp": "10-28-2026 10:46",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "COE LUISA",
+            "direction": "Inbound",
+            "location": "Duluth Piers",
+            "watchPoint": "Duluth / Superior",
+            "destination": "USDLH",
+            "eta": "10-27-2026 07:36",
+            "cargo": "",
+            "timestamp": "10-27-2026 07:36",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "KENTUCKY",
+            "direction": "Inbound",
+            "location": "Superior Entry",
+            "watchPoint": "Duluth / Superior",
+            "destination": "DULUTH SUPERIOR",
+            "eta": "10-26-2026 12:50",
+            "cargo": "",
+            "timestamp": "10-26-2026 12:50",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "SD-2049 (UNCREWED)",
+            "direction": "Inbound",
+            "location": "Superior Entry",
+            "watchPoint": "Duluth / Superior",
+            "destination": "",
+            "eta": "10-25-2026 12:11",
+            "cargo": "",
+            "timestamp": "10-25-2026 12:11",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "SD-2048 (UNCREWED)",
+            "direction": "Inbound",
+            "location": "Superior Entry",
+            "watchPoint": "Duluth / Superior",
+            "destination": "",
+            "eta": "10-25-2026 10:29",
+            "cargo": "",
+            "timestamp": "10-25-2026 10:29",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "RED HERRING",
+            "direction": "Inbound",
+            "location": "Superior Entry",
+            "watchPoint": "Duluth / Superior",
+            "destination": "",
+            "eta": "10-24-2026 22:00",
+            "cargo": "",
+            "timestamp": "10-24-2026 22:00",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "BLUE HERON",
+            "direction": "Inbound",
+            "location": "Superior Entry",
+            "watchPoint": "Duluth / Superior",
+            "destination": "SUPERIOR.WI",
+            "eta": "10-23-2026 08:47",
+            "cargo": "",
+            "timestamp": "10-23-2026 08:47",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "AMERICAN CENTURY",
+            "direction": "Inbound",
+            "location": "Superior Entry",
+            "watchPoint": "Duluth / Superior",
+            "destination": "SUPERIOR",
+            "eta": "10-22-2026 23:37",
+            "cargo": "",
+            "timestamp": "10-22-2026 23:37",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "HELEN H",
+            "direction": "Inbound",
+            "location": "Duluth Piers",
+            "watchPoint": "Duluth / Superior",
+            "destination": "DULUTH",
+            "eta": "10-22-2026 11:31",
+            "cargo": "",
+            "timestamp": "10-22-2026 11:31",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "VISTA STAR",
+            "direction": "Outbound",
+            "location": "Duluth Piers",
+            "watchPoint": "Duluth / Superior",
+            "destination": "DULUTH",
+            "eta": "10-22-2026 03:13",
+            "cargo": "",
+            "timestamp": "10-22-2026 03:13",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "R V LAKE EXPLORER II",
+            "direction": "Inbound",
+            "location": "Duluth Piers",
+            "watchPoint": "Duluth / Superior",
+            "destination": "SUPERIOR, WI",
+            "eta": "10-21-2026 17:29",
+            "cargo": "",
+            "timestamp": "10-21-2026 17:29",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "TWO SHOES",
+            "direction": "Inbound",
+            "location": "Superior Entry",
+            "watchPoint": "Duluth / Superior",
+            "destination": "",
+            "eta": "10-19-2026 16:35",
+            "cargo": "",
+            "timestamp": "10-19-2026 16:35",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "ISLAND FUN",
+            "direction": "Inbound",
+            "location": "Superior Entry",
+            "watchPoint": "Duluth / Superior",
+            "destination": "",
+            "eta": "10-14-2026 17:24",
+            "cargo": "",
+            "timestamp": "10-14-2026 17:24",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "KALLISTE",
+            "direction": "Inbound",
+            "location": "Duluth Piers",
+            "watchPoint": "Duluth / Superior",
+            "destination": "",
+            "eta": "10-13-2026 19:04",
+            "cargo": "",
+            "timestamp": "10-13-2026 19:04",
+            "port": "Duluth / Superior"
+          },
+          {
+            "name": "UNDERDOG",
+            "direction": "Inbound",
+            "location": "Duluth Piers",
+            "watchPoint": "Duluth / Superior",
+            "destination": "",
+            "eta": "10-11-2026 15:00",
+            "cargo": "",
+            "timestamp": "10-11-2026 15:00",
+            "port": "Duluth / Superior"
+          }
+        ],
+        "total": 20,
+        "status": "ok",
+        "fetched_at": "2026-10-30T15:21:49.543Z"
+      },
+      {
+        "port": "Saginaw",
+        "portId": "51",
+        "vessels": [],
+        "total": 0,
+        "status": "ok",
+        "fetched_at": "2026-10-30T15:21:49.520Z"
+      }
+    ],
+    "todayInHistory": [
+      {
+        "title": "Joseph H. Thompson",
+        "date": "2026-10-04T16:47:29",
+        "text": "[et_pb_section fb_built=\"1&#8243; admin_label=\"Header Section\" _builder_version=\"4.19.3&#8243; _dynamic_attributes=\"background_image\" _module_preset=\"default\" background_enable_color=\"off\" use_background_color_gradient=\"on\" background_color_gradient_stops=\"rgba(0,0,0,0.25) 0%|rgba(0,0,0,0.24) 99%\" background_color_gradient_overlays_image=\"on\" background_image=\"@ET-DC@eyJkeW5hbWljIjp0cnVlLCJjb250ZW50IjoicG9zdF9mZWF0dXJlZF9pbWFnZSIsInNldHRpbmdzIjp7fX0=@\" module_alignment=\"center\" min_height=\"500px\" min_height_tablet=\"375px\" min_height_phone=\"250px\" min_height_last_edited=\"on|tablet\" height=\"500px\" height_tablet=\"375px\" height_phone=\"250px\" height_last_edited=\"on|desktop\" global_colors_info=\"{}\"][et_pb_row _builder_version=\"4.19.3&#8243; _module_preset=\"default\" background_enable_color=\"off\" custom_padding=\"6%||6%||true|false\" global_colors_info=\"{}\"][et_pb_column type=\"4_4&#8243; _builder_version=\"4.18.0&#8243; _module_preset=\"default\" global_colors_info=\"{}\"][et_pb_post_title author=\"off\" date=\"off\" comments=\"off\" featured_image=\"off\" text_color=\"light\" module_id=\"vessel-title\" _builder_version=\"4.19.3&#8243; _module_preset=\"default\" title_font=\"||||||||\" title_text_align=\"center\" title_text_color=\"#FFFFFF\" title_font_size=\"70px\" meta_font=\"|||on|||||\" meta_text_align=\"center\" meta_text_color=\"#FFFFFF\" meta_font_size=\"16px\" meta_letter_spacing=\"5px\" background_enable_color=\"off\" text_orientation=\"center\" module_alignment=\"center\" title_font_size_tablet=\"55px\" title_font_size_p"
+      },
+      {
+        "title": "Sam Laud",
+        "date": "2026-10-03T17:29:31",
+        "text": "Sam Laud Bay Shipbuilding Corp. of Sturgeon Bay, WI, laid the keel for their hull # 712 on Jan. 4, 1974 to be built as a smaller-sized Great Lakes self-unloading bulk cargo carrier. The new vessel was launched on Nov. 19, 1974 for Buffalo's American Steamship Co. (ASC), a subsidiary of GATX Corp., Chicago, IL. Completed in 1975, the self-unloader was christened Sam Laud by Mrs. Edna Laud on behalf of her husband at a christening ceremony held April 15, 1975. Mr. Laud was the former president (1945) and chairman of the board (1956) of GATX Corp., having started with the company in 1916 as shop painter and riveter. Mr. Laud died August 1, 1963. GATX Corp. had acquired ASC in July of 1973. Mrs. Laud was accompanied by Mr. Frederick G. Jaicks, chairman and CEO of Inland Steel Co., Chicago, IL, who gave the address at the christening ceremonies. One of a new generation of self-unloaders for the ASC fleet, the Sam Laud was built at an approximate cost of $13.3 million and was the fourth of 10 self-unloaders launched for the fleet under Chapter XI of the Merchant Marine Act of 1970. Under this act, the U.S. government-guaranteed financing and tax deferred benefits for fleet modernizing. The other ASC self-unloaders built under this program were the Roger M. Kyes (now Adam E. Cornelius, 1973), Charles E. Wilson (now John J. Boland, 1973), H. Lee White (1974), St. Clair (1976), Belle River (now Walter J. McCarthy Jr., 1977), Buffalo (1978), Indiana Harbor (1979) and American Mariner ("
+      }
+    ],
+    "waterLevels": [
+      {
+        "lake": "Lake Superior",
+        "city": "Marquette C.G.",
+        "stationName": "Marquette C.G.",
+        "stationId": "9099018",
+        "level_ft": 0.745,
+        "valueText": "0.745",
+        "observedAt": "2026-10-30T15:12:00Z",
+        "date": "2026-10-30 15:12",
+        "preliminary": true,
+        "status": "ok"
+      },
+      {
+        "lake": "Lake Michigan",
+        "city": "Holland",
+        "stationName": "Holland",
+        "stationId": "9087031",
+        "level_ft": 1.23,
+        "valueText": "1.23",
+        "observedAt": "2026-10-30T15:12:00Z",
+        "date": "2026-10-30 15:12",
+        "preliminary": true,
+        "status": "ok"
+      },
+      {
+        "lake": "Lake Huron",
+        "city": "Harbor Beach",
+        "stationName": "Harbor Beach",
+        "stationId": "9075014",
+        "level_ft": 1.568,
+        "valueText": "1.568",
+        "observedAt": "2026-10-30T15:12:00Z",
+        "date": "2026-10-30 15:12",
+        "preliminary": true,
+        "status": "ok"
+      },
+      {
+        "lake": "Saginaw Bay, Lake Huron",
+        "city": "Essexville",
+        "stationName": "Essexville",
+        "stationId": "9075035",
+        "level_ft": 1.647,
+        "valueText": "1.647",
+        "observedAt": "2026-10-30T15:12:00Z",
+        "date": "2026-10-30 15:12",
+        "preliminary": true,
+        "status": "ok"
+      },
+      {
+        "lake": "Lake Erie",
+        "city": "Fairport",
+        "stationName": "Fairport",
+        "stationId": "9063053",
+        "level_ft": 2.434,
+        "valueText": "2.434",
+        "observedAt": "2026-10-30T15:12:00Z",
+        "date": "2026-10-30 15:12",
+        "preliminary": true,
+        "status": "ok"
+      },
+      {
+        "lake": "Lake Ontario",
+        "city": "Oswego",
+        "stationName": "Oswego",
+        "stationId": "9052030",
+        "level_ft": 1.814,
+        "valueText": "1.814",
+        "observedAt": "2026-10-30T15:12:00Z",
+        "date": "2026-10-30 15:12",
+        "preliminary": true,
+        "status": "ok"
+      }
+    ],
+    "greatLakesNow": {
+      "items": [],
+      "status": "error",
+      "error": "HTTP 403",
+      "source": "Great Lakes Now"
+    },
+    "marineWeather": [
+      {
+        "lake": "Lake Superior",
+        "code": "LS",
+        "synopsis": "A 30.3 inch high stretching from Alberta to the Upper Great Lakes this morning will continue building to 30.4 inches over the Upper Great Lakes today. High pressure then shifts to the Lower Great Lakes by Saturday morning and strengthens to 30.5 inches, with ridging of around 30.2 inches lingering over Lake Superior through the weekend as the high gradually shifts to the Eastern Seaboard. A 29.6 inch Colorado low develops on Monday and moves into Minnesota by Tuesday morning. This low passes north of Lake Superior into northern Ontario Tuesday night at 29.5 inches, dragging troughing of at least 29.6 inches over the western half of the lake Tuesday into Wednesday.",
+        "wind": "",
+        "waveHeight": "1",
+        "warning": null,
+        "issuanceTime": "2026-10-30T14:01:00+00:00",
+        "status": "ok"
+      },
+      {
+        "lake": "Lake Michigan",
+        "code": "LM",
+        "synopsis": "High pressure around 30.4 inches will work its way across the Upper Great Lakes Region today with winds turning more northeasterly and lessening as it moves over Lake Michigan. Then winds become southeasterly later tonight as high pressure slowly exits. Moderate southeasterly winds return for Saturday as low pressure around 29.8 inches moves into the central Plains. Light to moderate southeasterly to southerly winds then persist into Monday, increasing for Tuesday as low pressure approaches. Gales may be possible at times early next week.",
+        "wind": "",
+        "waveHeight": "1",
+        "warning": null,
+        "issuanceTime": "2026-10-30T13:50:00+00:00",
+        "status": "ok"
+      },
+      {
+        "lake": "Lake Huron",
+        "code": "LH",
+        "synopsis": "Brisk northwest flow this morning continues across Lake Huron in the wake of a cold front. High pressure, 30.40 inches, will then build in tonight and through the weekend, relaxing wind speeds and bringing in a period of lighter winds.",
+        "wind": "",
+        "waveHeight": "4",
+        "warning": null,
+        "issuanceTime": "2026-10-30T13:44:00+00:00",
+        "status": "ok"
+      },
+      {
+        "lake": "Lake Erie",
+        "code": "LE",
+        "synopsis": "Behind a departing cold front this morning, high pressure 30.40 inches will build southeast over the area and persist into the weekend. A warm front will lift north across the lake on Sunday into Sunday night. The area will linger in the warm sector into the start of next week.",
+        "wind": "",
+        "waveHeight": "2",
+        "warning": null,
+        "issuanceTime": "2026-10-30T13:35:00+00:00",
+        "status": "ok"
+      },
+      {
+        "lake": "Lake Ontario",
+        "code": "LO",
+        "synopsis": "A 30.4 inch high will settle over the lower Great Lakes tonight. This high will then drift to the eastern seaboard Tuesday, then east of the Mid Atlantic coast by Wednesday. Meanwhile, a 29.3 inch low over far northwest Ontario province Tuesday night will move to Hudson Bay by late Wednesday, then to northern Quebec by Thursday while deepening to 29.0 inches. A trailing cold front will cross the lower Great Lakes Wednesday night, with a 30.0 inch high building east across the eastern Great Lakes region Thursday through Friday, before sliding east into New England by Saturday.",
+        "wind": "",
+        "waveHeight": "3",
+        "warning": null,
+        "issuanceTime": "2026-10-30T14:03:00+00:00",
+        "status": "ok"
+      }
+    ],
+    "fetched_at": "2026-10-30T15:21:50.470Z"
+  },
+  "brief": {
+    "headline": "WICKY SPIRIT Estimated at Port Huron / St. Clair River Around 2:14 p.m. ET",
+    "deck": "52 vessels from BoatNerd's latest passage lists, 6 NOAA gauges and 5 NWS lake forecasts, each with its source time.",
+    "dateline": "Bay City, Mich., October 30, 2026",
+    "issueDate": "October 30, 2026",
+    "issueNumber": 15,
+    "leadSubject": "WICKY SPIRIT",
+    "sections": [
+      {
+        "kicker": "",
+        "body": "WICKY SPIRIT, upbound, was reported at Crib Light at 11:15 a.m. ET; BoatNerd estimates it at Vantage Point / Port Huron around 2:14 p.m. ET. Its AIS destination field reads CASNI. That time is a BoatNerd estimate, not a confirmed arrival or lock transit. The latest BoatNerd passage lists for 7 watch points held 52 distinct vessels with reports from the last 24 hours."
+      },
+      {
+        "kicker": "At the Watch Points",
+        "body": "Soo Locks: AMERICAN INTEGRITY, downbound, was reported at Downbound Keweenaw at 11:10 a.m. ET; BoatNerd estimates it at Soo Locks around 12:53 a.m. ET Oct. 31. Its AIS destination field reads CONNEAUT. SHIRLEY ANN, downbound, was reported at Soo Locks at 10:27 a.m. ET. Its AIS destination field reads SAULT STE MARIE. VALERIE B, upbound, was reported at Soo Locks at 9:39 a.m. ET.\n\nPort Huron / St. Clair River: NORTHERN VENTURE, upbound, was reported at Grassy Island at 10:46 a.m. ET; BoatNerd estimates it at Vantage Point / Port Huron around 4:36 p.m. ET. Its AIS destination field reads DETROIT. ALGOCANADA, upbound, was reported at Dossin Museum / Detroit at 10:46 a.m. ET; BoatNerd estimates it at Vantage Point / Port Huron around 3:30 p.m. ET. HURON, upbound, was reported at Grassy Island at 10:12 a.m. ET; BoatNerd estimates it at Vantage Point / Port Huron around 7:07 p.m. ET. Its AIS destination field reads UNKNOWN.\n\nDetroit River: KAYE E BARKER, downbound, was reported at Vantage Point / Port Huron at 11:13 a.m. ET; BoatNerd estimates it at Dossin Museum / Detroit around 4:18 p.m. ET. Its AIS destination field reads CLEVELAND. 368435930 US, upbound, was reported at Grassy Island at 10:12 a.m. ET; BoatNerd estimates it at Dossin Museum / Detroit around 11:48 a.m. ET. Its AIS destination field reads UNKNOWN. ALGOMA INTREPID, upbound, was reported at South East Shoal at 9:59 a.m. ET; BoatNerd estimates it at Dossin Museum / Detroit around 2:46 p.m. ET. Its AIS destination field reads GODERICH.\n\nWelland Canal: ALGOSOLIS, inbound, was reported at Port Weller at 11:10 a.m. ET. Its AIS destination field reads SARNIA. ALGOTITAN, outbound, was reported at Port Weller at 10:34 a.m. ET. Its AIS destination field reads CASEI. ZEA LILIAN, inbound, was reported at Port Weller at 10:12 a.m. ET.\n\nStraits of Mackinac: MISS MARGY, eastbound, was reported at Straits of Mackinac at 10:38 a.m. ET. DONALD J SARTER, westbound, was reported at Straits of Mackinac at 10:18 a.m. ET. Its AIS destination field reads STURGEON BAY. MARQUETTE II, eastbound, was reported at Straits of Mackinac at 8:37 a.m. ET.\n\nDuluth / Superior: BURNS HARBOR, outbound, was reported at Duluth Piers at 2:15 a.m. ET. Its AIS destination field reads DULUTH. MESABI MINER, inbound, was reported at Superior Entry at 8:52 p.m. ET Oct. 29. Its AIS destination field reads SUPERIOR. H LEE WHITE, outbound, was reported at Duluth Piers at 8:48 p.m. ET Oct. 29. Its AIS destination field reads MARQUETTE.\n\nSaginaw: no vessel reports from the last 24 hours were returned. That does not mean the waterway is empty."
+      },
+      {
+        "kicker": "The Levels Ledger",
+        "body": "Marquette C.G. (Lake Superior), NOAA station 9099018: 0.745 ft above Low Water Datum at 11:12 a.m. ET, preliminary data.\n\nHolland (Lake Michigan), NOAA station 9087031: 1.23 ft above Low Water Datum at 11:12 a.m. ET, preliminary data.\n\nHarbor Beach (Lake Huron), NOAA station 9075014: 1.568 ft above Low Water Datum at 11:12 a.m. ET, preliminary data.\n\nEssexville (Saginaw Bay, Lake Huron), NOAA station 9075035: 1.647 ft above Low Water Datum at 11:12 a.m. ET, preliminary data.\n\nFairport (Lake Erie), NOAA station 9063053: 2.434 ft above Low Water Datum at 11:12 a.m. ET, preliminary data.\n\nOswego (Lake Ontario), NOAA station 9052030: 1.814 ft above Low Water Datum at 11:12 a.m. ET, preliminary data.\n\nEach reading is one gauge above that lake's chart datum; it does not establish channel depth or vessel clearance."
+      },
+      {
+        "kicker": "Weather on the Water",
+        "body": "Lake Superior, NWS forecast issued 10:01 a.m. ET: \"A 30.3 inch high stretching from Alberta to the Upper Great Lakes this morning will continue building to 30.4 inches over the Upper Great Lakes today. High pressure then shifts to the Lower Great Lakes by Saturday morning and strengthens to 30.5 inches, with ridging of around 30.2 inches lingering over Lake Superior through the weekend as the high gradually shifts to the Eastern Seaboard.\"\n\nLake Michigan, NWS forecast issued 9:50 a.m. ET: \"High pressure around 30.4 inches will work its way across the Upper Great Lakes Region today with winds turning more northeasterly and lessening as it moves over Lake Michigan. Then winds become southeasterly later tonight as high pressure slowly exits.\"\n\nLake Huron, NWS forecast issued 9:44 a.m. ET: \"Brisk northwest flow this morning continues across Lake Huron in the wake of a cold front. High pressure, 30.40 inches, will then build in tonight and through the weekend, relaxing wind speeds and bringing in a period of lighter winds.\"\n\nLake Erie, NWS forecast issued 9:35 a.m. ET: \"Behind a departing cold front this morning, high pressure 30.40 inches will build southeast over the area and persist into the weekend. A warm front will lift north across the lake on Sunday into Sunday night.\"\n\nLake Ontario, NWS forecast issued 10:03 a.m. ET: \"A 30.4 inch high will settle over the lower Great Lakes tonight. This high will then drift to the eastern seaboard Tuesday, then east of the Mid Atlantic coast by Wednesday.\""
+      }
+    ],
+    "brief": "WICKY SPIRIT, upbound, was reported at Crib Light at 11:15 a.m. ET; BoatNerd estimates it at Vantage Point / Port Huron around 2:14 p.m. ET. Its AIS destination field reads CASNI. That time is a BoatNerd estimate, not a confirmed arrival or lock transit. The latest BoatNerd passage lists for 7 watch points held 52 distinct vessels with reports from the last 24 hours.\n\nSoo Locks: AMERICAN INTEGRITY, downbound, was reported at Downbound Keweenaw at 11:10 a.m. ET; BoatNerd estimates it at Soo Locks around 12:53 a.m. ET Oct. 31. Its AIS destination field reads CONNEAUT. SHIRLEY ANN, downbound, was reported at Soo Locks at 10:27 a.m. ET. Its AIS destination field reads SAULT STE MARIE. VALERIE B, upbound, was reported at Soo Locks at 9:39 a.m. ET.\n\nPort Huron / St. Clair River: NORTHERN VENTURE, upbound, was reported at Grassy Island at 10:46 a.m. ET; BoatNerd estimates it at Vantage Point / Port Huron around 4:36 p.m. ET. Its AIS destination field reads DETROIT. ALGOCANADA, upbound, was reported at Dossin Museum / Detroit at 10:46 a.m. ET; BoatNerd estimates it at Vantage Point / Port Huron around 3:30 p.m. ET. HURON, upbound, was reported at Grassy Island at 10:12 a.m. ET; BoatNerd estimates it at Vantage Point / Port Huron around 7:07 p.m. ET. Its AIS destination field reads UNKNOWN.\n\nDetroit River: KAYE E BARKER, downbound, was reported at Vantage Point / Port Huron at 11:13 a.m. ET; BoatNerd estimates it at Dossin Museum / Detroit around 4:18 p.m. ET. Its AIS destination field reads CLEVELAND. 368435930 US, upbound, was reported at Grassy Island at 10:12 a.m. ET; BoatNerd estimates it at Dossin Museum / Detroit around 11:48 a.m. ET. Its AIS destination field reads UNKNOWN. ALGOMA INTREPID, upbound, was reported at South East Shoal at 9:59 a.m. ET; BoatNerd estimates it at Dossin Museum / Detroit around 2:46 p.m. ET. Its AIS destination field reads GODERICH.\n\nWelland Canal: ALGOSOLIS, inbound, was reported at Port Weller at 11:10 a.m. ET. Its AIS destination field reads SARNIA. ALGOTITAN, outbound, was reported at Port Weller at 10:34 a.m. ET. Its AIS destination field reads CASEI. ZEA LILIAN, inbound, was reported at Port Weller at 10:12 a.m. ET.\n\nStraits of Mackinac: MISS MARGY, eastbound, was reported at Straits of Mackinac at 10:38 a.m. ET. DONALD J SARTER, westbound, was reported at Straits of Mackinac at 10:18 a.m. ET. Its AIS destination field reads STURGEON BAY. MARQUETTE II, eastbound, was reported at Straits of Mackinac at 8:37 a.m. ET.\n\nDuluth / Superior: BURNS HARBOR, outbound, was reported at Duluth Piers at 2:15 a.m. ET. Its AIS destination field reads DULUTH. MESABI MINER, inbound, was reported at Superior Entry at 8:52 p.m. ET Oct. 29. Its AIS destination field reads SUPERIOR. H LEE WHITE, outbound, was reported at Duluth Piers at 8:48 p.m. ET Oct. 29. Its AIS destination field reads MARQUETTE.\n\nSaginaw: no vessel reports from the last 24 hours were returned. That does not mean the waterway is empty.\n\nMarquette C.G. (Lake Superior), NOAA station 9099018: 0.745 ft above Low Water Datum at 11:12 a.m. ET, preliminary data.\n\nHolland (Lake Michigan), NOAA station 9087031: 1.23 ft above Low Water Datum at 11:12 a.m. ET, preliminary data.\n\nHarbor Beach (Lake Huron), NOAA station 9075014: 1.568 ft above Low Water Datum at 11:12 a.m. ET, preliminary data.\n\nEssexville (Saginaw Bay, Lake Huron), NOAA station 9075035: 1.647 ft above Low Water Datum at 11:12 a.m. ET, preliminary data.\n\nFairport (Lake Erie), NOAA station 9063053: 2.434 ft above Low Water Datum at 11:12 a.m. ET, preliminary data.\n\nOswego (Lake Ontario), NOAA station 9052030: 1.814 ft above Low Water Datum at 11:12 a.m. ET, preliminary data.\n\nEach reading is one gauge above that lake's chart datum; it does not establish channel depth or vessel clearance.\n\nLake Superior, NWS forecast issued 10:01 a.m. ET: \"A 30.3 inch high stretching from Alberta to the Upper Great Lakes this morning will continue building to 30.4 inches over the Upper Great Lakes today. High pressure then shifts to the Lower Great Lakes by Saturday morning and strengthens to 30.5 inches, with ridging of around 30.2 inches lingering over Lake Superior through the weekend as the high gradually shifts to the Eastern Seaboard.\"\n\nLake Michigan, NWS forecast issued 9:50 a.m. ET: \"High pressure around 30.4 inches will work its way across the Upper Great Lakes Region today with winds turning more northeasterly and lessening as it moves over Lake Michigan. Then winds become southeasterly later tonight as high pressure slowly exits.\"\n\nLake Huron, NWS forecast issued 9:44 a.m. ET: \"Brisk northwest flow this morning continues across Lake Huron in the wake of a cold front. High pressure, 30.40 inches, will then build in tonight and through the weekend, relaxing wind speeds and bringing in a period of lighter winds.\"\n\nLake Erie, NWS forecast issued 9:35 a.m. ET: \"Behind a departing cold front this morning, high pressure 30.40 inches will build southeast over the area and persist into the weekend. A warm front will lift north across the lake on Sunday into Sunday night.\"\n\nLake Ontario, NWS forecast issued 10:03 a.m. ET: \"A 30.4 inch high will settle over the lower Great Lakes tonight. This high will then drift to the eastern seaboard Tuesday, then east of the Mid Atlantic coast by Wednesday.\"",
+    "spotlight": "",
+    "tomorrow": "Still ahead in BoatNerd's estimates: 368435930 US at Dossin Museum / Detroit around 11:48 a.m. ET. That time is a BoatNerd estimate, not a confirmed arrival or lock transit.",
+    "sources": {
+      "aisPassages": [
+        {
+          "port": "Soo Locks",
+          "count": 5
+        },
+        {
+          "port": "Port Huron / St. Clair River",
+          "count": 15
+        },
+        {
+          "port": "Detroit River",
+          "count": 9
+        },
+        {
+          "port": "Welland Canal",
+          "count": 7
+        },
+        {
+          "port": "Straits of Mackinac",
+          "count": 11
+        },
+        {
+          "port": "Duluth / Superior",
+          "count": 5
+        },
+        {
+          "port": "Saginaw",
+          "count": 0
+        }
+      ],
+      "portReports": []
+    },
+    "ledger": {
+      "publicationDate": "2026-10-30",
+      "builtAt": "2026-10-30T15:21:50.589Z",
+      "aisClock": {
+        "verified": true,
+        "newestAgeMinutes": 7,
+        "reason": null
+      },
+      "timeLabel": "ET",
+      "watchPoints": [
+        "Soo Locks",
+        "Port Huron / St. Clair River",
+        "Detroit River",
+        "Welland Canal",
+        "Straits of Mackinac",
+        "Duluth / Superior",
+        "Saginaw"
+      ],
+      "vessels": [
+        {
+          "kind": "vessel-estimate",
+          "port": "Port Huron / St. Clair River",
+          "vessel": "WICKY SPIRIT",
+          "direction": "Upbound",
+          "location": "Crib Light",
+          "reportedAt": 1793373300000,
+          "reportedRaw": "10-30-2026 11:15",
+          "watchPoint": "Vantage Point / Port Huron",
+          "etaAt": 1793384040000,
+          "etaRaw": "10-30-2026 14:14",
+          "aisDestination": "CASNI",
+          "source": "BoatNerd AIS passages",
+          "id": "v1",
+          "text": "WICKY SPIRIT, upbound, was reported at Crib Light at 11:15 a.m. ET; BoatNerd estimates it at Vantage Point / Port Huron around 2:14 p.m. ET. Its AIS destination field reads CASNI."
+        },
+        {
+          "kind": "vessel-estimate",
+          "port": "Detroit River",
+          "vessel": "KAYE E BARKER",
+          "direction": "Downbound",
+          "location": "Vantage Point / Port Huron",
+          "reportedAt": 1793373180000,
+          "reportedRaw": "10-30-2026 11:13",
+          "watchPoint": "Dossin Museum / Detroit",
+          "etaAt": 1793391480000,
+          "etaRaw": "10-30-2026 16:18",
+          "aisDestination": "CLEVELAND",
+          "source": "BoatNerd AIS passages",
+          "id": "v2",
+          "text": "KAYE E BARKER, downbound, was reported at Vantage Point / Port Huron at 11:13 a.m. ET; BoatNerd estimates it at Dossin Museum / Detroit around 4:18 p.m. ET. Its AIS destination field reads CLEVELAND."
+        },
+        {
+          "kind": "vessel-estimate",
+          "port": "Soo Locks",
+          "vessel": "AMERICAN INTEGRITY",
+          "direction": "Downbound",
+          "location": "Downbound Keweenaw",
+          "reportedAt": 1793373000000,
+          "reportedRaw": "10-30-2026 11:10",
+          "watchPoint": "Soo Locks",
+          "etaAt": 1793422380000,
+          "etaRaw": "10-31-2026 00:53",
+          "aisDestination": "CONNEAUT",
+          "source": "BoatNerd AIS passages",
+          "id": "v3",
+          "text": "AMERICAN INTEGRITY, downbound, was reported at Downbound Keweenaw at 11:10 a.m. ET; BoatNerd estimates it at Soo Locks around 12:53 a.m. ET Oct. 31. Its AIS destination field reads CONNEAUT."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Welland Canal",
+          "vessel": "ALGOSOLIS",
+          "direction": "Inbound",
+          "location": "Port Weller",
+          "reportedAt": 1793373000000,
+          "reportedRaw": "10-30-2026 11:10",
+          "aisDestination": "SARNIA",
+          "source": "BoatNerd AIS passages",
+          "id": "v4",
+          "text": "ALGOSOLIS, inbound, was reported at Port Weller at 11:10 a.m. ET. Its AIS destination field reads SARNIA."
+        },
+        {
+          "kind": "vessel-estimate",
+          "port": "Port Huron / St. Clair River",
+          "vessel": "NORTHERN VENTURE",
+          "direction": "Upbound",
+          "location": "Grassy Island",
+          "reportedAt": 1793371560000,
+          "reportedRaw": "10-30-2026 10:46",
+          "watchPoint": "Vantage Point / Port Huron",
+          "etaAt": 1793392560000,
+          "etaRaw": "10-30-2026 16:36",
+          "aisDestination": "DETROIT",
+          "source": "BoatNerd AIS passages",
+          "id": "v5",
+          "text": "NORTHERN VENTURE, upbound, was reported at Grassy Island at 10:46 a.m. ET; BoatNerd estimates it at Vantage Point / Port Huron around 4:36 p.m. ET. Its AIS destination field reads DETROIT."
+        },
+        {
+          "kind": "vessel-estimate",
+          "port": "Port Huron / St. Clair River",
+          "vessel": "ALGOCANADA",
+          "direction": "Upbound",
+          "location": "Dossin Museum / Detroit",
+          "reportedAt": 1793371560000,
+          "reportedRaw": "10-30-2026 10:46",
+          "watchPoint": "Vantage Point / Port Huron",
+          "etaAt": 1793388600000,
+          "etaRaw": "10-30-2026 15:30",
+          "aisDestination": "",
+          "source": "BoatNerd AIS passages",
+          "id": "v6",
+          "text": "ALGOCANADA, upbound, was reported at Dossin Museum / Detroit at 10:46 a.m. ET; BoatNerd estimates it at Vantage Point / Port Huron around 3:30 p.m. ET."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Straits of Mackinac",
+          "vessel": "MISS MARGY",
+          "direction": "Eastbound",
+          "location": "Straits of Mackinac",
+          "reportedAt": 1793371080000,
+          "reportedRaw": "10-30-2026 10:38",
+          "aisDestination": "",
+          "source": "BoatNerd AIS passages",
+          "id": "v7",
+          "text": "MISS MARGY, eastbound, was reported at Straits of Mackinac at 10:38 a.m. ET."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Welland Canal",
+          "vessel": "ALGOTITAN",
+          "direction": "Outbound",
+          "location": "Port Weller",
+          "reportedAt": 1793370840000,
+          "reportedRaw": "10-30-2026 10:34",
+          "aisDestination": "CASEI",
+          "source": "BoatNerd AIS passages",
+          "id": "v8",
+          "text": "ALGOTITAN, outbound, was reported at Port Weller at 10:34 a.m. ET. Its AIS destination field reads CASEI."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Soo Locks",
+          "vessel": "SHIRLEY ANN",
+          "direction": "Downbound",
+          "location": "Soo Locks",
+          "reportedAt": 1793370420000,
+          "reportedRaw": "10-30-2026 10:27",
+          "aisDestination": "SAULT STE MARIE",
+          "source": "BoatNerd AIS passages",
+          "id": "v9",
+          "text": "SHIRLEY ANN, downbound, was reported at Soo Locks at 10:27 a.m. ET. Its AIS destination field reads SAULT STE MARIE."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Straits of Mackinac",
+          "vessel": "DONALD J SARTER",
+          "direction": "Westbound",
+          "location": "Straits of Mackinac",
+          "reportedAt": 1793369880000,
+          "reportedRaw": "10-30-2026 10:18",
+          "aisDestination": "STURGEON BAY",
+          "source": "BoatNerd AIS passages",
+          "id": "v10",
+          "text": "DONALD J SARTER, westbound, was reported at Straits of Mackinac at 10:18 a.m. ET. Its AIS destination field reads STURGEON BAY."
+        },
+        {
+          "kind": "vessel-estimate",
+          "port": "Port Huron / St. Clair River",
+          "vessel": "HURON",
+          "direction": "Upbound",
+          "location": "Grassy Island",
+          "reportedAt": 1793369520000,
+          "reportedRaw": "10-30-2026 10:12",
+          "watchPoint": "Vantage Point / Port Huron",
+          "etaAt": 1793401620000,
+          "etaRaw": "10-30-2026 19:07",
+          "aisDestination": "UNKNOWN",
+          "source": "BoatNerd AIS passages",
+          "id": "v11",
+          "text": "HURON, upbound, was reported at Grassy Island at 10:12 a.m. ET; BoatNerd estimates it at Vantage Point / Port Huron around 7:07 p.m. ET. Its AIS destination field reads UNKNOWN."
+        },
+        {
+          "kind": "vessel-estimate",
+          "port": "Detroit River",
+          "vessel": "368435930 US",
+          "direction": "Upbound",
+          "location": "Grassy Island",
+          "reportedAt": 1793369520000,
+          "reportedRaw": "10-30-2026 10:12",
+          "watchPoint": "Dossin Museum / Detroit",
+          "etaAt": 1793375280000,
+          "etaRaw": "10-30-2026 11:48",
+          "aisDestination": "UNKNOWN",
+          "source": "BoatNerd AIS passages",
+          "id": "v12",
+          "text": "368435930 US, upbound, was reported at Grassy Island at 10:12 a.m. ET; BoatNerd estimates it at Dossin Museum / Detroit around 11:48 a.m. ET. Its AIS destination field reads UNKNOWN."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Welland Canal",
+          "vessel": "ZEA LILIAN",
+          "direction": "Inbound",
+          "location": "Port Weller",
+          "reportedAt": 1793369520000,
+          "reportedRaw": "10-30-2026 10:12",
+          "aisDestination": "",
+          "source": "BoatNerd AIS passages",
+          "id": "v13",
+          "text": "ZEA LILIAN, inbound, was reported at Port Weller at 10:12 a.m. ET."
+        },
+        {
+          "kind": "vessel-estimate",
+          "port": "Detroit River",
+          "vessel": "ALGOMA INTREPID",
+          "direction": "Upbound",
+          "location": "South East Shoal",
+          "reportedAt": 1793368740000,
+          "reportedRaw": "10-30-2026 09:59",
+          "watchPoint": "Dossin Museum / Detroit",
+          "etaAt": 1793385960000,
+          "etaRaw": "10-30-2026 14:46",
+          "aisDestination": "GODERICH",
+          "source": "BoatNerd AIS passages",
+          "id": "v14",
+          "text": "ALGOMA INTREPID, upbound, was reported at South East Shoal at 9:59 a.m. ET; BoatNerd estimates it at Dossin Museum / Detroit around 2:46 p.m. ET. Its AIS destination field reads GODERICH."
+        },
+        {
+          "kind": "vessel-estimate",
+          "port": "Port Huron / St. Clair River",
+          "vessel": "AMERICAN MARINER",
+          "direction": "Upbound",
+          "location": "Crib Light",
+          "reportedAt": 1793368080000,
+          "reportedRaw": "10-30-2026 09:48",
+          "watchPoint": "Vantage Point / Port Huron",
+          "etaAt": 1793379480000,
+          "etaRaw": "10-30-2026 12:58",
+          "aisDestination": "STONEPORT",
+          "source": "BoatNerd AIS passages",
+          "id": "v15",
+          "text": "AMERICAN MARINER, upbound, was reported at Crib Light at 9:48 a.m. ET; BoatNerd estimates it at Vantage Point / Port Huron around 12:58 p.m. ET. Its AIS destination field reads STONEPORT."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Soo Locks",
+          "vessel": "VALERIE B",
+          "direction": "Upbound",
+          "location": "Soo Locks",
+          "reportedAt": 1793367540000,
+          "reportedRaw": "10-30-2026 09:39",
+          "aisDestination": "",
+          "source": "BoatNerd AIS passages",
+          "id": "v16",
+          "text": "VALERIE B, upbound, was reported at Soo Locks at 9:39 a.m. ET."
+        },
+        {
+          "kind": "vessel-estimate",
+          "port": "Detroit River",
+          "vessel": "PAUL R TREGURTHA",
+          "direction": "Upbound",
+          "location": "South East Shoal",
+          "reportedAt": 1793367360000,
+          "reportedRaw": "10-30-2026 09:36",
+          "watchPoint": "Dossin Museum / Detroit",
+          "etaAt": 1793383380000,
+          "etaRaw": "10-30-2026 14:03",
+          "aisDestination": "DULUTH",
+          "source": "BoatNerd AIS passages",
+          "id": "v17",
+          "text": "PAUL R TREGURTHA, upbound, was reported at South East Shoal at 9:36 a.m. ET; BoatNerd estimates it at Dossin Museum / Detroit around 2:03 p.m. ET. Its AIS destination field reads DULUTH."
+        },
+        {
+          "kind": "vessel-estimate",
+          "port": "Detroit River",
+          "vessel": "WHITEFISH BAY",
+          "direction": "Downbound",
+          "location": "Downbound 11 and 12",
+          "reportedAt": 1793366280000,
+          "reportedRaw": "10-30-2026 09:18",
+          "watchPoint": "Dossin Museum / Detroit",
+          "etaAt": 1793386200000,
+          "etaRaw": "10-30-2026 14:50",
+          "aisDestination": "MONTREAL",
+          "source": "BoatNerd AIS passages",
+          "id": "v18",
+          "text": "WHITEFISH BAY, downbound, was reported at Downbound 11 and 12 at 9:18 a.m. ET; BoatNerd estimates it at Dossin Museum / Detroit around 2:50 p.m. ET. Its AIS destination field reads MONTREAL."
+        },
+        {
+          "kind": "vessel-estimate",
+          "port": "Detroit River",
+          "vessel": "SEA EAGLE II",
+          "direction": "Upbound",
+          "location": "South East Shoal",
+          "reportedAt": 1793364120000,
+          "reportedRaw": "10-30-2026 08:42",
+          "watchPoint": "Dossin Museum / Detroit",
+          "etaAt": 1793386260000,
+          "etaRaw": "10-30-2026 14:51",
+          "aisDestination": "DETROIT SMC ROUGE",
+          "source": "BoatNerd AIS passages",
+          "id": "v19",
+          "text": "SEA EAGLE II, upbound, was reported at South East Shoal at 8:42 a.m. ET; BoatNerd estimates it at Dossin Museum / Detroit around 2:51 p.m. ET. Its AIS destination field reads DETROIT SMC ROUGE."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Straits of Mackinac",
+          "vessel": "MARQUETTE II",
+          "direction": "Eastbound",
+          "location": "Straits of Mackinac",
+          "reportedAt": 1793363820000,
+          "reportedRaw": "10-30-2026 08:37",
+          "aisDestination": "",
+          "source": "BoatNerd AIS passages",
+          "id": "v20",
+          "text": "MARQUETTE II, eastbound, was reported at Straits of Mackinac at 8:37 a.m. ET."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Port Huron / St. Clair River",
+          "vessel": "BAIE COMEAU",
+          "direction": "Upbound",
+          "location": "Stag Island Upper",
+          "reportedAt": 1793362380000,
+          "reportedRaw": "10-30-2026 08:13",
+          "aisDestination": "MARYSVILLE",
+          "source": "BoatNerd AIS passages",
+          "id": "v21",
+          "text": "BAIE COMEAU, upbound, was reported at Stag Island Upper at 8:13 a.m. ET. Its AIS destination field reads MARYSVILLE."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Port Huron / St. Clair River",
+          "vessel": "ROBERT S. PIERSON",
+          "direction": "Upbound",
+          "location": "Vantage Point / Port Huron",
+          "reportedAt": 1793361660000,
+          "reportedRaw": "10-30-2026 08:01",
+          "aisDestination": "",
+          "source": "BoatNerd AIS passages",
+          "id": "v22",
+          "text": "ROBERT S. PIERSON, upbound, was reported at Vantage Point / Port Huron at 8:01 a.m. ET."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Straits of Mackinac",
+          "vessel": "MEREDITH ASHTON",
+          "direction": "Eastbound",
+          "location": "Straits of Mackinac",
+          "reportedAt": 1793361600000,
+          "reportedRaw": "10-30-2026 08:00",
+          "aisDestination": "MUSKEGON",
+          "source": "BoatNerd AIS passages",
+          "id": "v23",
+          "text": "MEREDITH ASHTON, eastbound, was reported at Straits of Mackinac at 8:00 a.m. ET. Its AIS destination field reads MUSKEGON."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Detroit River",
+          "vessel": "MARK W. BARKER",
+          "direction": "Downbound",
+          "location": "Dossin Museum / Detroit",
+          "reportedAt": 1793361240000,
+          "reportedRaw": "10-30-2026 07:54",
+          "aisDestination": "",
+          "source": "BoatNerd AIS passages",
+          "id": "v24",
+          "text": "MARK W. BARKER, downbound, was reported at Dossin Museum / Detroit at 7:54 a.m. ET."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Welland Canal",
+          "vessel": "RT HON PAUL J MARTIN",
+          "direction": "Inbound",
+          "location": "Port Weller",
+          "reportedAt": 1793359500000,
+          "reportedRaw": "10-30-2026 07:25",
+          "aisDestination": "THUNDER BAY",
+          "source": "BoatNerd AIS passages",
+          "id": "v25",
+          "text": "RT HON PAUL J MARTIN, inbound, was reported at Port Weller at 7:25 a.m. ET. Its AIS destination field reads THUNDER BAY."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Port Huron / St. Clair River",
+          "vessel": "LEO A. MCARTHUR",
+          "direction": "Upbound",
+          "location": "Stag Island Upper",
+          "reportedAt": 1793357340000,
+          "reportedRaw": "10-30-2026 06:49",
+          "aisDestination": "SARNIA",
+          "source": "BoatNerd AIS passages",
+          "id": "v26",
+          "text": "LEO A. MCARTHUR, upbound, was reported at Stag Island Upper at 6:49 a.m. ET. Its AIS destination field reads SARNIA."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Port Huron / St. Clair River",
+          "vessel": "DEFIANCE",
+          "direction": "Upbound",
+          "location": "Vantage Point / Port Huron",
+          "reportedAt": 1793356620000,
+          "reportedRaw": "10-30-2026 06:37",
+          "aisDestination": "CALCITE",
+          "source": "BoatNerd AIS passages",
+          "id": "v27",
+          "text": "DEFIANCE, upbound, was reported at Vantage Point / Port Huron at 6:37 a.m. ET. Its AIS destination field reads CALCITE."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Straits of Mackinac",
+          "vessel": "SAGINAW",
+          "direction": "Eastbound",
+          "location": "Straits of Mackinac",
+          "reportedAt": 1793355600000,
+          "reportedRaw": "10-30-2026 06:20",
+          "aisDestination": "SPRAGGE",
+          "source": "BoatNerd AIS passages",
+          "id": "v28",
+          "text": "SAGINAW, eastbound, was reported at Straits of Mackinac at 6:20 a.m. ET. Its AIS destination field reads SPRAGGE."
+        },
+        {
+          "kind": "vessel-estimate",
+          "port": "Port Huron / St. Clair River",
+          "vessel": "CG29419",
+          "direction": "Upbound",
+          "location": "Dossin Museum / Detroit",
+          "reportedAt": 1793355000000,
+          "reportedRaw": "10-30-2026 06:10",
+          "watchPoint": "Vantage Point / Port Huron",
+          "etaAt": 1793481720000,
+          "etaRaw": "10-31-2026 17:22",
+          "aisDestination": "",
+          "source": "BoatNerd AIS passages",
+          "id": "v29",
+          "text": "CG29419, upbound, was reported at Dossin Museum / Detroit at 6:10 a.m. ET; BoatNerd estimates it at Vantage Point / Port Huron around 5:22 p.m. ET Oct. 31."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Welland Canal",
+          "vessel": "MURGASH",
+          "direction": "Inbound",
+          "location": "Port Weller",
+          "reportedAt": 1793354340000,
+          "reportedRaw": "10-30-2026 05:59",
+          "aisDestination": "CA CLB",
+          "source": "BoatNerd AIS passages",
+          "id": "v30",
+          "text": "MURGASH, inbound, was reported at Port Weller at 5:59 a.m. ET. Its AIS destination field reads CA CLB."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Detroit River",
+          "vessel": "POLSTEAM LEBSKO",
+          "direction": "Downbound",
+          "location": "Dossin Museum / Detroit",
+          "reportedAt": 1793350800000,
+          "reportedRaw": "10-30-2026 05:00",
+          "aisDestination": "CA MTR",
+          "source": "BoatNerd AIS passages",
+          "id": "v31",
+          "text": "POLSTEAM LEBSKO, downbound, was reported at Dossin Museum / Detroit at 5:00 a.m. ET. Its AIS destination field reads CA MTR."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Welland Canal",
+          "vessel": "CSL ASSINIBOINE",
+          "direction": "Outbound",
+          "location": "Port Weller",
+          "reportedAt": 1793349600000,
+          "reportedRaw": "10-30-2026 04:40",
+          "aisDestination": "BECANCOUR",
+          "source": "BoatNerd AIS passages",
+          "id": "v32",
+          "text": "CSL ASSINIBOINE, outbound, was reported at Port Weller at 4:40 a.m. ET. Its AIS destination field reads BECANCOUR."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Welland Canal",
+          "vessel": "POLSTEAM WADAG",
+          "direction": "Inbound",
+          "location": "Port Weller",
+          "reportedAt": 1793348100000,
+          "reportedRaw": "10-30-2026 04:15",
+          "aisDestination": "BURNS HARBOUR",
+          "source": "BoatNerd AIS passages",
+          "id": "v33",
+          "text": "POLSTEAM WADAG, inbound, was reported at Port Weller at 4:15 a.m. ET. Its AIS destination field reads BURNS HARBOUR."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Straits of Mackinac",
+          "vessel": "THUNDER BAY",
+          "direction": "Westbound",
+          "location": "Straits of Mackinac",
+          "reportedAt": 1793347320000,
+          "reportedRaw": "10-30-2026 04:02",
+          "aisDestination": "",
+          "source": "BoatNerd AIS passages",
+          "id": "v34",
+          "text": "THUNDER BAY, westbound, was reported at Straits of Mackinac at 4:02 a.m. ET."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Soo Locks",
+          "vessel": "INDIANA HARBOR",
+          "direction": "Downbound",
+          "location": "Soo Locks",
+          "reportedAt": 1793341740000,
+          "reportedRaw": "10-30-2026 02:29",
+          "aisDestination": "",
+          "source": "BoatNerd AIS passages",
+          "id": "v35",
+          "text": "INDIANA HARBOR, downbound, was reported at Soo Locks at 2:29 a.m. ET."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Duluth / Superior",
+          "vessel": "BURNS HARBOR",
+          "direction": "Outbound",
+          "location": "Duluth Piers",
+          "reportedAt": 1793340900000,
+          "reportedRaw": "10-30-2026 02:15",
+          "aisDestination": "DULUTH",
+          "source": "BoatNerd AIS passages",
+          "id": "v36",
+          "text": "BURNS HARBOR, outbound, was reported at Duluth Piers at 2:15 a.m. ET. Its AIS destination field reads DULUTH."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Straits of Mackinac",
+          "vessel": "JOHN J. BOLAND",
+          "direction": "Westbound",
+          "location": "Straits of Mackinac",
+          "reportedAt": 1793333640000,
+          "reportedRaw": "10-30-2026 00:14",
+          "aisDestination": "GARY",
+          "source": "BoatNerd AIS passages",
+          "id": "v37",
+          "text": "JOHN J. BOLAND, westbound, was reported at Straits of Mackinac at 12:14 a.m. ET. Its AIS destination field reads GARY."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Straits of Mackinac",
+          "vessel": "JOHN G MUNSON",
+          "direction": "Westbound",
+          "location": "Straits of Mackinac",
+          "reportedAt": 1793331600000,
+          "reportedRaw": "10-29-2026 23:40",
+          "aisDestination": "BURNS HBR",
+          "source": "BoatNerd AIS passages",
+          "id": "v38",
+          "text": "JOHN G MUNSON, westbound, was reported at Straits of Mackinac at 11:40 p.m. ET Oct. 29. Its AIS destination field reads BURNS HBR."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Port Huron / St. Clair River",
+          "vessel": "VICTORY",
+          "direction": "Upbound",
+          "location": "Vantage Point / Port Huron",
+          "reportedAt": 1793330220000,
+          "reportedRaw": "10-29-2026 23:17",
+          "aisDestination": "",
+          "source": "BoatNerd AIS passages",
+          "id": "v39",
+          "text": "VICTORY, upbound, was reported at Vantage Point / Port Huron at 11:17 p.m. ET Oct. 29."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Duluth / Superior",
+          "vessel": "MESABI MINER",
+          "direction": "Inbound",
+          "location": "Superior Entry",
+          "reportedAt": 1793321520000,
+          "reportedRaw": "10-29-2026 20:52",
+          "aisDestination": "SUPERIOR",
+          "source": "BoatNerd AIS passages",
+          "id": "v40",
+          "text": "MESABI MINER, inbound, was reported at Superior Entry at 8:52 p.m. ET Oct. 29. Its AIS destination field reads SUPERIOR."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Duluth / Superior",
+          "vessel": "H LEE WHITE",
+          "direction": "Outbound",
+          "location": "Duluth Piers",
+          "reportedAt": 1793321280000,
+          "reportedRaw": "10-29-2026 20:48",
+          "aisDestination": "MARQUETTE",
+          "source": "BoatNerd AIS passages",
+          "id": "v41",
+          "text": "H LEE WHITE, outbound, was reported at Duluth Piers at 8:48 p.m. ET Oct. 29. Its AIS destination field reads MARQUETTE."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Duluth / Superior",
+          "vessel": "HELIOS",
+          "direction": "Inbound",
+          "location": "Superior Entry",
+          "reportedAt": 1793318400000,
+          "reportedRaw": "10-29-2026 20:00",
+          "aisDestination": "",
+          "source": "BoatNerd AIS passages",
+          "id": "v42",
+          "text": "HELIOS, inbound, was reported at Superior Entry at 8:00 p.m. ET Oct. 29."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Soo Locks",
+          "vessel": "JOSEPH L BLOCK",
+          "direction": "Downbound",
+          "location": "Soo Locks",
+          "reportedAt": 1793317680000,
+          "reportedRaw": "10-29-2026 19:48",
+          "aisDestination": "TOLEDO",
+          "source": "BoatNerd AIS passages",
+          "id": "v43",
+          "text": "JOSEPH L BLOCK, downbound, was reported at Soo Locks at 7:48 p.m. ET Oct. 29. Its AIS destination field reads TOLEDO."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Duluth / Superior",
+          "vessel": "CSL NIAGARA",
+          "direction": "Outbound",
+          "location": "Superior Entry",
+          "reportedAt": 1793317560000,
+          "reportedRaw": "10-29-2026 19:46",
+          "aisDestination": "QUEBEC",
+          "source": "BoatNerd AIS passages",
+          "id": "v44",
+          "text": "CSL NIAGARA, outbound, was reported at Superior Entry at 7:46 p.m. ET Oct. 29. Its AIS destination field reads QUEBEC."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Port Huron / St. Clair River",
+          "vessel": "BRUCE",
+          "direction": "Upbound",
+          "location": "Vantage Point / Port Huron",
+          "reportedAt": 1793312100000,
+          "reportedRaw": "10-29-2026 18:15",
+          "aisDestination": "BURNS HARBOR",
+          "source": "BoatNerd AIS passages",
+          "id": "v45",
+          "text": "BRUCE, upbound, was reported at Vantage Point / Port Huron at 6:15 p.m. ET Oct. 29. Its AIS destination field reads BURNS HARBOR."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Straits of Mackinac",
+          "vessel": "ALGOMA COMPASS",
+          "direction": "Westbound",
+          "location": "Straits of Mackinac",
+          "reportedAt": 1793310780000,
+          "reportedRaw": "10-29-2026 17:53",
+          "aisDestination": "GREEN BAY",
+          "source": "BoatNerd AIS passages",
+          "id": "v46",
+          "text": "ALGOMA COMPASS, westbound, was reported at Straits of Mackinac at 5:53 p.m. ET Oct. 29. Its AIS destination field reads GREEN BAY."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Straits of Mackinac",
+          "vessel": "PRESQUE ISLE",
+          "direction": "Westbound",
+          "location": "Straits of Mackinac",
+          "reportedAt": 1793310000000,
+          "reportedRaw": "10-29-2026 17:40",
+          "aisDestination": "GARY",
+          "source": "BoatNerd AIS passages",
+          "id": "v47",
+          "text": "PRESQUE ISLE, westbound, was reported at Straits of Mackinac at 5:40 p.m. ET Oct. 29. Its AIS destination field reads GARY."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Detroit River",
+          "vessel": "TURNING POINT",
+          "direction": "Upbound",
+          "location": "Dossin Museum / Detroit",
+          "reportedAt": 1793309160000,
+          "reportedRaw": "10-29-2026 17:26",
+          "aisDestination": "",
+          "source": "BoatNerd AIS passages",
+          "id": "v48",
+          "text": "TURNING POINT, upbound, was reported at Dossin Museum / Detroit at 5:26 p.m. ET Oct. 29."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Port Huron / St. Clair River",
+          "vessel": "MANITOWOC",
+          "direction": "Upbound",
+          "location": "Vantage Point / Port Huron",
+          "reportedAt": 1793307240000,
+          "reportedRaw": "10-29-2026 16:54",
+          "aisDestination": "PORT DOLOMITE",
+          "source": "BoatNerd AIS passages",
+          "id": "v49",
+          "text": "MANITOWOC, upbound, was reported at Vantage Point / Port Huron at 4:54 p.m. ET Oct. 29. Its AIS destination field reads PORT DOLOMITE."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Straits of Mackinac",
+          "vessel": "ALPENA",
+          "direction": "Westbound",
+          "location": "Straits of Mackinac",
+          "reportedAt": 1793300640000,
+          "reportedRaw": "10-29-2026 15:04",
+          "aisDestination": "GREEN BAY",
+          "source": "BoatNerd AIS passages",
+          "id": "v50",
+          "text": "ALPENA, westbound, was reported at Straits of Mackinac at 3:04 p.m. ET Oct. 29. Its AIS destination field reads GREEN BAY."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Port Huron / St. Clair River",
+          "vessel": "WILFRED SYKES",
+          "direction": "Upbound",
+          "location": "Vantage Point / Port Huron",
+          "reportedAt": 1793291820000,
+          "reportedRaw": "10-29-2026 12:37",
+          "aisDestination": "",
+          "source": "BoatNerd AIS passages",
+          "id": "v51",
+          "text": "WILFRED SYKES, upbound, was reported at Vantage Point / Port Huron at 12:37 p.m. ET Oct. 29."
+        },
+        {
+          "kind": "vessel-report",
+          "port": "Port Huron / St. Clair River",
+          "vessel": "DIRK S. VANENKEVORT",
+          "direction": "Downbound",
+          "location": "Vantage Point / Port Huron",
+          "reportedAt": 1793288760000,
+          "reportedRaw": "10-29-2026 11:46",
+          "aisDestination": "TOLEDO",
+          "source": "BoatNerd AIS passages",
+          "id": "v52",
+          "text": "DIRK S. VANENKEVORT, downbound, was reported at Vantage Point / Port Huron at 11:46 a.m. ET Oct. 29. Its AIS destination field reads TOLEDO."
+        }
+      ],
+      "levels": [
+        {
+          "id": "l1",
+          "kind": "water-level",
+          "station": "Marquette C.G.",
+          "stationId": "9099018",
+          "lake": "Lake Superior",
+          "value": "0.745",
+          "observedAt": 1793373120000,
+          "preliminary": true,
+          "source": "NOAA CO-OPS",
+          "text": "Marquette C.G. (Lake Superior), NOAA station 9099018: 0.745 ft above Low Water Datum at 11:12 a.m. ET, preliminary data."
+        },
+        {
+          "id": "l2",
+          "kind": "water-level",
+          "station": "Holland",
+          "stationId": "9087031",
+          "lake": "Lake Michigan",
+          "value": "1.23",
+          "observedAt": 1793373120000,
+          "preliminary": true,
+          "source": "NOAA CO-OPS",
+          "text": "Holland (Lake Michigan), NOAA station 9087031: 1.23 ft above Low Water Datum at 11:12 a.m. ET, preliminary data."
+        },
+        {
+          "id": "l3",
+          "kind": "water-level",
+          "station": "Harbor Beach",
+          "stationId": "9075014",
+          "lake": "Lake Huron",
+          "value": "1.568",
+          "observedAt": 1793373120000,
+          "preliminary": true,
+          "source": "NOAA CO-OPS",
+          "text": "Harbor Beach (Lake Huron), NOAA station 9075014: 1.568 ft above Low Water Datum at 11:12 a.m. ET, preliminary data."
+        },
+        {
+          "id": "l4",
+          "kind": "water-level",
+          "station": "Essexville",
+          "stationId": "9075035",
+          "lake": "Saginaw Bay, Lake Huron",
+          "value": "1.647",
+          "observedAt": 1793373120000,
+          "preliminary": true,
+          "source": "NOAA CO-OPS",
+          "text": "Essexville (Saginaw Bay, Lake Huron), NOAA station 9075035: 1.647 ft above Low Water Datum at 11:12 a.m. ET, preliminary data."
+        },
+        {
+          "id": "l5",
+          "kind": "water-level",
+          "station": "Fairport",
+          "stationId": "9063053",
+          "lake": "Lake Erie",
+          "value": "2.434",
+          "observedAt": 1793373120000,
+          "preliminary": true,
+          "source": "NOAA CO-OPS",
+          "text": "Fairport (Lake Erie), NOAA station 9063053: 2.434 ft above Low Water Datum at 11:12 a.m. ET, preliminary data."
+        },
+        {
+          "id": "l6",
+          "kind": "water-level",
+          "station": "Oswego",
+          "stationId": "9052030",
+          "lake": "Lake Ontario",
+          "value": "1.814",
+          "observedAt": 1793373120000,
+          "preliminary": true,
+          "source": "NOAA CO-OPS",
+          "text": "Oswego (Lake Ontario), NOAA station 9052030: 1.814 ft above Low Water Datum at 11:12 a.m. ET, preliminary data."
+        }
+      ],
+      "weather": [
+        {
+          "kind": "forecast",
+          "lake": "Lake Superior",
+          "issuedAt": 1793368860000,
+          "excerpt": "A 30.3 inch high stretching from Alberta to the Upper Great Lakes this morning will continue building to 30.4 inches over the Upper Great Lakes today. High pressure then shifts to the Lower Great Lakes by Saturday morning and strengthens to 30.5 inches, with ridging of around 30.2 inches lingering over Lake Superior through the weekend as the high gradually shifts to the Eastern Seaboard.",
+          "source": "NWS open lakes forecast",
+          "text": "Lake Superior, NWS forecast issued 10:01 a.m. ET: \"A 30.3 inch high stretching from Alberta to the Upper Great Lakes this morning will continue building to 30.4 inches over the Upper Great Lakes today. High pressure then shifts to the Lower Great Lakes by Saturday morning and strengthens to 30.5 inches, with ridging of around 30.2 inches lingering over Lake Superior through the weekend as the high gradually shifts to the Eastern Seaboard.\"",
+          "id": "w1"
+        },
+        {
+          "kind": "forecast",
+          "lake": "Lake Michigan",
+          "issuedAt": 1793368200000,
+          "excerpt": "High pressure around 30.4 inches will work its way across the Upper Great Lakes Region today with winds turning more northeasterly and lessening as it moves over Lake Michigan. Then winds become southeasterly later tonight as high pressure slowly exits.",
+          "source": "NWS open lakes forecast",
+          "text": "Lake Michigan, NWS forecast issued 9:50 a.m. ET: \"High pressure around 30.4 inches will work its way across the Upper Great Lakes Region today with winds turning more northeasterly and lessening as it moves over Lake Michigan. Then winds become southeasterly later tonight as high pressure slowly exits.\"",
+          "id": "w2"
+        },
+        {
+          "kind": "forecast",
+          "lake": "Lake Huron",
+          "issuedAt": 1793367840000,
+          "excerpt": "Brisk northwest flow this morning continues across Lake Huron in the wake of a cold front. High pressure, 30.40 inches, will then build in tonight and through the weekend, relaxing wind speeds and bringing in a period of lighter winds.",
+          "source": "NWS open lakes forecast",
+          "text": "Lake Huron, NWS forecast issued 9:44 a.m. ET: \"Brisk northwest flow this morning continues across Lake Huron in the wake of a cold front. High pressure, 30.40 inches, will then build in tonight and through the weekend, relaxing wind speeds and bringing in a period of lighter winds.\"",
+          "id": "w3"
+        },
+        {
+          "kind": "forecast",
+          "lake": "Lake Erie",
+          "issuedAt": 1793367300000,
+          "excerpt": "Behind a departing cold front this morning, high pressure 30.40 inches will build southeast over the area and persist into the weekend. A warm front will lift north across the lake on Sunday into Sunday night.",
+          "source": "NWS open lakes forecast",
+          "text": "Lake Erie, NWS forecast issued 9:35 a.m. ET: \"Behind a departing cold front this morning, high pressure 30.40 inches will build southeast over the area and persist into the weekend. A warm front will lift north across the lake on Sunday into Sunday night.\"",
+          "id": "w4"
+        },
+        {
+          "kind": "forecast",
+          "lake": "Lake Ontario",
+          "issuedAt": 1793368980000,
+          "excerpt": "A 30.4 inch high will settle over the lower Great Lakes tonight. This high will then drift to the eastern seaboard Tuesday, then east of the Mid Atlantic coast by Wednesday.",
+          "source": "NWS open lakes forecast",
+          "text": "Lake Ontario, NWS forecast issued 10:03 a.m. ET: \"A 30.4 inch high will settle over the lower Great Lakes tonight. This high will then drift to the eastern seaboard Tuesday, then east of the Mid Atlantic coast by Wednesday.\"",
+          "id": "w5"
+        }
+      ]
+    },
+    "generated_at": "2026-10-30T15:21:50.589Z",
+    "editorial": {
+      "mode": "fact-ledger",
+      "lead": {
+        "id": "v1",
+        "subject": "WICKY SPIRIT",
+        "chosenBy": "deterministic",
+        "confidence": 1,
+        "reason": "cost-free scheduled edition",
+        "candidates": [
+          {
+            "id": "v1",
+            "score": 70,
+            "subject": "WICKY SPIRIT"
+          },
+          {
+            "id": "v2",
+            "score": 70,
+            "subject": "KAYE E BARKER"
+          },
+          {
+            "id": "v3",
+            "score": 70,
+            "subject": "AMERICAN INTEGRITY"
+          },
+          {
+            "id": "v5",
+            "score": 69,
+            "subject": "NORTHERN VENTURE"
+          },
+          {
+            "id": "v6",
+            "score": 69,
+            "subject": "ALGOCANADA"
+          }
+        ]
+      },
+      "verifiedAt": "2026-10-30T15:21:50.589Z"
+    }
+  },
+  "generated_at": "2026-10-30T15:21:50.703Z",
+  "runLog": [
+    "[2026-10-30T15:21:48.600Z] Cron starting - Great Lakes Gazette daily run (2026-10-30)",
+    "[2026-10-30T15:21:50.470Z] Data fetched: 0 port reports, 3 news items",
+    "[2026-10-30T15:21:50.470Z] AIS: 7/7 source checks healthy, 6 ports with named passages",
+    "Lead chosen by deterministic: WICKY SPIRIT (v1); cost-free scheduled edition",
+    "[2026-10-30T15:21:50.703Z] Fact-ledger edition verified: \"WICKY SPIRIT Estimated at Port Huron / St. Clair River Around 2:14 p.m. ET\" (Issue 15; lead chosen by deterministic)",
+    "[2026-10-30T15:21:50.705Z] Edition staged for authenticated GitHub Actions archival on 2026-10-30",
+    "[2026-10-30T15:21:54.256Z] Published FVF draft - https://wordpress.com/post/freighterviewfarms.com/2835",
+    "[2026-10-30T15:21:54.944Z] IndexNow submitted 7 affected URLs - HTTP 200"
+  ],
+  "publication": {
+    "wordpress": {
+      "post_id": 2835,
+      "edit_url": "https://wordpress.com/post/freighterviewfarms.com/2835",
+      "status": "draft"
+    }
+  }
+}

@@ -249,6 +249,17 @@ for (const topic of TOPICS) {
 }
 
 const vercel = JSON.parse(readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
+// The three GSC-reported trailing-slash variants must resolve to existing
+// slashless topic routes. Do not broaden this to unrelated URLs.
+for (const slug of ['lake-michigan-shipping', 'lake-erie-shipping', 'soo-locks']) {
+  const rule = vercel.redirects.find(redirect => redirect.source === `/topics/${slug}/`);
+  assert.ok(rule, `Missing redirect for ${slug}`);
+  assert.equal(rule.destination, `/topics/${slug}`);
+  assert.equal(rule.permanent, true);
+  assert.deepEqual(rule.has, [{ type: 'host', value: 'gazette\\.chrisizworski\\.com' }]);
+  assert.ok(TOPICS.some(topic => topic.slug === slug));
+}
+
 const rewrites = new Map(vercel.rewrites.map(rewrite => [rewrite.source, rewrite.destination]));
 assert.equal(rewrites.get('/feed.json'), '/api/gateway?route=sitemap&format=json');
 assert.equal(rewrites.get('/news-sitemap.xml'), '/api/gateway?route=sitemap&format=news');

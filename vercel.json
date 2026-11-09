@@ -123,6 +123,24 @@
   ],
   "redirects": [
     {
+      "source": "/topics/lake-michigan-shipping/",
+      "destination": "/topics/lake-michigan-shipping",
+      "permanent": true,
+      "has": [{ "type": "host", "value": "gazette\\.chrisizworski\\.com" }]
+    },
+    {
+      "source": "/topics/lake-erie-shipping/",
+      "destination": "/topics/lake-erie-shipping",
+      "permanent": true,
+      "has": [{ "type": "host", "value": "gazette\\.chrisizworski\\.com" }]
+    },
+    {
+      "source": "/topics/soo-locks/",
+      "destination": "/topics/soo-locks",
+      "permanent": true,
+      "has": [{ "type": "host", "value": "gazette\\.chrisizworski\\.com" }]
+    },
+    {
       "source": "/",
       "has": [
         {
